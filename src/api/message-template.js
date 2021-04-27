@@ -1,0 +1,46 @@
+import platform from '@/config/platform'
+import axios from '@/libs/api.request'
+
+// 获取企业微信 查询 初始化 
+export const getWechatInt = params => {
+  return axios.request({
+    url: platform.OPERATE + "/wechat/page",
+    method: "get",
+    params
+  })
+}
+
+// 获取企业微信 搜索企业 
+export const getWechatKeyWord = params => {
+  return axios.request({
+    url: platform.OPERATE + "/wechat/list",
+    method: "get",
+    params
+  })
+}
+
+// 获取企业微信 新增企业 
+export const addWechat = data => {
+  return axios.request({
+    url: platform.OPERATE + "/wechat/add",
+    method: "post",
+    data
+  })
+}
+
+// 获取企业微信 编辑企业 
+export const editWechat = data => {
+  return axios.request({
+    url: platform.OPERATE + "/wechat/set-up",
+    method: "put",
+    data
+  })
+}
+
+// 获取企业微信 删除企业 
+export const deleteWechat = data => {
+  return axios.request({
+    url: platform.OPERATE + "/wechat/" + data,
+    method: "delete"
+  })
+}

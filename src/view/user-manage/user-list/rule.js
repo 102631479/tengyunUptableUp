@@ -25,7 +25,10 @@ export default [
   }),
   maker.input('邮箱', 'email').validate([
     { required: true, message: '请输入邮箱' },
-    { pattern: /^\s*[a-zA-Z]+((?:\.{0,1})(?:\-{0,1})(?:\_{0,1})[a-zA-Z]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+\s*$/, message: '邮箱格式不正确' }
+    { pattern: /^\s*[a-zA-Z0-9]+((?:\.{0,1})(?:\-{0,1})(?:\_{0,1})[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+\s*$/, message: '邮箱格式不正确' }
+
+    // { pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/, message: '邮箱格式不正确' }
+
   ]),
 
   maker.input('微信', 'wechatAccount').validate([{ message: '请输入微信' }]).props({ maxlength: 50 }),

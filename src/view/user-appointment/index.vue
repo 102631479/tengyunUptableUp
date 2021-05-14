@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">反馈列表</div>
+    <div class="title">用户预约</div>
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
@@ -37,17 +37,11 @@
         show-sizer
       />
     </Card>
-    <!-- 用户表单 -->
-    <feedback ref="feedback" @success="init" />
   </div>
 </template>
 
 <script>
-import feedback from "./feedback";
 export default {
-  components: {
-    feedback,
-  },
   data() {
     return {
       loading: false,
@@ -72,8 +66,8 @@ export default {
               "span",
               {
                 props: {
-                  // type: "primary",
-                  // size: "small",
+                  //   type: "primary",
+                  //   size: "small",
                 },
                 style: {
                   color: "#0084ff",
@@ -99,8 +93,8 @@ export default {
               "span",
               {
                 props: {
-                  // type: "error",
-                  // size: "small"
+                  //   type: "error",
+                  //   size: "small",
                 },
                 style: {
                   color: "#0084ff",
@@ -147,38 +141,8 @@ export default {
       ],
     };
   },
-  created() {
-    this.init();
-  },
-  methods: {
-    /**
-     * 初始化数据
-     */
-    async init() {
-      this.loading = true;
-      // await getAuthorityList(this.info).then(d => {
-      //   this.tabData = d.data.list;
-      //   this.total = d.data.pagination.total;
-      // });
-      this.loading = false;
-    },
-    /**
-     * 分页
-     */
-    changePage(num) {
-      this.info.limit.currentPage = num;
-      this.init();
-    },
-    /**
-     * 切换每页大小
-     */
-    changePageSize(size) {
-      this.info.limit.pageSize = size;
-      this.init();
-    },
-  },
 };
-</script>
+</script> 
 
 <style scoped>
 .flex {

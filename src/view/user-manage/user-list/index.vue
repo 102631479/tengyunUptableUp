@@ -267,7 +267,6 @@ export default {
                   marginRight: "15px",
                   color: "#0084ff",
                   cursor: "pointer",
-
                   display: hasOneOf(
                     ["operate:user-manage:user-recharge-record"],
                     this.$store.state.user.access
@@ -352,7 +351,6 @@ export default {
                       this.$store.state.user.access
                     );
                     if (!power) return;
-
                     this.modalDetail = true; // 弹窗
                     this.formDatas.setValue(params.row);
                     getDetailsById(params.row.id).then((res) => {
@@ -427,13 +425,13 @@ export default {
                   // width: "24px",
                   color: "#0084ff",
                   cursor: "pointer",
-                  display: "none",
-                  // display: hasOneOf(
-                  //   ["operate:user-manage:related-authorize"],
-                  //   this.$store.state.user.access
-                  // )
-                  //   ? "inline-block"
-                  //   : "none",
+                  // display: "none",
+                  display: hasOneOf(
+                    ["operate:user-manage:related-authorize"],
+                    this.$store.state.user.access
+                  )
+                    ? "inline-block"
+                    : "none",
                 },
 
                 on: {

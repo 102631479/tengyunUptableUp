@@ -188,29 +188,29 @@ export default [{
 //   },
 //   // component: () => import('@/view/document-management')
 // },
-{
-  path: '/document-management',
-  name: 'document-management',
-  meta: {
-    icon: 'iconpricetags-outline',
-    access: ['operate:document:path'],
-    title: '文档管理'
-  },
-  component: Main,
-  children: [
-    {
-      path: 'document-management',
-      name: 'document-management',
-      meta: {
-        access: ['operate:document:manage'],
+// {
+//   path: '/document-management',
+//   name: 'document-management',
+//   meta: {
+//     icon: 'iconpricetags-outline',
+//     // access: ['operate:document:path'],
+//     title: '文档管理'
+//   },
+//   component: Main,
+//   children: [
+//     {
+//       path: 'document-management',
+//       name: 'document-management',
+//       meta: {
+//         access: ['operate:document:manage'],
 
-        // icon: 'iconradio-button-on-outline',
-        title: '文档模板配置'
-      },
-      component: () => import('@/view/document-management/index')
-    }
-  ]
-},
+//         // icon: 'iconradio-button-on-outline',
+//         title: '文档模板配置'
+//       },
+//       component: () => import('@/view/document-management/index')
+//     }
+//   ]
+// },
 // {
 //   path: '/package',
 //   name: 'package',
@@ -337,27 +337,48 @@ export default [{
 //     }
 //   ]
 // },
-// {
-//   path: '/userback',
-//   name: 'userback',
-//   meta: {
-//     icon: 'iconpricetags-outline',
-//     // access: ['userback'],
-//     title: '用户反馈'
-//   },
-//   component: Main,
-//   children: [
-//     {
-//       path: 'user-feedback',
-//       name: 'user-feedback',
-//       meta: {
-//         icon: 'iconradio-button-on-outline',
-//         title: '用户反馈'
-//       },
-//       component: () => import('@/view/user-feedback/index')
-//     }
-//   ]
-// },
+{
+  path: '/userback',
+  name: 'userback',
+  meta: {
+    icon: 'iconpricetags-outline',
+    // access: ['userback'],
+    title: '用户反馈'
+  },
+  component: Main,
+  children: [
+    { 
+      path: 'user-feedback',
+      name: 'user-feedback',
+      meta: {
+        icon: 'iconradio-button-on-outline',
+        title: '用户反馈'
+      },
+      component: () => import('@/view/user-feedback/index')
+    }
+  ]
+},
+{
+  path: '/appointment',
+  name: 'appointment',
+  meta: {
+    icon: 'iconpricetags-outline',
+    // access: ['userback'],
+    title: '用户预约'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'user-appointment',
+      name: 'user-appointment',
+      meta: {
+        icon: 'iconradio-button-on-outline',
+        title: '用户预约'
+      },
+      component: () => import('@/view/user-appointment/index')
+    }
+  ]
+},
 // {
 //   path: '/sched',
 //   name: 'sched',

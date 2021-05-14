@@ -127,14 +127,15 @@ export default {
       rechargeTabData: [],
       // 表头配置
       columns: [
-        { title: "序号", align: "center",minWidth: 60, type: "index" },
-        { title: "用户名", key: "userCode",minWidth: 100, align: "center" },
-        { title: "姓名", key: "userName",minWidth: 100, align: "center" },
-        { title: "手机号", key: "phone",minWidth: 100, align: "center" },
+        { title: "序号", align: "center", minWidth: 60, type: "index" },
+        { title: "用户名", key: "userCode", minWidth: 100, align: "center" },
+        { title: "姓名", key: "userName", minWidth: 100, align: "center" },
+        { title: "手机号", key: "phone", minWidth: 100, align: "center" },
         {
           title: "所属企业",
           key: "companyName",
-          align: "center",minWidth: 100,
+          align: "center",
+          minWidth: 100,
           render: (h, params) => [
             h(
               "span",
@@ -145,7 +146,8 @@ export default {
         },
         {
           title: "是否为管理员",
-          key: "phone",minWidth: 100,
+          key: "phone",
+          minWidth: 100,
           align: "center",
           width: "110px",
           render: (h, params) => [
@@ -153,7 +155,8 @@ export default {
           ],
         },
         {
-          title: "保证金",minWidth: 100,
+          title: "保证金",
+          minWidth: 100,
           key: "guaranteedAmount",
           align: "center",
           render: (h, params) => [
@@ -166,7 +169,8 @@ export default {
         },
         {
           title: "上级代理(邀请码)",
-          key: "code",minWidth: 100,
+          key: "code",
+          minWidth: 100,
           align: "center",
           width: 130,
           render: (h, params) => [
@@ -175,7 +179,8 @@ export default {
         },
         {
           title: "账户余额",
-          key: "balance",minWidth: 100,
+          key: "balance",
+          minWidth: 100,
           align: "center",
           render: (h, params) => [
             h("span", {}, params.balance == null ? "--" : params.balance),
@@ -184,14 +189,14 @@ export default {
         {
           title: "注册时间",
           key: "registrationTime",
-          align: "center",minWidth: 100,
-         
+          align: "center",
+          minWidth: 100,
         },
         {
           title: "充值提现记录",
           key: "registrationTime",
           align: "center",
-       minWidth: 100,
+          minWidth: 100,
           render: (h, params) => [
             h(
               "span",
@@ -217,7 +222,8 @@ export default {
         {
           title: "状态",
           key: "userStatus",
-          align: "center",minWidth: 100,
+          align: "center",
+          minWidth: 100,
           render: (h, params) => {
             // this.status = params.row.userStatus;
             if (params.row.userStatus == 2) {
@@ -556,19 +562,25 @@ export default {
      */
     async init() {
       this.loading = true;
-      await getProductlist(this.info).then((res) => {
-        console.log(res);
-        this.tabData = res.data.list;
-        this.total = +res.data.pagination.total;
-      });
+      await getProductlist(this.info)
+        .then((res) => {
+          console.log(res);
+          this.tabData = res.data.list;
+          this.total = +res.data.pagination.total;
+        })
+        .catch((err) => {
+          this.loading = false;
+        });
       await getAgentList()
         .then((res) => {
-          this.agentList = res.data.map((item) => {
-            return {
-              value: item.supplierId,
-              label: item.userName,
-            };
-          });
+          this.agentList = res.data
+            .map((item) => {
+              return {
+                value: item.supplierId,
+                label: item.userName,
+              };
+            })
+         
           // console.log(agentList);
           let formData = this.$refs.formModal.formData; // 表单实例
           formData.updateRule("supplierId", {
@@ -577,6 +589,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
+          return err
         });
       this.loading = false;
     },

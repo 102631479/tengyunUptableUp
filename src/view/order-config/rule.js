@@ -6,7 +6,7 @@ export default [
   maker.input('密码', 'password').validate([ { required: true, message: '请输入密码' } ]),
   maker.input('邮箱', 'email').validate([
     { required: true, message: '请输入邮箱' },
-    { pattern: /^\s*[a-zA-Z]+((?:\.{0,1})(?:\-{0,1})(?:\_{0,1})[a-zA-Z]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+\s*$/, message: '邮箱格式不正确' }
+    { pattern: /^\s*[a-zA-Z0-9]+((?:\.{0,1})(?:\-{0,1})(?:\_{0,1})[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+\s*$/, message: '邮箱格式不正确' }
   ]),
   maker.input('电话', 'phone').validate([
     { required: true, message: '请输入电话' },

@@ -150,11 +150,12 @@ export default {
       columns: [
         { title: "序号", align: "center", type: "index", minWidth: 60 },
         { title: "用户名", key: "userCode", align: "center", minWidth: 100 },
-        { title: "姓名", key: "userName", align: "center" , minWidth: 100},
-        { title: "手机号", key: "phone", align: "center" , minWidth: 100},
+        { title: "姓名", key: "userName", align: "center", minWidth: 100 },
+        { title: "手机号", key: "phone", align: "center", minWidth: 100 },
         {
           title: "所属企业",
-          key: "companyName", minWidth: 100,
+          key: "companyName",
+          minWidth: 100,
           align: "center",
           render: (h, params) => [
             h(
@@ -166,7 +167,8 @@ export default {
         },
         {
           title: "是否为管理员",
-          key: "phone", minWidth: 100,
+          key: "phone",
+          minWidth: 100,
           align: "center",
           width: "110px",
           render: (h, params) => [
@@ -174,7 +176,8 @@ export default {
           ],
         },
         {
-          title: "保证金", minWidth: 100,
+          title: "保证金",
+          minWidth: 100,
           key: "guaranteedAmount",
           align: "center",
           render: (h, params) => [
@@ -199,7 +202,8 @@ export default {
         {
           title: "账户余额",
           key: "balance",
-          align: "center", minWidth: 100,
+          align: "center",
+          minWidth: 100,
           render: (h, params) => [
             h("span", {}, params.balance == null ? "--" : params.balance),
           ],
@@ -240,7 +244,8 @@ export default {
         {
           title: "状态",
           key: "userStatus",
-          align: "center", minWidth: 100,
+          align: "center",
+          minWidth: 100,
           render: (h, params) => {
             // this.status = params.row.userStatus;
             if (params.row.userStatus == 2) {
@@ -255,7 +260,8 @@ export default {
           },
         },
         {
-          title: "操作",minWidth: 250,
+          title: "操作",
+          minWidth: 250,
           key: "userCode",
           width: 300,
           align: "center",
@@ -352,14 +358,13 @@ export default {
                   color: "#0084ff",
                   cursor: "pointer",
                   marginRight: "15px",
-
-                  // display: hasOneOf(
-                  //   ["operate:agent-management:agent-related-authorize"],
-                  //   this.$store.state.user.access
-                  // )
-                  //   ? "inline-block"
-                  //   : "none",
-                  display: "none",
+                  display: hasOneOf(
+                    ["operate:agent-management:agent-related-authorize"],
+                    this.$store.state.user.access
+                  )
+                    ? "inline-block"
+                    : "none",
+                  // display: "none",
                 },
                 on: {
                   click: () => {
@@ -571,10 +576,14 @@ export default {
     },
     async init() {
       this.loading = true;
-      await getPage(this.info).then((res) => {
-        this.tabData = res.data.list;
-        this.total = +res.data.pagination.total;
-      });
+      await getPage(this.info)
+        .then((res) => {
+          this.tabData = res.data.list;
+          this.total = +res.data.pagination.total;
+        })
+        .catch((err) => {
+          this.loading = false;
+        });
       await getAgentList()
         .then((res) => {
           this.agentList = res.data.map((item) => {
@@ -583,6 +592,7 @@ export default {
               label: item.userName,
             };
           });
+
           // console.log(agentList);
           let formData = this.$refs.formModal.formData; // 表单实例
           formData.updateRule("supplierId", {
@@ -591,7 +601,9 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
+          return err;
         });
+
       this.loading = false;
     },
     /**

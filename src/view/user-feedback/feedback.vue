@@ -1,20 +1,25 @@
 <template>
   <div>
     <Modal
-    width="700px"
+      width="700px"
       v-model="userForm"
       title="编辑公告"
       @on-ok="handleSubmit('formValidate')"
       @click="handleReset('formValidate')"
     >
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+      <Form
+        ref="formValidate"
+        :model="formValidate"
+        :rules="ruleValidate"
+        :label-width="100"
+      >
         <FormItem label="标题：" prop="name">
           <Input placeholder="输入标题" v-model="formValidate.name" />
         </FormItem>
         <FormItem label="调用编译器" prop="name">
           <div class="edit_container">
             <quill-editor
-            width="500px"
+              width="500px"
               v-model="content"
               ref="myQuillEditor"
               :options="editorOption"
@@ -40,7 +45,7 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 export default {
   components: {
-    quillEditor
+    quillEditor,
   },
   data() {
     return {
@@ -50,12 +55,12 @@ export default {
       content: "",
       str: "",
       formValidate: {
-        name: ""
+        name: "",
       },
       ruleValidate: {
         name: [{ required: true, message: "请输入标题", trigger: "blur" }],
-        status: [{ required: true, message: "请选择状态", trigger: "blur" }]
-      }
+        status: [{ required: true, message: "请选择状态", trigger: "blur" }],
+      },
     };
   },
   mounted() {
@@ -65,7 +70,7 @@ export default {
   computed: {
     editor() {
       return this.$refs.myQuillEditor.quill;
-    }
+    },
   },
   methods: {
     handleSubmit() {},
@@ -80,12 +85,12 @@ export default {
       str = str.replace(/&lt;/g, "<");
       str = str.replace(/&gt;/g, ">");
       return str;
-    }
-  }
+    },
+  },
 };
 </script>
 <style  scoped>
-.edit_container{
-     width: 550px;
-   }
+.edit_container {
+  width: 550px;
+}
 </style>

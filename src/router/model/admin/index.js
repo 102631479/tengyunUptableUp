@@ -4,7 +4,7 @@ export default [{
   path: '/user-manage',
   name: 'user-manage',
   meta: {
-    icon: "icon-tengxunyunchanpinzonglan-1",
+    icon: 'icon-tengxunyunchanpinzonglan-1',
     notCache: true,
     // access: ['backstage:user:management'],
     access: ['operate:user-manage:path'],
@@ -28,7 +28,7 @@ export default [{
       title: '身份升级申请'
     },
     component: () => import('@/view/user-manage/identity-upgrade/index')
-  },
+  }
   ]
 },
 {
@@ -139,45 +139,45 @@ export default [{
 //     }
 //   ]
 // },
-// {
-//   path: '/message',
-//   name: 'message',
-//   meta: {
-//     icon: 'iconpricetags-outline',
-//     // access: ['message-template'],
-//     title: '消息模板管理'
-//   },
-//   component: Main,
-//   children: [
-//     {
-//       path: 'message-mobile',
-//       name: 'message-mobile',
-//       meta: {
-//         // icon: 'iconradio-button-on-outline',
-//         title: '短信模板'
-//       },
-//       component: () => import('@/view/message-template/message-mobile/index')
-//     },
-//     {
-//       path: 'message-Standinside',
-//       name: 'message-Standinside',
-//       meta: {
-//         // icon: 'iconradio-button-on-outline',
-//         title: '站内信模板'
-//       },
-//       component: () => import('@/view/message-template/message-Standinside/index')
-//     },
-//     {
-//       path: 'message-mail',
-//       name: 'message-mail',
-//       meta: {
-//         // icon: 'iconradio-button-on-outline',
-//         title: '邮件模板'
-//       },
-//       component: () => import('@/view/message-template/message-mail/index')
-//     }
-//   ]
-// },
+{
+  path: '/message',
+  name: 'message',
+  meta: {
+    icon: 'iconpricetags-outline',
+    // access: ['message-template'],
+    title: '消息模板管理'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'message-mobile',
+      name: 'message-mobile',
+      meta: {
+        // icon: 'iconradio-button-on-outline',
+        title: '短信模板'
+      },
+      component: () => import('@/view/message-template/message-mobile/index')
+    },
+    {
+      path: 'message-Standinside',
+      name: 'message-Standinside',
+      meta: {
+        // icon: 'iconradio-button-on-outline',
+        title: '站内信模板'
+      },
+      component: () => import('@/view/message-template/message-Standinside/index')
+    },
+    {
+      path: 'message-mail',
+      name: 'message-mail',
+      meta: {
+        // icon: 'iconradio-button-on-outline',
+        title: '邮件模板'
+      },
+      component: () => import('@/view/message-template/message-mail/index')
+    }
+  ]
+},
 // {
 //   path: '/document-management',
 //   name: 'document-management',
@@ -188,29 +188,29 @@ export default [{
 //   },
 //   // component: () => import('@/view/document-management')
 // },
-// {
-//   path: '/document-management',
-//   name: 'document-management',
-//   meta: {
-//     icon: 'iconpricetags-outline',
-//     // access: ['operate:document:path'],
-//     title: '文档管理'
-//   },
-//   component: Main,
-//   children: [
-//     {
-//       path: 'document-management',
-//       name: 'document-management',
-//       meta: {
-//         access: ['operate:document:manage'],
+{
+  path: '/document-management',
+  name: 'document-management',
+  meta: {
+    icon: 'iconpricetags-outline',
+    access: ['operate:document:path'],
+    title: '文档管理'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'document-management',
+      name: 'document-management',
+      meta: {
+        access: ['operate:document:manage'],
 
-//         // icon: 'iconradio-button-on-outline',
-//         title: '文档模板配置'
-//       },
-//       component: () => import('@/view/document-management/index')
-//     }
-//   ]
-// },
+        // icon: 'iconradio-button-on-outline',
+        title: '文档模板配置'
+      },
+      component: () => import('@/view/document-management/index')
+    }
+  ]
+},
 // {
 //   path: '/package',
 //   name: 'package',
@@ -347,7 +347,7 @@ export default [{
   },
   component: Main,
   children: [
-    { 
+    {
       path: 'user-feedback',
       name: 'user-feedback',
       meta: {
@@ -420,5 +420,5 @@ export default [{
       component: () => import('@/view/wechat-manage/index')
     }
   ]
-},
+}
 ]

@@ -18,17 +18,14 @@ export default [
   maker.input('用户名', 'userCode').validate([{ required: true, message: '请输入用户名' }]).props({ maxlength: 50 }),
   maker.input('姓名', 'userName').validate([{ required: true, message: '请输入姓名' }]).props({ maxlength: 50 }),
   maker.input('手机号', 'phone').validate([{ required: true, message: '请输入手机号' },
-  { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' }
+    { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' }
   ]),
   maker.input('密码', 'password').validate([{ required: true, message: '请输入密码' }]).props({
     type: 'password', maxlength: 50
   }),
   maker.input('邮箱', 'email').validate([
     { required: true, message: '请输入邮箱' },
-    { pattern: /^\s*[a-zA-Z0-9]+((?:\.{0,1})(?:\-{0,1})(?:\_{0,1})[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+\s*$/, message: '邮箱格式不正确' }
-
-    // { pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/, message: '邮箱格式不正确' }
-
+    { pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/, message: '邮箱格式不正确' }
   ]),
   maker.input('微信', 'wechatAccount').validate([{ message: '请输入微信' }]).props({ maxlength: 50 }),
   maker.input('企业微信', 'wechatEnterprise').validate([{ message: '请输入企业微信' }]),
@@ -63,7 +60,7 @@ export default [
   maker.radio('状态', 'userStatus', 1).options([
     { value: 1, label: '启用' },
     { value: 2, label: '禁用' },
-    { value: 3, label: '拉黑' },
+    { value: 3, label: '拉黑' }
     // { value: 4, label: '注销' },
   ]).validate([{ required: true, message: '请输入状态' }])
 ]

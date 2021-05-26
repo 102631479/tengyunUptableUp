@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: huangfu
  * @Date: 2020-09-14 16:21:22
@@ -26,12 +26,12 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    
+
     // dev: 'http://192.168.1.57:811', // 公共网关
-    dev:'http://192.168.1.228:1811',
+    dev: 'http://192.168.2.228:1811',
     muck: 'http://localhost:3000',
-    test:'http://topen.zhihuiwenlvyun.com',
-    pro: 'http://open.zhihuiwenlvyun.com',
+    test: 'http://topen.zhihuiwenlvyun.com',
+    pro: 'http://open.zhihuiwenlvyun.com'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home

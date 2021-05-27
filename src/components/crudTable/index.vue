@@ -36,7 +36,6 @@
         show-sizer
       />
     </Card>
-
     <slot name="formModal"></slot>
   </div>
 </template>

@@ -17,6 +17,8 @@
               placeholder="请输入用户名、详情内容"
               search
               enter-button
+              v-model="info.userName"
+              @on-search="sercher"
             />
           </div>
         </div>
@@ -28,8 +30,9 @@
         :loading="loading"
       ></Table>
       <Page
+        v-if="pageshow"
         class="t-center mt-10"
-        :page-size="info.limit.pageSize"
+        :page-size="info.pageSize"
         :total="total"
         @on-page-size-change="changePageSize"
         @on-change="changePage"
@@ -43,216 +46,70 @@
 </template>
 
 <script>
-import feedback from './feedback'
+import { getUserList } from "@/api/user-feedback";
+import feedback from "./feedback";
+import columns from "./columns";
 export default {
   components: {
-    feedback
+    feedback,
   },
-  data () {
+  data() {
     return {
+      pageshow: true,
+      this: this,
       loading: false,
-      // 表头配置
-      columns: [
-        { title: 'ID', key: 'id', align: 'center' },
-        { title: '用户名', key: 'name', align: 'center' },
-        { title: '详情描述', key: 'memo', align: 'center' },
-        { title: '附件图片', key: 'memo', align: 'center' },
-        { title: '提交时间', key: 'memo', align: 'center' },
-        { title: '回复内容', key: 'memo', align: 'center' },
-        { title: '回复人', key: 'memo', align: 'center' },
-        { title: '回复时间', key: 'memo', align: 'center' },
-        { title: '状态', key: 'memo', align: 'center' },
-        {
-          title: '操作',
-          key: 'userCode',
-          width: 200,
-          align: 'center',
-          render: (h, params) => [
-            h(
-              'span',
-              {
-                props: {
-                  // type: "primary",
-                  // size: "small",
-                },
-                style: {
-                  color: '#0084ff',
-                  cursor: 'pointer',
-                  marginRight: '15px'
-                },
-                on: {
-                  click: () => {
-                    getDetails(params.row.id).then((d) => {
-                      this.details = d.data.data
-                    })
-                    this.$refs.feedback.userForm = true
-                    this.$refs.feedback.edit = true
-                  }
-                }
-              },
-              '回复'
-            ),
-            h(
-              'span',
-              {
-                props: {
-                  // type: "error",
-                  // size: "small"
-                },
-                style: {
-                  color: '#0084ff',
-                  cursor: 'pointer',
-                  marginRight: '15px'
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '确认同意？',
-                      onOk: () => {
-                        delAuthority(params.row.id)
-                          .then((d) => {
-                            this.init()
-                            this.$Message.success('拒绝成功')
-                          })
-                          .catch(() => this.$Message.error('拒绝失败'))
-                      }
-                    })
-                  }
-                }
-              },
-              '拒绝'
-            )
-          ]
-        }
-      ],
-      columns: [
-        { title: 'ID', key: 'id', align: 'center' },
-        { title: '预约人姓名', key: 'name', align: 'center' },
-        { title: '手机号', key: 'memo', align: 'center' },
-        { title: '咨询内容', key: 'memo', align: 'center' },
-        { title: '附件图片', key: 'memo', align: 'center' },
-        { title: '提交时间', key: 'memo', align: 'center' },
-        { title: '状态', key: 'memo', align: 'center' },
-        { title: '沟通人', key: 'memo', align: 'center' },
-        { title: '沟通时间', key: 'memo', align: 'center' },
-        { title: '沟通时间', key: 'memo', align: 'center' },
-        {
-          title: '操作',
-          key: 'userCode',
-          width: 200,
-          align: 'center',
-          render: (h, params) => [
-            h(
-              'span',
-              {
-                props: {
-                  // type: "primary",
-                  // size: "small",
-                },
-                style: {
-                  color: '#0084ff',
-                  cursor: 'pointer',
-                  marginRight: '15px'
-                },
-                on: {
-                  click: () => {
-                    // console.log("d", params.row.id);
-                    getDetails(params.row.id).then((d) => {
-                      // console.log("d", d);
-                      this.details = d.data.data
-                      // console.log("d", this.details);
-                    })
-                    this.$refs.feedback.userForm = true
-                    this.$refs.feedback.edit = true
-                  }
-                }
-              },
-              '回复'
-            ),
-            h(
-              'span',
-              {
-                props: {
-                  // type: "error",
-                  // size: "small"
-                },
-                style: {
-                  color: '#0084ff',
-                  cursor: 'pointer',
-                  marginRight: '15px'
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '确认同意？',
-                      onOk: () => {
-                        delAuthority(params.row.id)
-                          .then((d) => {
-                            this.init()
-                            this.$Message.success('拒绝成功')
-                          })
-                          .catch(() => this.$Message.error('拒绝失败'))
-                      }
-                    })
-                  }
-                }
-              },
-              '拒绝'
-            )
-          ]
-        }
-      ],
+      columns: columns(this),
       total: 0,
-      // 请求配置
       info: {
-        permissionName: '',
-        limit: {
-          currentPage: 1,
-          pageSize: 10
-        }
+        userName: "",
+        currentPage: 1,
+        pageSize: 10,
       },
-      tabData: [
-        {
-          id: 1,
-          memo: '你是谁？',
-          name: '迪丽热巴'
-        }
-      ]
-    }
+      tabData: [],
+    };
   },
-  created () {
-    this.init()
+  created() {
+    this.init();
   },
   methods: {
+    sercher() {
+      this.pageshow = false;
+      this.init();
+      this.info.currentPage = 1;
+      this.$nextTick(() => {
+        this.pageshow = true;
+      });
+    },
     /**
      * 初始化数据
      */
-    async init () {
-      this.loading = true
-      // await getAuthorityList(this.info).then(d => {
-      //   this.tabData = d.data.list;
-      //   this.total = d.data.pagination.total;
-      // });
-      this.loading = false
+    async init() {
+      this.loading = true;
+      let _this = this;
+      await getUserList(this.info).then((res) => {
+        let data = res.data;
+        _this.total = Number(data.pagination.total);
+        _this.tabData = data.list;
+        console.log(data.list);
+      });
+      this.loading = false;
     },
     /**
      * 分页
      */
-    changePage (num) {
-      this.info.limit.currentPage = num
-      this.init()
+    changePage(num) {
+      this.info.currentPage = num;
+      this.init();
     },
     /**
      * 切换每页大小
      */
-    changePageSize (size) {
-      this.info.limit.pageSize = size
-      this.init()
-    }
-  }
-}
+    changePageSize(size) {
+      this.info.pageSize = size;
+      this.init();
+    },
+  },
+};
 </script>
 
 <style scoped>

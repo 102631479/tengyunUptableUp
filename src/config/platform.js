@@ -7,7 +7,6 @@
  * @LastEditTime: 2020-10-13 11:38:06
  */
 const platform = {
-
   SSO: 'sso', // 开放平台验证服务
   AUTH: 'auth', // 【权限中心：用户，资源（菜单资源，按钮资源）】
   BBS: 'bbs', // 【论坛微服务】

@@ -139,6 +139,8 @@ export default [{
 //     }
 //   ]
 // },
+
+
 // {
 //   path: '/message',
 //   name: 'message',
@@ -178,39 +180,30 @@ export default [{
 //     }
 //   ]
 // },
-// {
-//   path: '/document-management',
-//   name: 'document-management',
-//   meta: {
-//     icon: 'iconpricetags-outline',
-//     // access: ['message-template'],
-//     title: '文档管理'
-//   },
-//   // component: () => import('@/view/document-management')
-// },
-// {
-//   path: '/document-management',
-//   name: 'document-management',
-//   meta: {
-//     icon: 'iconpricetags-outline',
-//     // access: ['operate:document:path'],
-//     title: '文档管理'
-//   },
-//   component: Main,
-//   children: [
-//     {
-//       path: 'document-management',
-//       name: 'document-management',
-//       meta: {
-//         access: ['operate:document:manage'],
 
-//         // icon: 'iconradio-button-on-outline',
-//         title: '文档模板配置'
-//       },
-//       component: () => import('@/view/document-management/index')
-//     }
-//   ]
-// },
+{
+  path: '/document-management',
+  name: 'document-management',
+  meta: {
+    icon: 'iconpricetags-outline',
+    // access: ['operate:document:path'],
+    title: '文档管理'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'document-management',
+      name: 'document-management',
+      meta: {
+        access: ['operate:document:manage'],
+
+        // icon: 'iconradio-button-on-outline',
+        title: '文档模板配置'
+      },
+      component: () => import('@/view/document-management/index')
+    }
+  ]
+},
 // {
 //   path: '/package',
 //   name: 'package',

@@ -23,10 +23,11 @@
               type="text"
               class="mr-6"
               style="width: 200px"
-              v-model="info.userName"
+              
               placeholder="请输入用户名称"
               search
               enter-button
+              v-model="info.userName"
               @on-search="sercher"
             />
           </div>

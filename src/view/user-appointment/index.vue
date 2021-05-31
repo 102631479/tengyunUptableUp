@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">用户预约</div>
+    <div class="title">反馈列表</div>
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
@@ -14,9 +14,7 @@
               type="text"
               class="mr-6"
               style="width: 200px"
-              placeholder="请输入预约人、手机号、咨询内容
-
-"
+              placeholder="请输入用户名、详情内容"
               search
               enter-button
             />
@@ -39,112 +37,70 @@
         show-sizer
       />
     </Card>
+    <!-- 用户表单 -->
+    <feedback ref="feedback" @success="init" />
   </div>
 </template>
 
 <script>
+import feedback from "./feedback";
+import columns from './columns'
 export default {
-  data () {
+  components: {
+    feedback,
+  },
+  data() {
     return {
       loading: false,
-      // 表头配置
-      columns: [
-        { title: 'ID', key: 'id', align: 'center' },
-        { title: '预约人姓名', key: 'name', align: 'center' },
-        { title: '手机号', key: 'memo', align: 'center' },
-        { title: '咨询内容', key: 'memo', align: 'center' },
-        { title: '附件图片', key: 'memo', align: 'center' },
-        { title: '提交时间', key: 'memo', align: 'center' },
-        { title: '状态', key: 'memo', align: 'center' },
-        { title: '沟通人', key: 'memo', align: 'center' },
-        { title: '沟通时间', key: 'memo', align: 'center' },
-        { title: '备注', key: 'memo', align: 'center' },
-        {
-          title: '操作',
-          key: 'userCode',
-          width: 200,
-          align: 'center',
-          render: (h, params) => [
-            h(
-              'span',
-              {
-                props: {
-                  //   type: "primary",
-                  //   size: "small",
-                },
-                style: {
-                  color: '#0084ff',
-                  cursor: 'pointer',
-                  marginRight: '15px'
-                },
-                on: {
-                  click: () => {
-                    // console.log("d", params.row.id);
-                    getDetails(params.row.id).then((d) => {
-                      // console.log("d", d);
-                      this.details = d.data.data
-                      // console.log("d", this.details);
-                    })
-                    this.$refs.feedback.userForm = true
-                    this.$refs.feedback.edit = true
-                  }
-                }
-              },
-              '回复'
-            ),
-            h(
-              'span',
-              {
-                props: {
-                  //   type: "error",
-                  //   size: "small",
-                },
-                style: {
-                  color: '#0084ff',
-                  cursor: 'pointer',
-                  marginRight: '15px'
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '确认同意？',
-                      onOk: () => {
-                        delAuthority(params.row.id)
-                          .then((d) => {
-                            this.init()
-                            this.$Message.success('拒绝成功')
-                          })
-                          .catch(() => this.$Message.error('拒绝失败'))
-                      }
-                    })
-                  }
-                }
-              },
-              '拒绝'
-            )
-          ]
-        }
-      ],
+      columns:columns(this),
       total: 0,
-      // 请求配置
       info: {
-        permissionName: '',
+        permissionName: "",
         limit: {
           currentPage: 1,
-          pageSize: 10
-        }
+          pageSize: 10,
+        },
       },
       tabData: [
         {
           id: 1,
-          memo: '你是谁？',
-          name: '迪丽热巴'
-        }
-      ]
-    }
-  }
-}
+          memo: "你是谁？",
+          name: "迪丽热巴",
+        },
+      ],
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    /**
+     * 初始化数据
+     */
+    async init() {
+      this.loading = true;
+      // await getAuthorityList(this.info).then(d => {
+      //   this.tabData = d.data.list;
+      //   this.total = d.data.pagination.total;
+      // });
+      this.loading = false;
+    },
+    /**
+     * 分页
+     */
+    changePage(num) {
+      this.info.limit.currentPage = num;
+      this.init();
+    },
+    /**
+     * 切换每页大小
+     */
+    changePageSize(size) {
+      this.info.limit.pageSize = size;
+      this.init();
+    },
+  },
+};
 </script>
 
 <style scoped>

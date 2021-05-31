@@ -141,45 +141,45 @@ export default [{
 // },
 
 
-// {
-//   path: '/message',
-//   name: 'message',
-//   meta: {
-//     icon: 'iconpricetags-outline',
-//     // access: ['message-template'],
-//     title: '消息模板管理'
-//   },
-//   component: Main,
-//   children: [
-//     {
-//       path: 'message-mobile',
-//       name: 'message-mobile',
-//       meta: {
-//         // icon: 'iconradio-button-on-outline',
-//         title: '短信模板'
-//       },
-//       component: () => import('@/view/message-template/message-mobile/index')
-//     },
-//     {
-//       path: 'message-Standinside',
-//       name: 'message-Standinside',
-//       meta: {
-//         // icon: 'iconradio-button-on-outline',
-//         title: '站内信模板'
-//       },
-//       component: () => import('@/view/message-template/message-Standinside/index')
-//     },
-//     {
-//       path: 'message-mail',
-//       name: 'message-mail',
-//       meta: {
-//         // icon: 'iconradio-button-on-outline',
-//         title: '邮件模板'
-//       },
-//       component: () => import('@/view/message-template/message-mail/index')
-//     }
-//   ]
-// },
+{
+  path: '/message',
+  name: 'message',
+  meta: {
+    icon: 'iconpricetags-outline',
+    // access: ['message-template'],
+    title: '消息模板管理'
+  },
+  component: Main,
+  children: [
+    {
+      path: 'message-mobile',
+      name: 'message-mobile',
+      meta: {
+        // icon: 'iconradio-button-on-outline',
+        title: '短信模板'
+      },
+      component: () => import('@/view/message-template/message-mobile/index')
+    },
+    {
+      path: 'message-Standinside',
+      name: 'message-Standinside',
+      meta: {
+        // icon: 'iconradio-button-on-outline',
+        title: '站内信模板'
+      },
+      component: () => import('@/view/message-template/message-Standinside/index')
+    },
+    {
+      path: 'message-mail',
+      name: 'message-mail',
+      meta: {
+        // icon: 'iconradio-button-on-outline',
+        title: '邮件模板'
+      },
+      component: () => import('@/view/message-template/message-mail/index')
+    }
+  ]
+},
 
 {
   path: '/document-management',

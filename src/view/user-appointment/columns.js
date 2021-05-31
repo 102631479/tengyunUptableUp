@@ -1,4 +1,11 @@
-
+import {
+  getDeleteUser
+} from "@/api/user-appointment";
+let _this
+let columnData = (data) => {
+  _this = data
+  return columns
+}
 let columns = [{
     title: "ID",
     key: "id",
@@ -6,23 +13,23 @@ let columns = [{
   },
   {
     title: "预约人姓名",
-    key: "name",
+    key: "userName",
     align: "center"
   },
   {
     title: "手机号",
-    key: "memo",
+    key: "phone",
     align: "center"
   },
   {
     title: "咨询内容",
-    key: "memo",
+    key: "content",
     align: "center"
   },
   {
     title: "附件图片",
     align: "center",
-    key: "registrationTime",
+    // key: "registrationTime",
     render: (h, params) => {
       return h("div", [
         h("Icon", {
@@ -36,7 +43,9 @@ let columns = [{
           },
           on: {
             click: () => {
-           console.log('11');      
+              _this.userForm = true
+              _this.annexTabData = []
+              _this.annexTabData = params.row.photoIdList
             },
           },
         }),
@@ -45,27 +54,27 @@ let columns = [{
   },
   {
     title: "提交时间",
-    key: "memo",
+    key: "dataCreateTime",
     align: "center"
   },
   {
     title: "状态",
-    key: "memo",
+    key: "state",
     align: "center"
   },
   {
     title: "沟通人",
-    key: "memo",
+    key: "communicateUser",
     align: "center"
   },
   {
     title: "沟通时间",
-    key: "memo",
+    key: "communicateTime",
     align: "center"
   },
   {
-    title: "沟通时间",
-    key: "memo",
+    title: "备注",
+    key: "remarks",
     align: "center"
   },
   {
@@ -77,8 +86,7 @@ let columns = [{
       h(
         "span", {
           props: {
-            // type: "primary",
-            // size: "small",
+   
           },
           style: {
             color: "#0084ff",
@@ -87,16 +95,17 @@ let columns = [{
           },
           on: {
             click: () => {
-            //   let that = this
-            //   getDetails(params.row.id).then((d) => {
-            //     that.details = d.data.data;
-            //   });
-            //   that.$refs.feedback.userForm = true;
-            //   that.$refs.feedback.edit = true;
+              _this.$Modal.confirm({
+                title: "信息",
+                content: "确认已沟通？",
+                onOk: () => {
+
+                },
+              });
             },
           },
         },
-        "回复"
+        "沟通"
       ),
       h(
         "span", {
@@ -111,25 +120,46 @@ let columns = [{
           },
           on: {
             click: () => {
-                that.$Modal.confirm({
-                  title: "提示",
-                  content: "确认同意？",
-                  onOk: () => {
-                  },
-                });
-                
+              _this.$Modal.confirm({
+                title: "提示",
+                content: "确认同意？",
+                onOk: () => {
+                  getDeleteUser(params.row.id).then(res => {
+                    console.log(res);
+                    _this.$Message.success("删除成功");
+                    _this.init()
+                  }).catch(err => {
+                    this.$Message.error(err.msg)
+                  })
+                },
+              });
             },
           },
         },
         "删除"
       ),
+      h(
+        "span", {
+          props: {
+            // type: "primary",
+            // size: "small",
+          },
+          style: {
+            color: "#0084ff",
+            cursor: "pointer",
+            marginRight: "15px",
+          },
+          on: {
+            click: () => {
+              _this.remarks = ''
+              _this.remarksReturn = true
+            },
+          },
+        },
+        "备注"
+      ),
     ],
   },
 ];
-let that
-let columnData = (data) => {
-    that=data
-    console.log(data);
-  return columns
-}
+
 export default columnData

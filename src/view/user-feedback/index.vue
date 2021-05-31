@@ -41,37 +41,109 @@
       />
     </Card>
     <!-- 用户表单 -->
-    <feedback ref="feedback" @success="init" />
+    <Modal v-model="userForm" title="附件列表" :mask-closable="false">
+      <Table
+        border
+        ref="selection"
+        :columns="annexColumns"
+        :data="annexTabData"
+        @on-select="getimgDownload"
+        @on-select-all="getimgDownload"
+      ></Table>
+      <div slot="footer">
+        <Button type="text" @click="closes">取消</Button>
+        <Button type="primary" @click="imgDownload(true)">下载</Button>
+      </div>
+    </Modal>
+    <Modal v-model="userFormIMg" title="图片查看" :mask-closable="false">
+      <div class="img-srcUserFormIMg">
+        <img :src="srcUserFormIMg" alt="" class="img-srcUserFormIMg-phone" />
+      </div>
+      <div slot="footer"></div>
+    </Modal>
+
+    <Modal v-model="reply" title="回复" :mask-closable="false" :width="800">
+      <replyText></replyText>
+      <div slot="footer">
+        <Button type="text" @click="closes">取消</Button>
+        <Button type="primary">确认s</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script>
+import config from "@/config";
+import platform from "@/config/platform";
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = config.baseUrl.dev + platform.FILE;
+} else if (process.env.NODE_ENV === "testing") {
+  url = config.baseUrl.test + platform.FILE;
+} else {
+  url = config.baseUrl.pro + platform.FILE;
+}
 import { getUserList } from "@/api/user-feedback";
-import feedback from "./feedback";
 import columns from "./columns";
+import annexColumns from "./annexColumns";
+import replyText from "./feedback";
 export default {
   components: {
-    feedback,
+    replyText,
   },
   data() {
     return {
+      reply: false,
+      remarks: "",
+      imgDownloaddata: [],
+      remarksReturn: false,
+      userForm: false,
+      userFormIMg: false,
       pageshow: true,
       this: this,
       loading: false,
       columns: columns(this),
+      annexColumns: annexColumns(this),
+      annexTabData: [],
+      tabData: [],
+      srcUserFormIMg: "",
       total: 0,
       info: {
         userName: "",
         currentPage: 1,
         pageSize: 10,
       },
-      tabData: [],
     };
   },
   created() {
     this.init();
   },
   methods: {
+    getimgDownload(e) {
+      let data = [];
+      e.map((item) => {
+        data.push(item.fileId);
+      });
+      this.imgDownloaddata = data;
+    },
+    imgDownload() {
+      console.log(this.imgDownloaddata);
+      this.imgDownloaddata.map((itme) => {
+        window.open(url + "/file/img/download/" + itme);
+      });
+    },
+    closes() {
+      this.userForm = false;
+      this.reply = false;
+    },
+    sercher() {
+      this.pageshow = false;
+      this.init();
+      this.info.currentPage = 1;
+      this.$nextTick(() => {
+        this.pageshow = true;
+      });
+    },
     sercher() {
       this.pageshow = false;
       this.init();
@@ -86,12 +158,17 @@ export default {
     async init() {
       this.loading = true;
       let _this = this;
-      await getUserList(this.info).then((res) => {
-        let data = res.data;
-        _this.total = Number(data.pagination.total);
-        _this.tabData = data.list;
-        console.log(data.list);
-      });
+      await getUserList(this.info)
+        .then((res) => {
+          let data = res.data;
+          _this.total = Number(data.pagination.total);
+          _this.tabData = data.list;
+          console.log(data.list);
+        })
+        .catch((err) => {
+          _this.loading = false;
+          _this.$Message.error(err.msg);
+        });
       this.loading = false;
     },
     /**

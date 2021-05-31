@@ -1,40 +1,27 @@
 <template>
   <div>
-    <Modal
-      width="700px"
-      v-model="userForm"
-      title="编辑公告"
-      @on-ok="handleSubmit('formValidate')"
-      @click="handleReset('formValidate')"
+    <Form
+      ref="formValidate"
+      :model="formValidate"
+      :rules="ruleValidate"
+      :label-width="100"
     >
-      <Form
-        ref="formValidate"
-        :model="formValidate"
-        :rules="ruleValidate"
-        :label-width="100"
-      >
-        <FormItem label="标题：" prop="name">
-          <Input placeholder="输入标题" v-model="formValidate.name" />
-        </FormItem>
-        <FormItem label="调用编译器" prop="name">
-          <div class="edit_container">
-            <quill-editor
-              width="500px"
-              v-model="content"
-              ref="myQuillEditor"
-              :options="editorOption"
-              @blur="onEditorBlur($event)"
-              @focus="onEditorFocus($event)"
-              @change="onEditorChange($event)"
-            ></quill-editor>
-          </div>
-        </FormItem>
-        <FormItem label="状态：" prop="status">
-          <Radio>启用</Radio>
-          <Radio>禁用</Radio>
-        </FormItem>
-      </Form>
-    </Modal>
+      <FormItem label="标题：" prop="name">
+        <Input placeholder="输入标题" v-model="formValidate.name" />
+      </FormItem>
+      <FormItem label="回复描述" prop="name">
+        <div class="edit_container" width="300px">
+          <quill-editor
+            v-model="content"
+            ref="myQuillEditor"
+            :options="editorOption"
+            @blur="onEditorBlur($event)"
+            @focus="onEditorFocus($event)"
+            @change="onEditorChange($event)"
+          ></quill-editor>
+        </div>
+      </FormItem>
+    </Form>
   </div>
 </template>
 <script>
@@ -50,7 +37,6 @@ export default {
   data() {
     return {
       editorOption: {},
-      userForm: false,
       edit: false,
       content: "",
       str: "",

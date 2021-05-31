@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">反馈列表</div>
+    <div class="title">预约列表</div>
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
@@ -17,6 +17,8 @@
               placeholder="请输入用户名、详情内容"
               search
               enter-button
+              v-model="info.userName"
+              @on-search="sercher"
             />
           </div>
         </div>
@@ -28,8 +30,9 @@
         :loading="loading"
       ></Table>
       <Page
+        v-if="pageshow"
         class="t-center mt-10"
-        :page-size="info.limit.pageSize"
+        :page-size="info.pageSize"
         :total="total"
         @on-page-size-change="changePageSize"
         @on-change="changePage"
@@ -38,65 +41,136 @@
       />
     </Card>
     <!-- 用户表单 -->
-    <feedback ref="feedback" @success="init" />
+    <Modal v-model="userForm" title="附件列表" :mask-closable="false">
+      <Table
+        border
+        ref="selection"
+        :columns="annexColumns"
+        :data="annexTabData"
+        @on-select="getimgDownload"
+        @on-select-all="getimgDownload"
+      ></Table>
+      <div slot="footer">
+        <Button type="text" @click="closes">取消</Button>
+        <Button type="primary" @click="imgDownload(true)">下载</Button>
+      </div>
+    </Modal>
+    <Modal v-model="userFormIMg" title="图片查看" :mask-closable="false">
+      <div class="img-srcUserFormIMg">
+        <img :src="srcUserFormIMg" alt="" class="img-srcUserFormIMg-phone" />
+      </div>
+      <div slot="footer"></div>
+    </Modal>
+    <Modal v-model="remarksReturn" title="添加备注" :mask-closable="false">
+      <Input
+        v-model="remarks"
+        show-word-limit
+        type="textarea"
+        placeholder="请输入备注信息..."
+        style="width: 100%"
+      />
+    </Modal>
   </div>
 </template>
 
 <script>
-import feedback from "./feedback";
-import columns from './columns'
+import config from "@/config";
+import platform from "@/config/platform";
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = config.baseUrl.dev + platform.FILE;
+} else if (process.env.NODE_ENV === "testing") {
+  url = config.baseUrl.test + platform.FILE;
+} else {
+  url = config.baseUrl.pro + platform.FILE;
+}
+import { getUserList } from "@/api/user-appointment";
+// import feedback from "./feedback";
+import columns from "./columns";
+import annexColumns from "./annexColumns";
+
 export default {
   components: {
-    feedback,
+    // feedback,
   },
   data() {
     return {
+      remarks: "",
+      imgDownloaddata: [],
+      remarksReturn: false,
+      userForm: false,
+      userFormIMg: false,
+      pageshow: true,
+      this: this,
       loading: false,
-      columns:columns(this),
+      columns: columns(this),
+      annexColumns: annexColumns(this),
+      annexTabData: [],
+      tabData: [],
+      srcUserFormIMg: "",
       total: 0,
       info: {
-        permissionName: "",
-        limit: {
-          currentPage: 1,
-          pageSize: 10,
-        },
+        userName: "",
+        currentPage: 1,
+        pageSize: 10,
       },
-      tabData: [
-        {
-          id: 1,
-          memo: "你是谁？",
-          name: "迪丽热巴",
-        },
-      ],
     };
   },
   created() {
     this.init();
   },
   methods: {
-    /**
-     * 初始化数据
-     */
+    getimgDownload(e) {
+      let data = [];
+      e.map((item) => {
+        data.push(item.fileId);
+      });
+      this.imgDownloaddata = data;
+    },
+    imgDownload() {
+     let arr= []
+     let index0=0
+      this.imgDownloaddata.forEach((itme,index) => {
+        index0=index
+        arr.push(itme)
+        // window.open(url + "/file/img/download/" + itme);
+      });
+      console.log(arr,index0);
+      // console.log("窗口关闭");
+      // setTimeout
+    },
+    closes() {
+      this.userForm = false;
+    },
+    sercher() {
+      this.pageshow = false;
+      this.init();
+      this.info.currentPage = 1;
+      this.$nextTick(() => {
+        this.pageshow = true;
+      });
+    },
     async init() {
       this.loading = true;
-      // await getAuthorityList(this.info).then(d => {
-      //   this.tabData = d.data.list;
-      //   this.total = d.data.pagination.total;
-      // });
+      let _this = this;
+      await getUserList(this.info)
+        .then((res) => {
+          let data = res.data;
+          _this.total = Number(data.pagination.total);
+          _this.tabData = data.list;
+        })
+        .catch((err) => {
+          _this.loading = false;
+          _this.$Message.error(err.msg);
+        });
       this.loading = false;
     },
-    /**
-     * 分页
-     */
     changePage(num) {
-      this.info.limit.currentPage = num;
+      this.info.currentPage = num;
       this.init();
     },
-    /**
-     * 切换每页大小
-     */
     changePageSize(size) {
-      this.info.limit.pageSize = size;
+      this.info.pageSize = size;
       this.init();
     },
   },

@@ -38,7 +38,9 @@ let columns = [{
           },
           on: {
             click: () => {
-              console.log('11');
+              _this.userForm = true
+              _this.annexTabData = []
+              _this.annexTabData = params.row.photoIdList
             },
           },
         }),
@@ -72,7 +74,7 @@ let columns = [{
   },
   {
     title: "操作",
-    key: "userCode",
+    // key: "userCode",
     width: 200,
     align: "center",
     render: (h, params) => [
@@ -89,10 +91,7 @@ let columns = [{
           },
           on: {
             click: () => {
-              getDetails(params.row.id).then(res => {
-                _this.details = resdata.data;
-              });
-              _this.$refs.feedback.userForm = true;
+              _this.reply = true
             },
           },
         },
@@ -120,7 +119,7 @@ let columns = [{
                     _this.$Message.success("删除成功");
                     _this.init()
                   }).catch(err => {
-
+                    this.$Message.error(err.msg)
                   })
                 },
               });

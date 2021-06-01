@@ -86,7 +86,7 @@ let columns = [{
       h(
         "span", {
           props: {
-   
+
           },
           style: {
             color: "#0084ff",
@@ -99,7 +99,10 @@ let columns = [{
                 title: "信息",
                 content: "确认已沟通？",
                 onOk: () => {
-
+                  _this.remarksData = {}
+                  _this.remarksData = JSON.parse(JSON.stringify(params.row))
+                  _this.remarksData.communicateId = _this.$store.state.user.userId
+                  _this.getRemarks()
                 },
               });
             },
@@ -151,7 +154,9 @@ let columns = [{
           },
           on: {
             click: () => {
-              _this.remarks = ''
+              _this.remarksText = ''
+              _this.remarksData = {}
+              _this.remarksData = JSON.parse(JSON.stringify(params.row))
               _this.remarksReturn = true
             },
           },

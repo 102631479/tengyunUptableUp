@@ -61,9 +61,14 @@
       </div>
       <div slot="footer"></div>
     </Modal>
-    <Modal v-model="remarksReturn" title="添加备注" :mask-closable="false">
+    <Modal
+      v-model="remarksReturn"
+      title="添加备注"
+      :mask-closable="false"
+      @on-ok="getRemarks"
+    >
       <Input
-        v-model="remarks"
+        v-model="remarksText"
         show-word-limit
         type="textarea"
         placeholder="请输入备注信息..."
@@ -84,18 +89,15 @@ if (process.env.NODE_ENV === "development") {
 } else {
   url = config.baseUrl.pro + platform.FILE;
 }
-import { getUserList } from "@/api/user-appointment";
-// import feedback from "./feedback";
+import { getUserList, tokenORremarks } from "@/api/user-appointment";
 import columns from "./columns";
 import annexColumns from "./annexColumns";
 
 export default {
-  components: {
-    // feedback,
-  },
   data() {
     return {
-      remarks: "",
+      remarksText: "",
+      remarksData: {},
       imgDownloaddata: [],
       remarksReturn: false,
       userForm: false,
@@ -120,6 +122,20 @@ export default {
     this.init();
   },
   methods: {
+    async getRemarks() {
+      this.remarksData.remarks = JSON.parse(JSON.stringify(this.remarksText));
+      console.log(this.remarksData, "remarksData");
+      delete this.remarksData._index;
+      delete this.remarksData._rowKey;
+      await tokenORremarks(this.remarksData)
+        .then((res) => {
+          console.log(res, "res");
+          this.init();
+        })
+        .catch((err) => {
+          console.log(err, "err");
+        });
+    },
     getimgDownload(e) {
       let data = [];
       e.map((item) => {
@@ -128,16 +144,9 @@ export default {
       this.imgDownloaddata = data;
     },
     imgDownload() {
-     let arr= []
-     let index0=0
-      this.imgDownloaddata.forEach((itme,index) => {
-        index0=index
-        arr.push(itme)
-        // window.open(url + "/file/img/download/" + itme);
+      this.imgDownloaddata.forEach((itme, index) => {
+        window.open(url + "/file/img/download/" + itme);
       });
-      console.log(arr,index0);
-      // console.log("窗口关闭");
-      // setTimeout
     },
     closes() {
       this.userForm = false;

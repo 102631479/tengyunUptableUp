@@ -19,3 +19,14 @@ export const getDeleteUser = (data) => {
     method: 'delete',
   })
 }
+
+
+
+// 沟通或备注
+export const tokenORremarks = (data) => {
+  return axios.request({
+    url: platform.OPERATE + '/user-reserve',
+    method: 'put',
+    data
+  })
+}

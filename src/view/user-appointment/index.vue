@@ -65,7 +65,7 @@
       v-model="remarksReturn"
       title="添加备注"
       :mask-closable="false"
-      @on-ok="getRemarks"
+      @on-ok="getRemarks(true)"
     >
       <Input
         v-model="remarksText"
@@ -122,9 +122,10 @@ export default {
     this.init();
   },
   methods: {
-    async getRemarks() {
-      this.remarksData.remarks = JSON.parse(JSON.stringify(this.remarksText));
-      console.log(this.remarksData, "remarksData");
+    async getRemarks(data) {
+      if (data) {
+        this.remarksData.remarks = JSON.parse(JSON.stringify(this.remarksText));
+      }
       delete this.remarksData._index;
       delete this.remarksData._rowKey;
       await tokenORremarks(this.remarksData)
@@ -144,6 +145,10 @@ export default {
       this.imgDownloaddata = data;
     },
     imgDownload() {
+      if (this.imgDownloaddata.length == 0) {
+        this.$Message.error("请标记下载内容");
+        return;
+      }
       this.imgDownloaddata.forEach((itme, index) => {
         window.open(url + "/file/img/download/" + itme);
       });
@@ -187,6 +192,9 @@ export default {
 </script>
 
 <style scoped>
+
+
+
 .flex {
   display: none;
   width: 100%;
@@ -195,7 +203,15 @@ export default {
   /* background-color: blue; */
 }
 
+
+
 .ios-search-input {
   margin-right: 30px;
+}
+</style>
+<style >
+.img-srcUserFormIMg-phone {
+  width: 100%;
+  height: 100%;
 }
 </style>

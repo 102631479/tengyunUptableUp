@@ -100,9 +100,11 @@ let columns = [{
                 content: "确认已沟通？",
                 onOk: () => {
                   _this.remarksData = {}
+                  console.log(_this.remarksData, '1');
                   _this.remarksData = JSON.parse(JSON.stringify(params.row))
+                  console.log(_this.remarksData, '2');
                   _this.remarksData.communicateId = _this.$store.state.user.userId
-                  _this.getRemarks()
+                  _this.getRemarks(false)
                 },
               });
             },

@@ -135,7 +135,6 @@ export default {
   data() {
     return {
       pageshow: true,
-      //下拉框的样子
       info_agentType: "",
       cityList: [
         {
@@ -150,27 +149,17 @@ export default {
         },
         { value: 3, index: 3, label: "状态停用" },
       ],
-      // agentRuleagentRule: "",
-      // agentRule,
-      // annexIdList: [],
-      // photoLists: [],
-      //121122
-      // 权限信息
+     
       permissionMap: {},
       hasOneOf,
       agentList: [],
       option,
       ruleDetail,
-      // 搜索双向绑定
       formDatas: {},
       formData: {},
-      // 授权弹窗模块
       impowerUpwindow_data: {},
-      // 授权是否弹窗
       impowerUpwindow_Detail: false,
-      // impowerUpwindow,
       formDataDetail: {},
-      // detailLoading:false,
       rechargeLoading: false,
       rechargeColumns: [
         { title: "金额（元）", key: "expenseNumber", align: "center" },
@@ -182,8 +171,6 @@ export default {
       loading: false,
       modalShow: false,
       modalDetail: false,
-      // 表头配置
-      // 用户列表配置
       ruleInline: {
         user: [
           {
@@ -195,7 +182,6 @@ export default {
       },
       columns: [
         { title: "序号", align: "center", type: "index", width: 100 },
-        // { title: "ID", key: "id", align: "center" },
         { title: "用户名", key: "userCode", align: "center", width: 100 },
         { title: "姓名", key: "userName", align: "center", width: 100 },
         { title: "手机号", key: "phone", align: "center", width: 115 },
@@ -312,7 +298,6 @@ export default {
             }
           },
         },
-
         {
           title: "操作",
           key: "userCode",
@@ -362,7 +347,6 @@ export default {
               },
               "详情"
             ),
-
             // 用户列表配置编辑
             h(
               "span",
@@ -411,8 +395,6 @@ export default {
               },
               "编辑"
             ),
-
-            // 用户列表配置授权
             h(
               "span",
               {
@@ -598,7 +580,6 @@ export default {
           ],
         },
       ],
-
       total: 0,
       userName: "",
       // 请求配置

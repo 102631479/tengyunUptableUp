@@ -66,7 +66,7 @@
       <replyText></replyText>
       <div slot="footer">
         <Button type="text" @click="closes">取消</Button>
-        <Button type="primary">确认s</Button>
+        <Button type="primary">确认</Button>
       </div>
     </Modal>
   </div>
@@ -127,6 +127,10 @@ export default {
       this.imgDownloaddata = data;
     },
     imgDownload() {
+      if (this.imgDownloaddata.length == 0) {
+        this.$Message.error("请标记下载内容");
+        return;
+      }
       console.log(this.imgDownloaddata);
       this.imgDownloaddata.map((itme) => {
         window.open(url + "/file/img/download/" + itme);

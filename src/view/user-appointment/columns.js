@@ -60,7 +60,13 @@ let columns = [{
   {
     title: "状态",
     key: "state",
-    align: "center"
+    align: "center",
+    render: (h, params) => [
+      h(
+        "span", {},
+        params.row.state == 1 ? "待沟通" : '已沟通'
+      ),
+    ],
   },
   {
     title: "沟通人",
@@ -104,6 +110,7 @@ let columns = [{
                   _this.remarksData = JSON.parse(JSON.stringify(params.row))
                   console.log(_this.remarksData, '2');
                   _this.remarksData.communicateId = _this.$store.state.user.userId
+                  _this.remarksData.state = '2'
                   _this.getRemarks(false)
                 },
               });

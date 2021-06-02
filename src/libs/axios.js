@@ -65,9 +65,9 @@ class HttpRequest {
         // console.log(res.data, '响应拦截器');
         return Promise.resolve(res.data)
       } else {
-        // console.log(222);
+        console.log(222);
         if (res.data.errorcode === 2002) {
-          // console.log(res.data, '响应拦截器');
+          // console.log(res.data, '登录失败');
 
           // iView.Modal.confirm({
           //   title: '身份信息Token已过期！',

@@ -70,7 +70,14 @@ let columns = [{
   {
     title: "状态",
     key: "state",
-    align: "center"
+    align: "center",
+    render: (h, params) => [
+      h(
+        "span",
+        {},
+        params.row.state == 1 ? "待回复" : '已回复'
+      ),
+    ],
   },
   {
     title: "操作",

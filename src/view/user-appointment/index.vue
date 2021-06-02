@@ -122,10 +122,20 @@ export default {
     this.init();
   },
   methods: {
-    async getRemarks(data) {
+    getRemarks(data) {
       if (data) {
         this.remarksData.remarks = JSON.parse(JSON.stringify(this.remarksText));
+        let _this = this;
+        if (this.remarksData.remarks == "") {
+          _this.remarksReturn = false;
+        } else {
+          _this.GETtokenORremarks();
+        }
+      } else {
+        this.GETtokenORremarks();
       }
+    },
+    async GETtokenORremarks() {
       delete this.remarksData._index;
       delete this.remarksData._rowKey;
       await tokenORremarks(this.remarksData)
@@ -192,9 +202,6 @@ export default {
 </script>
 
 <style scoped>
-
-
-
 .flex {
   display: none;
   width: 100%;
@@ -202,8 +209,6 @@ export default {
   justify-content: space-between;
   /* background-color: blue; */
 }
-
-
 
 .ios-search-input {
   margin-right: 30px;

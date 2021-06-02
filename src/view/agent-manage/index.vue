@@ -358,13 +358,13 @@ export default {
                   color: "#0084ff",
                   cursor: "pointer",
                   marginRight: "15px",
-                  display: hasOneOf(
-                    ["operate:agent-management:agent-related-authorize"],
-                    this.$store.state.user.access
-                  )
-                    ? "inline-block"
-                    : "none",
-                  // display: "none",
+                  // display: hasOneOf(
+                  //   ["operate:agent-management:agent-related-authorize"],
+                  //   this.$store.state.user.access
+                  // )
+                  //   ? "inline-block"
+                  //   : "none",
+                  display: "none",
                 },
                 on: {
                   click: () => {

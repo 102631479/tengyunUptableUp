@@ -407,13 +407,13 @@ export default {
                   // width: "24px",
                   color: "#0084ff",
                   cursor: "pointer",
-                  // display: "none",
-                  display: hasOneOf(
-                    ["operate:user-manage:related-authorize"],
-                    this.$store.state.user.access
-                  )
-                    ? "inline-block"
-                    : "none",
+                  display: "none",
+                  // display: hasOneOf(
+                  //   ["operate:user-manage:related-authorize"],
+                  //   this.$store.state.user.access
+                  // )
+                  //   ? "inline-block"
+                  //   : "none",
                 },
 
                 on: {

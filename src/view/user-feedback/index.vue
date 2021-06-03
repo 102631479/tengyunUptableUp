@@ -63,16 +63,17 @@
     </Modal>
 
     <Modal v-model="reply" title="回复" :mask-closable="false" :width="800">
-      <replyText></replyText>
+      <replyText ref="replyText"> </replyText>
       <div slot="footer">
         <Button type="text" @click="closes">取消</Button>
-        <Button type="primary">确认</Button>
+        <Button type="primary" @click="subime">确认</Button>
       </div>
     </Modal>
   </div>
 </template>
 
 <script>
+import { userReply } from "@/api/user-feedback";
 import config from "@/config";
 import platform from "@/config/platform";
 let url;
@@ -119,6 +120,23 @@ export default {
     this.init();
   },
   methods: {
+    async subime() {
+      // console.log(this.$refs.replyText.form, "from");
+
+      // console.log(
+      //   this.$store.state.user.userId,
+      //   "this.$store.state.user.userId"
+      // );
+      await userReply(this.$refs.replyText.form)
+        .then((res) => {
+          this.reply = false;
+          this.init();
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err.msg);
+        });
+    },
     getimgDownload(e) {
       let data = [];
       e.map((item) => {

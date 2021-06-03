@@ -115,14 +115,11 @@ let columns = [{
             },
           },
         },
-        params.row.state==1?"沟通":""
+        params.row.state == 1 ? "沟通" : ""
       ),
       h(
         "span", {
-          props: {
-            // type: "error",
-            // size: "small"
-          },
+          props: {},
           style: {
             color: "#0084ff",
             cursor: "pointer",

@@ -1,27 +1,39 @@
 <template>
-  <div>
+  <div class="mix">
     <Form
       ref="formValidate"
       :model="formValidate"
       :rules="ruleValidate"
       :label-width="100"
     >
-      <FormItem label="标题：" prop="name">
-        <Input placeholder="输入标题" v-model="formValidate.name" />
-      </FormItem>
-      <FormItem label="回复描述" prop="name">
-        <div class="edit_container" width="300px">
-          <quill-editor
-            v-model="content"
-            ref="myQuillEditor"
-            :options="editorOption"
-            @blur="onEditorBlur($event)"
-            @focus="onEditorFocus($event)"
-            @change="onEditorChange($event)"
-          ></quill-editor>
-        </div>
-      </FormItem>
+      <div class="box">
+        <FormItem label="回复反馈" prop="name">
+          <div>{{ details }}</div>
+
+          <div class="edit_container" style="flex-wrap: warp">
+            <div class="img-wid" v-for="item in imgData" :key="item.id">
+              <img :src="item.fileAddress" alt="" />
+            </div>
+          </div>
+        </FormItem>
+      </div>
+      <div style="margin-top: 50px">
+        <FormItem label="回复描述" prop="name">
+          <div class="edit_container">
+            <quill-editor
+              v-model="form.reply"
+              ref="myQuillEditor"
+              :options="editorOption"
+              @blur="onEditorBlur($event)"
+              @focus="onEditorFocus($event)"
+              @change="onEditorChange($event)"
+            ></quill-editor>
+          </div>
+        </FormItem>
+      </div>
     </Form>
+    <slot></slot>
+    <div class="box1"></div>
   </div>
 </template>
 <script>
@@ -36,9 +48,15 @@ export default {
   },
   data() {
     return {
+      form: {
+        reply: "",
+      },
+
+      details: "",
+      imgData: [],
       editorOption: {},
       edit: false,
-      content: "",
+
       str: "",
       formValidate: {
         name: "",
@@ -76,7 +94,36 @@ export default {
 };
 </script>
 <style  scoped>
+.box1 {
+  height: 100px;
+}
+.mix {
+  height: 100%;
+}
+.box {
+  margin: 0 auto;
+  /* width: 690px; */
+
+  background: #f2f2f2;
+}
 .edit_container {
-  width: 550px;
+  /* width: 550px; */
+  display: flex;
+  flex-wrap: wrap;
+}
+.img-wid {
+  overflow: hidden;
+  margin-top: 20px;
+  width: 150px;
+  max-height: 130px;
+
+  /* background: red; */
+  margin-right: 17px;
+  margin-bottom: 20px;
+  /* border-radius: 6px; */
+}
+.img-wid img {
+  width: 100%;
+  width: 100%;
 }
 </style>

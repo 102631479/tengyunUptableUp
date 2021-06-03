@@ -19,3 +19,13 @@ export const getDeleteUser = (data) => {
     method: 'delete',
   })
 }
+
+
+// 回复
+export const userReply = data => {
+  return axios.request({
+    url: platform.OPERATE + "/user-feedback/reply",
+    method: "post",
+    data
+  })
+}

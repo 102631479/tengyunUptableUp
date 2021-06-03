@@ -40,6 +40,7 @@ let columns = [{
             click: () => {
               _this.userForm = true
               _this.annexTabData = []
+
               _this.annexTabData = params.row.photoIdList
             },
           },
@@ -73,8 +74,7 @@ let columns = [{
     align: "center",
     render: (h, params) => [
       h(
-        "span",
-        {},
+        "span", {},
         params.row.state == 1 ? "待回复" : '已回复'
       ),
     ],
@@ -99,10 +99,16 @@ let columns = [{
           on: {
             click: () => {
               _this.reply = true
+              _this.$refs.replyText.form.reply = ''
+              _this.$refs.replyText.imgData = params.row.photoIdList ? params.row.photoIdList : []
+              _this.$refs.replyText.details = params.row.details ? params.row.details : ''
+              _this.$refs.replyText.form.replyId = _this.$store.state.user.userId
+              _this.$refs.replyText.form.id = params.row.id ? params.row.id : ''
+              s
             },
           },
         },
-        "回复"
+        params.row.state == 1 ? "回复" : ""
       ),
       h(
         "span", {

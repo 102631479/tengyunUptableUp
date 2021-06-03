@@ -129,6 +129,7 @@ import ruleDetail from "./ruleDetail";
 
 // 授权弹窗引入
 import impower from "./impower";
+import columns from "./columns";
 
 export default {
   components: { formModal, searchFrom, impower, agentInit },
@@ -180,406 +181,7 @@ export default {
           },
         ],
       },
-      columns: [
-        { title: "序号", align: "center", type: "index", width: 100 },
-        { title: "用户名", key: "userCode", align: "center", width: 100 },
-        { title: "姓名", key: "userName", align: "center", width: 100 },
-        { title: "手机号", key: "phone", align: "center", width: 115 },
-        {
-          title: "所属企业",
-          key: "companyName",
-          align: "center",
-          width: 180,
-          render: (h, params) => [
-            h(
-              "span",
-              {},
-              params.row.companyName == null ? "--" : params.row.companyName
-            ),
-          ],
-        },
-        {
-          title: "是否为管理员",
-          key: "phone",
-          align: "center",
-          width: "110px",
-          render: (h, params) => [
-            h("span", {}, params.row.adminFlag == true ? "是" : "否"),
-          ],
-        },
-        {
-          title: "上级代理(邀请码)",
-          key: "code",
-          align: "center",
-          width: 130,
-          render: (h, params) => [
-            h("span", {}, params.row.code == null ? "--" : params.row.code),
-          ],
-        },
-        {
-          title: "账户余额",
-          key: "balance",
-          align: "center",
-          width: 130,
-          render: (h, params) => [
-            h(
-              "span",
-              {},
-              params.row.balance == null ? "--" : params.row.balance
-            ),
-          ],
-        },
-        {
-          title: "注册时间",
-          key: "registrationTime",
-          align: "center",
-          width: "105px",
-        },
-        {
-          title: "充值提现记录",
-          key: "registrationTime",
-          align: "center",
-          width: "115px",
-          render: (h, params) => [
-            h(
-              "span",
-              {
-                props: {
-                  type: "md-pricetag",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "5px",
-                  marginRight: "15px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-                  display: hasOneOf(
-                    ["operate:user-manage:user-recharge-record"],
-                    this.$store.state.user.access
-                  )
-                    ? "inline-block"
-                    : "none",
-                },
-                on: {
-                  click: () => {
-                    let power = hasOneOf(
-                      ["operate:user-manage:user-recharge-record"],
-                      this.$store.state.user.access
-                    );
-                    if (!power) return;
-                    this.modalShow = true;
-                    let userId = params.row.id;
-                    rechargeRecord(userId).then((res) => {
-                      this.rechargeTabData = res.data;
-                    });
-                  },
-                },
-              },
-              "查看"
-            ),
-          ],
-        },
-        {
-          title: "状态",
-          key: "userStatus",
-          align: "center",
-          width: "100px",
-          render: (h, params) => {
-            // console.log(params.row.userStatus,'状态显示');
-            // this.status = params.row.userStatus;
-            if (params.row.userStatus == 2) {
-              return h("span", "停用");
-            } else if (params.row.userStatus == 3) {
-              return h("span", "拉黑");
-            } else if (params.row.userStatus == 4) {
-              return h("span", "注销");
-            } else {
-              return h("span", "正常");
-            }
-          },
-        },
-        {
-          title: "操作",
-          key: "userCode",
-          // width: 330,
-          // fixed: "right",
-          minWidth: 300,
-          align: "center",
-          render: (h, params) => [
-            // 用户列表配置详情
-            h(
-              "span",
-              {
-                props: {
-                  type: "primary",
-                  size: "small",
-                },
-                style: {
-                  // width: "24px",
-                  // marginRight: '5px'
-                  marginRight: "15px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-
-                  display: hasOneOf(
-                    ["operate:user-manage:user-detail"],
-                    this.$store.state.user.access
-                  )
-                    ? "inline-block"
-                    : "none",
-                },
-                on: {
-                  click: () => {
-                    // 点击事件鉴权   双层鉴权
-                    let power = hasOneOf(
-                      ["operate:user-manage:user-detail"],
-                      this.$store.state.user.access
-                    );
-                    if (!power) return;
-                    this.modalDetail = true; // 弹窗
-                    this.formDatas.setValue(params.row);
-                    getDetailsById(params.row.id).then((res) => {
-                      console.log(params.row.userName);
-                      this.formDatas.setValue(res.data);
-                    });
-                  },
-                },
-              },
-              "详情"
-            ),
-            // 用户列表配置编辑
-            h(
-              "span",
-              {
-                props: {
-                  type: "primary",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "15px",
-                  // width: "24px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-                  display: hasOneOf(
-                    ["operate:user-manage:user-edit"],
-                    this.$store.state.user.access
-                  )
-                    ? "inline-block"
-                    : "none",
-                },
-                on: {
-                  click: () => {
-                    let power = hasOneOf(
-                      ["operate:user-manage:user-edit"],
-                      this.$store.state.user.access
-                    );
-                    if (!power) return;
-                    this.$refs.formModal.formData.setValue(params.row);
-                    this.$refs.formModal.userType = params.row.userType;
-                    if (params.row.supplierId == null) {
-                      console.log(
-                        this.$refs.formModal.formData.form.userTypetypes,
-                        "this.$refs.formModal.formData.form.userTypetypes"
-                      );
-                      this.$refs.formModal.formData.form.userTypetypes = 1;
-                    } else {
-                      this.$refs.formModal.formData.form.userTypetypes = 3;
-                      console.log(
-                        this.$refs.formModal.formData.form.userTypetypes
-                      );
-                    }
-                    this.$refs.formModal.userForm = true;
-                    this.$refs.formModal.edit = true;
-                  },
-                },
-              },
-              "编辑"
-            ),
-            h(
-              "span",
-              {
-                props: {
-                  type: "primary",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "15px",
-                  // width: "24px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-                  display: "none",
-                  // display: hasOneOf(
-                  //   ["operate:user-manage:related-authorize"],
-                  //   this.$store.state.user.access
-                  // )
-                  //   ? "inline-block"
-                  //   : "none",
-                },
-
-                on: {
-                  click: () => {
-                    let power = hasOneOf(
-                      ["operate:user-manage:related-authorize"],
-                      this.$store.state.user.access
-                    );
-                    if (!power) return;
-                    this.$refs.impower.companyIdcompanyId =
-                      params.row.companyId;
-                    this.$refs.impower.idid = params.row.id;
-                    // this.$refs.impower.permissionMap =JSON.stringify(params.row.permissionMap)
-                    this.permissionMap = params.row.permissionMap;
-                    console.log(params.row.permissionMap, "index页面授权");
-                    this.$refs.impower.userForm = true;
-                    this.$refs.impower.adminFlag = params.row.adminFlag;
-                    getLists({
-                      adminFlag: params.row.adminFlag,
-                      // companyId: this.$store.state.user.userInfo.companyId,
-                      companyId: params.row.companyId,
-                    })
-                      .then((d) => {
-                        this.$refs.impower.lists = d.data;
-                      })
-                      .catch((e) => {
-                        let ev = e.msg ? e.msg : e.message;
-                        this.$Message.error(ev);
-                      });
-                  },
-                },
-              },
-              "授权"
-            ),
-            h(
-              "span",
-              {
-                props: {
-                  type: "primary",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "15px",
-                  color: "#0084ff",
-                  // width: "48px",
-                  cursor: "pointer",
-                  display: hasOneOf(
-                    ["operate:user-manage:up-grade"],
-                    this.$store.state.user.access
-                  )
-                    ? "inline-block"
-                    : "none",
-                },
-                on: {
-                  click: () => {
-                    let power = hasOneOf(
-                      ["operate:user-manage:up-grade"],
-                      this.$store.state.user.access
-                    );
-                    if (!power) return;
-                    // console.log(params.row, "params.row.");
-                    this.$refs.agentInit.formItem.agentName =
-                      params.row.userCode;
-                    this.$refs.agentInit.formItem.email = params.row.email;
-                    this.$refs.agentInit.formItem.contactNumber =
-                      params.row.phone;
-                    this.$refs.agentInit.formItem.applicationPeopleId =
-                      params.row.id;
-                    this.$refs.agentInit.agentInitShow = true;
-                  },
-                },
-              },
-              "身份升级"
-            ),
-
-            // 用户列表配置拉黑
-            h(
-              "span",
-              {
-                props: {
-                  type: "primary",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "15px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-                  // width: "24px",
-                  // display: hasOneOf(
-                  //   ["user:backstag:user:edit"],
-                  //   this.$store.state.user.access
-                  // )
-                  //   ? "inline-block"
-                  //   : "none"
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: "温馨提示",
-                      content: "确定拉黑吗？",
-                      onOk: () => {
-                        upOrDown(params.row.id, 3)
-                          .then((d) => {
-                            this.$Message.success("拉黑成功!");
-                            this.init();
-                          })
-                          .catch((e) => {
-                            let ev = e.msg ? e.msg : e.message;
-                            this.$Message.error(ev);
-                          });
-                      },
-                    });
-                  },
-                },
-              },
-              "拉黑"
-            ),
-
-            // 用户列表配置删除
-            h(
-              "span",
-              {
-                props: {
-                  type: "error",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "15px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-                  // width: "24px",
-                  display: hasOneOf(
-                    ["operate:user-manage:user-delete"],
-                    this.$store.state.user.access
-                  )
-                    ? "inline-block"
-                    : "none",
-                },
-                on: {
-                  click: () => {
-                    // 用列表户配置点击删除弹窗
-                    this.$Modal.confirm({
-                      title: "提示",
-                      content: "确认删除么？",
-                      onOk: () => {
-                        apiDelUser(params.row.id)
-                          // 删除成功执行
-                          .then((d) => {
-                            if (this.tabData.length == 1)
-                              this.info["limit.currentPage"] =
-                                this.info["limit.currentPage"] - 1;
-                            this.init();
-                            this.$Message.success("删除成功");
-                          })
-                          // 失败捕捉
-                          .catch(() => this.$Message.error("删除失败"));
-                      },
-                    });
-                  },
-                },
-              },
-              "删除"
-            ),
-          ],
-        },
-      ],
+      columns:columns(this),
       total: 0,
       userName: "",
       // 请求配置
@@ -736,6 +338,412 @@ export default {
     },
   },
 };
+
+
+
+
+
+
+ // columns: [
+      //   { title: "序号", align: "center", type: "index", width: 100 },
+      //   { title: "用户名", key: "userCode", align: "center", width: 100 },
+      //   { title: "姓名", key: "userName", align: "center", width: 100 },
+      //   { title: "手机号", key: "phone", align: "center", width: 115 },
+      //   {
+      //     title: "所属企业",
+      //     key: "companyName",
+      //     align: "center",
+      //     width: 180,
+      //     render: (h, params) => [
+      //       h(
+      //         "span",
+      //         {},
+      //         params.row.companyName == null ? "--" : params.row.companyName
+      //       ),
+      //     ],
+      //   },
+      //   {
+      //     title: "是否为管理员",
+      //     key: "phone",
+      //     align: "center",
+      //     width: "110px",
+      //     render: (h, params) => [
+      //       h("span", {}, params.row.adminFlag == true ? "是" : "否"),
+      //     ],
+      //   },
+      //   {
+      //     title: "上级代理(邀请码)",
+      //     key: "code",
+      //     align: "center",
+      //     width: 130,
+      //     render: (h, params) => [
+      //       h("span", {}, params.row.code == null ? "--" : params.row.code),
+      //     ],
+      //   },
+      //   {
+      //     title: "账户余额",
+      //     key: "balance",
+      //     align: "center",
+      //     width: 130,
+      //     render: (h, params) => [
+      //       h(
+      //         "span",
+      //         {},
+      //         params.row.balance == null ? "--" : params.row.balance
+      //       ),
+      //     ],
+      //   },
+      //   {
+      //     title: "注册时间",
+      //     key: "registrationTime",
+      //     align: "center",
+      //     width: "105px",
+      //   },
+      //   {
+      //     title: "充值提现记录",
+      //     key: "registrationTime",
+      //     align: "center",
+      //     width: "115px",
+      //     render: (h, params) => [
+      //       h(
+      //         "span",
+      //         {
+      //           props: {
+      //             type: "md-pricetag",
+      //             size: "small",
+      //           },
+      //           style: {
+      //             marginRight: "5px",
+      //             marginRight: "15px",
+      //             color: "#0084ff",
+      //             cursor: "pointer",
+      //             display: hasOneOf(
+      //               ["operate:user-manage:user-recharge-record"],
+      //               this.$store.state.user.access
+      //             )
+      //               ? "inline-block"
+      //               : "none",
+      //           },
+      //           on: {
+      //             click: () => {
+      //               let power = hasOneOf(
+      //                 ["operate:user-manage:user-recharge-record"],
+      //                 this.$store.state.user.access
+      //               );
+      //               if (!power) return;
+      //               this.modalShow = true;
+      //               let userId = params.row.id;
+      //               rechargeRecord(userId).then((res) => {
+      //                 this.rechargeTabData = res.data;
+      //               });
+      //             },
+      //           },
+      //         },
+      //         "查看"
+      //       ),
+      //     ],
+      //   },
+      //   {
+      //     title: "状态",
+      //     key: "userStatus",
+      //     align: "center",
+      //     width: "100px",
+      //     render: (h, params) => {
+      //       // console.log(params.row.userStatus,'状态显示');
+      //       // this.status = params.row.userStatus;
+      //       if (params.row.userStatus == 2) {
+      //         return h("span", "停用");
+      //       } else if (params.row.userStatus == 3) {
+      //         return h("span", "拉黑");
+      //       } else if (params.row.userStatus == 4) {
+      //         return h("span", "注销");
+      //       } else {
+      //         return h("span", "正常");
+      //       }
+      //     },
+      //   },
+      //   {
+      //     title: "操作",
+      //     key: "userCode",
+      //     // width: 330,
+      //     // fixed: "right",
+      //     minWidth: 300,
+      //     align: "center",
+      //     render: (h, params) => [
+      //       // 用户列表配置详情
+      //       h(
+      //         "span",
+      //         {
+      //           props: {
+      //             type: "primary",
+      //             size: "small",
+      //           },
+      //           style: {
+      //             // width: "24px",
+      //             // marginRight: '5px'
+      //             marginRight: "15px",
+      //             color: "#0084ff",
+      //             cursor: "pointer",
+
+      //             display: hasOneOf(
+      //               ["operate:user-manage:user-detail"],
+      //               this.$store.state.user.access
+      //             )
+      //               ? "inline-block"
+      //               : "none",
+      //           },
+      //           on: {
+      //             click: () => {
+      //               // 点击事件鉴权   双层鉴权
+      //               let power = hasOneOf(
+      //                 ["operate:user-manage:user-detail"],
+      //                 this.$store.state.user.access
+      //               );
+      //               if (!power) return;
+      //               this.modalDetail = true; // 弹窗
+      //               this.formDatas.setValue(params.row);
+      //               getDetailsById(params.row.id).then((res) => {
+      //                 console.log(params.row.userName);
+      //                 this.formDatas.setValue(res.data);
+      //               });
+      //             },
+      //           },
+      //         },
+      //         "详情"
+      //       ),
+      //       // 用户列表配置编辑
+      //       h(
+      //         "span",
+      //         {
+      //           props: {
+      //             type: "primary",
+      //             size: "small",
+      //           },
+      //           style: {
+      //             marginRight: "15px",
+      //             // width: "24px",
+      //             color: "#0084ff",
+      //             cursor: "pointer",
+      //             display: hasOneOf(
+      //               ["operate:user-manage:user-edit"],
+      //               this.$store.state.user.access
+      //             )
+      //               ? "inline-block"
+      //               : "none",
+      //           },
+      //           on: {
+      //             click: () => {
+      //               let power = hasOneOf(
+      //                 ["operate:user-manage:user-edit"],
+      //                 this.$store.state.user.access
+      //               );
+      //               if (!power) return;
+      //               this.$refs.formModal.formData.setValue(params.row);
+      //               this.$refs.formModal.userType = params.row.userType;
+      //               if (params.row.supplierId == null) {
+      //                 console.log(
+      //                   this.$refs.formModal.formData.form.userTypetypes,
+      //                   "this.$refs.formModal.formData.form.userTypetypes"
+      //                 );
+      //                 this.$refs.formModal.formData.form.userTypetypes = 1;
+      //               } else {
+      //                 this.$refs.formModal.formData.form.userTypetypes = 3;
+      //                 console.log(
+      //                   this.$refs.formModal.formData.form.userTypetypes
+      //                 );
+      //               }
+      //               this.$refs.formModal.userForm = true;
+      //               this.$refs.formModal.edit = true;
+      //             },
+      //           },
+      //         },
+      //         "编辑"
+      //       ),
+      //       h(
+      //         "span",
+      //         {
+      //           props: {
+      //             type: "primary",
+      //             size: "small",
+      //           },
+      //           style: {
+      //             marginRight: "15px",
+      //             // width: "24px",
+      //             color: "#0084ff",
+      //             cursor: "pointer",
+      //             display: "none",
+      //             // display: hasOneOf(
+      //             //   ["operate:user-manage:related-authorize"],
+      //             //   this.$store.state.user.access
+      //             // )
+      //             //   ? "inline-block"
+      //             //   : "none",
+      //           },
+
+      //           on: {
+      //             click: () => {
+      //               let power = hasOneOf(
+      //                 ["operate:user-manage:related-authorize"],
+      //                 this.$store.state.user.access
+      //               );
+      //               if (!power) return;
+      //               this.$refs.impower.companyIdcompanyId =
+      //                 params.row.companyId;
+      //               this.$refs.impower.idid = params.row.id;
+      //               // this.$refs.impower.permissionMap =JSON.stringify(params.row.permissionMap)
+      //               this.permissionMap = params.row.permissionMap;
+      //               console.log(params.row.permissionMap, "index页面授权");
+      //               this.$refs.impower.userForm = true;
+      //               this.$refs.impower.adminFlag = params.row.adminFlag;
+      //               getLists({
+      //                 adminFlag: params.row.adminFlag,
+      //                 // companyId: this.$store.state.user.userInfo.companyId,
+      //                 companyId: params.row.companyId,
+      //               })
+      //                 .then((d) => {
+      //                   this.$refs.impower.lists = d.data;
+      //                 })
+      //                 .catch((e) => {
+      //                   let ev = e.msg ? e.msg : e.message;
+      //                   this.$Message.error(ev);
+      //                 });
+      //             },
+      //           },
+      //         },
+      //         "授权"
+      //       ),
+      //       h(
+      //         "span",
+      //         {
+      //           props: {
+      //             type: "primary",
+      //             size: "small",
+      //           },
+      //           style: {
+      //             marginRight: "15px",
+      //             color: "#0084ff",
+      //             // width: "48px",
+      //             cursor: "pointer",
+      //             display: hasOneOf(
+      //               ["operate:user-manage:up-grade"],
+      //               this.$store.state.user.access
+      //             )
+      //               ? "inline-block"
+      //               : "none",
+      //           },
+      //           on: {
+      //             click: () => {
+      //               let power = hasOneOf(
+      //                 ["operate:user-manage:up-grade"],
+      //                 this.$store.state.user.access
+      //               );
+      //               if (!power) return;
+      //               // console.log(params.row, "params.row.");
+      //               this.$refs.agentInit.formItem.agentName =
+      //                 params.row.userCode;
+      //               this.$refs.agentInit.formItem.email = params.row.email;
+      //               this.$refs.agentInit.formItem.contactNumber =
+      //                 params.row.phone;
+      //               this.$refs.agentInit.formItem.applicationPeopleId =
+      //                 params.row.id;
+      //               this.$refs.agentInit.agentInitShow = true;
+      //             },
+      //           },
+      //         },
+      //         "身份升级"
+      //       ),
+
+      //       // 用户列表配置拉黑
+      //       h(
+      //         "span",
+      //         {
+      //           props: {
+      //             type: "primary",
+      //             size: "small",
+      //           },
+      //           style: {
+      //             marginRight: "15px",
+      //             color: "#0084ff",
+      //             cursor: "pointer",
+      //             // width: "24px",
+      //             // display: hasOneOf(
+      //             //   ["user:backstag:user:edit"],
+      //             //   this.$store.state.user.access
+      //             // )
+      //             //   ? "inline-block"
+      //             //   : "none"
+      //           },
+      //           on: {
+      //             click: () => {
+      //               this.$Modal.confirm({
+      //                 title: "温馨提示",
+      //                 content: "确定拉黑吗？",
+      //                 onOk: () => {
+      //                   upOrDown(params.row.id, 3)
+      //                     .then((d) => {
+      //                       this.$Message.success("拉黑成功!");
+      //                       this.init();
+      //                     })
+      //                     .catch((e) => {
+      //                       let ev = e.msg ? e.msg : e.message;
+      //                       this.$Message.error(ev);
+      //                     });
+      //                 },
+      //               });
+      //             },
+      //           },
+      //         },
+      //         "拉黑"
+      //       ),
+
+      //       // 用户列表配置删除
+      //       h(
+      //         "span",
+      //         {
+      //           props: {
+      //             type: "error",
+      //             size: "small",
+      //           },
+      //           style: {
+      //             marginRight: "15px",
+      //             color: "#0084ff",
+      //             cursor: "pointer",
+      //             // width: "24px",
+      //             display: hasOneOf(
+      //               ["operate:user-manage:user-delete"],
+      //               this.$store.state.user.access
+      //             )
+      //               ? "inline-block"
+      //               : "none",
+      //           },
+      //           on: {
+      //             click: () => {
+      //               // 用列表户配置点击删除弹窗
+      //               this.$Modal.confirm({
+      //                 title: "提示",
+      //                 content: "确认删除么？",
+      //                 onOk: () => {
+      //                   apiDelUser(params.row.id)
+      //                     // 删除成功执行
+      //                     .then((d) => {
+      //                       if (this.tabData.length == 1)
+      //                         this.info["limit.currentPage"] =
+      //                           this.info["limit.currentPage"] - 1;
+      //                       this.init();
+      //                       this.$Message.success("删除成功");
+      //                     })
+      //                     // 失败捕捉
+      //                     .catch(() => this.$Message.error("删除失败"));
+      //                 },
+      //               });
+      //             },
+      //           },
+      //         },
+      //         "删除"
+      //       ),
+      //     ],
+      //   },
+      // ],
 </script>
 <style lang="scss" scoped>
 .search {
@@ -756,4 +764,17 @@ export default {
 .ios-search-input {
   margin-right: 10px;
 }
+
+
+
+
 </style>
+
+
+
+
+
+
+
+
+

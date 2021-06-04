@@ -32,7 +32,7 @@
       <Page
         v-if="pageshow"
         class="t-center mt-10"
-        :page-size="info.pageSize"
+        :page-size="info['limit.pageSize']"
         :total="total"
         @on-page-size-change="changePageSize"
         @on-change="changePage"
@@ -111,8 +111,8 @@ export default {
       total: 0,
       info: {
         userName: "",
-        currentPage: 1,
-        pageSize: 10,
+        "limit.currentPage": 1,
+        "limit.pageSize": 10,
       },
     };
   },
@@ -161,22 +161,12 @@ export default {
     sercher() {
       this.pageshow = false;
       this.init();
-      this.info.currentPage = 1;
+      this.info["limit.currentPage"] = 1;
       this.$nextTick(() => {
         this.pageshow = true;
       });
     },
-    sercher() {
-      this.pageshow = false;
-      this.init();
-      this.info.currentPage = 1;
-      this.$nextTick(() => {
-        this.pageshow = true;
-      });
-    },
-    /**
-     * 初始化数据
-     */
+  
     async init() {
       this.loading = true;
       let _this = this;
@@ -193,18 +183,15 @@ export default {
         });
       this.loading = false;
     },
-    /**
-     * 分页
-     */
+
+   
     changePage(num) {
-      this.info.currentPage = num;
+      this.info["limit.currentPage"] = num;
       this.init();
     },
-    /**
-     * 切换每页大小
-     */
+  
     changePageSize(size) {
-      this.info.pageSize = size;
+      this.info["limit.pageSize"] = size;
       this.init();
     },
   },

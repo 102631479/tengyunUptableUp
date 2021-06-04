@@ -32,7 +32,7 @@
       <Page
         v-if="pageshow"
         class="t-center mt-10"
-        :page-size="info.pageSize"
+        :page-size="info['limit.pageSize']"
         :total="total"
         @on-page-size-change="changePageSize"
         @on-change="changePage"
@@ -113,14 +113,16 @@ export default {
       total: 0,
       info: {
         userName: "",
-        currentPage: 1,
-        pageSize: 10,
+        "limit.currentPage": 1,
+        "limit.pageSize": 10,
       },
     };
   },
   created() {
     this.init();
   },
+
+  
   methods: {
     getRemarks(data) {
       if (data) {
@@ -135,6 +137,8 @@ export default {
         this.GETtokenORremarks();
       }
     },
+
+
     async GETtokenORremarks() {
       delete this.remarksData._index;
       delete this.remarksData._rowKey;
@@ -147,6 +151,8 @@ export default {
           console.log(err, "err");
         });
     },
+
+
     getimgDownload(e) {
       let data = [];
       e.map((item) => {
@@ -154,6 +160,8 @@ export default {
       });
       this.imgDownloaddata = data;
     },
+
+
     imgDownload() {
       if (this.imgDownloaddata.length == 0) {
         this.$Message.error("请标记下载内容");
@@ -163,17 +171,23 @@ export default {
         window.open(url + "/file/img/download/" + itme);
       });
     },
+
+
     closes() {
       this.userForm = false;
     },
+
+
     sercher() {
       this.pageshow = false;
       this.init();
-      this.info.currentPage = 1;
+      this.info["limit.currentPage"] = 1;
       this.$nextTick(() => {
         this.pageshow = true;
       });
     },
+
+
     async init() {
       this.loading = true;
       let _this = this;
@@ -189,14 +203,17 @@ export default {
         });
       this.loading = false;
     },
+  
     changePage(num) {
-      this.info.currentPage = num;
+      this.info["limit.currentPage"] = num;
       this.init();
     },
+
     changePageSize(size) {
-      this.info.pageSize = size;
+      this.info["limit.pageSize"] = size;
       this.init();
     },
+
   },
 };
 </script>

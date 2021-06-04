@@ -63,14 +63,11 @@ let columns = [{
           },
           on: {
             click: () => {
-              
               let a = /(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/;
               if (a.test(params.row.oldName)) {
-               
                 window.open(
                   url + "/file/img/download/" + params.row.fileId
                 );
-                
               } else {
                 window.open(params.row.fileAddress);
               }

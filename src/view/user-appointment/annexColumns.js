@@ -68,6 +68,7 @@ let columns = [{
                 window.open(
                   url + "/file/img/download/" + params.row.fileId
                 );
+                console.log(url + "/file/img/download/" + params.row.fileId, '图片下载地址');
               } else {
                 window.open(params.row.fileAddress);
               }

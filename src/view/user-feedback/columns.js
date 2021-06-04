@@ -126,7 +126,7 @@ let columns = [{
             click: () => {
               _this.$Modal.confirm({
                 title: "提示",
-                content: "确认同意？",
+                content: "确认删除？",
                 onOk: () => {
                   getDeleteUser(params.row.id).then(res => {
                     console.log(res);

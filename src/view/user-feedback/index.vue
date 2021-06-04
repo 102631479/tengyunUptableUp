@@ -210,4 +210,12 @@ export default {
 .ios-search-input {
   margin-right: 30px;
 }
+
+
+.img-srcUserFormIMg-phone {
+  width: 100%;
+  height: 100%;
+}
+
+
 </style>

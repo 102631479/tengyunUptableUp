@@ -105,11 +105,11 @@ let columns = [{
                 title: "信息",
                 content: "确认已沟通？",
                 onOk: () => {
-                  let data = _this.remarksData
-                  data = {}
-                  data = JSON.parse(JSON.stringify(params.row))
-                  data.communicateId = _this.$store.state.user.userId
-                  data.state = '2'
+                  _this.remarksData = {}
+                  _this.remarksData = JSON.parse(JSON.stringify(params.row))
+                  _this.remarksData.communicateId = _this.$store.state.user.userId
+                  _this.remarksData.state = '2'
+
                   _this.getRemarks(false)
                 },
               });
@@ -130,7 +130,7 @@ let columns = [{
             click: () => {
               _this.$Modal.confirm({
                 title: "提示",
-                content: "确认同意？",
+                content: "确认删除？",
                 onOk: () => {
                   getDeleteUser(params.row.id).then(res => {
                     console.log(res);

@@ -122,9 +122,9 @@ export default {
     this.init();
   },
 
-  
   methods: {
     getRemarks(data) {
+      // console.log(this.remarksData);
       if (data) {
         this.remarksData.remarks = JSON.parse(JSON.stringify(this.remarksText));
         let _this = this;
@@ -138,20 +138,19 @@ export default {
       }
     },
 
-
     async GETtokenORremarks() {
       delete this.remarksData._index;
       delete this.remarksData._rowKey;
+      // console.log(this.remarksData, "this.remarksDatathis.remarksData");
       await tokenORremarks(this.remarksData)
         .then((res) => {
-          console.log(res, "res");
+          // console.log(res, "res");
           this.init();
         })
         .catch((err) => {
-          console.log(err, "err");
+          // console.log(err, "err");
         });
     },
-
 
     getimgDownload(e) {
       let data = [];
@@ -160,7 +159,6 @@ export default {
       });
       this.imgDownloaddata = data;
     },
-
 
     imgDownload() {
       if (this.imgDownloaddata.length == 0) {
@@ -172,11 +170,9 @@ export default {
       });
     },
 
-
     closes() {
       this.userForm = false;
     },
-
 
     sercher() {
       this.pageshow = false;
@@ -186,7 +182,6 @@ export default {
         this.pageshow = true;
       });
     },
-
 
     async init() {
       this.loading = true;
@@ -203,7 +198,7 @@ export default {
         });
       this.loading = false;
     },
-  
+
     changePage(num) {
       this.info["limit.currentPage"] = num;
       this.init();
@@ -213,7 +208,6 @@ export default {
       this.info["limit.pageSize"] = size;
       this.init();
     },
-
   },
 };
 </script>

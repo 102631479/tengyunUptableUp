@@ -105,10 +105,11 @@ let columns = [{
                 title: "信息",
                 content: "确认已沟通？",
                 onOk: () => {
-                  _this.remarksData = {}
-                  _this.remarksData = JSON.parse(JSON.stringify(params.row))
-                  _this.remarksData.communicateId = _this.$store.state.user.userId
-                  _this.remarksData.state = '2'
+                  let data = _this.remarksData
+                  data = {}
+                  data = JSON.parse(JSON.stringify(params.row))
+                  data.communicateId = _this.$store.state.user.userId
+                  data.state = '2'
                   _this.getRemarks(false)
                 },
               });

@@ -98,13 +98,14 @@ let columns = [{
           },
           on: {
             click: () => {
+              let data = _this.$refs.replyText
               _this.reply = true
-              _this.$refs.replyText.form.reply = ''
-              _this.$refs.replyText.imgData = params.row.photoIdList ? params.row.photoIdList : []
-              _this.$refs.replyText.details = params.row.details ? params.row.details : ''
-              _this.$refs.replyText.form.replyId = _this.$store.state.user.userId
-              _this.$refs.replyText.form.id = params.row.id ? params.row.id : ''
-              s
+              data.form.reply = ''
+              data.imgData = params.row.photoIdList ? params.row.photoIdList : []
+              data.details = params.row.details ? params.row.details : ''
+              data.form.replyId = _this.$store.state.user.userId
+              data.form.id = params.row.id ? params.row.id : ''
+               
             },
           },
         },

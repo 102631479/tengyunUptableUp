@@ -1,11 +1,7 @@
 <template>
   <div>
     <!-- :loading="loading" -->
-    <Modal
-      v-model="userForm"
-      :title="edit ? '编辑用户' : '新增用户'"
-      width="30%"
-    >
+    <Modal v-model="userForm" :title="edit ? '编辑用户' : '新增用户'">
       <Form
         ref="formValidate"
         :model="formValidate"
@@ -13,7 +9,28 @@
         :label-width="100"
       >
         <FormItem label="模板名称：" prop="name">
-          <Input placeholder="输入模板名称" v-model="formValidate.name" style="width: 380px" />
+          <Input placeholder="输入模板名称" v-model="formValidate.name" />
+        </FormItem>
+        <!-- <FormItem label="变量数量：" prop="num">
+          <Select
+            style="80%"
+            placeholder="请选择变量备注的数量"
+            v-model="numMer"
+            @on-change="getnumMer"
+          >
+            <Option value="1">1个变量备注</Option>
+            <Option value="2">2个变量备注</Option>
+            <Option value="3">3个变量备注</Option>
+           <Option value="4">4个变量备注</Option>
+            <Option value="5">5个变量备注</Option> 
+          </Select>
+        </FormItem> -->
+        <FormItem label="选择平台：" prop="name">
+          <RadioGroup v-model="animal">
+            <Radio label="腾讯云"></Radio>
+            <Radio label="阿里云"></Radio>
+            <Radio label="文旅云"></Radio>
+          </RadioGroup>
         </FormItem>
         <FormItem label="变量数量：" prop="num">
           <Select
@@ -42,17 +59,17 @@
         <!-- <Select
         label="模板名称："
           style="width: 380px"
-          placeholder="请选择变量释义的数量"
+          placeholder="请选择变量备注的数量"
           v-model="numMer"
           @on-change="getnumMer"
         >
-          <Option value="1">1个变量释义</Option>
-          <Option value="2">2个变量释义</Option>
-          <Option value="3">3个变量释义</Option>
-          <Option value="4">4个变量释义</Option>
-          <Option value="5">5个变量释义</Option>
+          <Option value="1">1个变量备注</Option>
+          <Option value="2">2个变量备注</Option>
+          <Option value="3">3个变量备注</Option>
+          <Option value="4">4个变量备注</Option>
+          <Option value="5">5个变量备注</Option>
         </Select>
-        <FormItem label="变量释义：" prop="xxx">
+        <FormItem label="变量备注：" prop="xxx">
           <Input
             v-if="notShown == 5"
             v-model="formValidate.input1"
@@ -85,9 +102,8 @@
           />
         </FormItem> -->
         <FormItem label="模板内容：" prop="memo">
-          <div     class="ditor-editor">
+          <div class="ditor-editor">
             <quill-editor
-          
               width="380px"
               :options="editorOption"
               v-model="formValidate.noticeContent"
@@ -108,7 +124,12 @@
           </Select>
         </FormItem>
         <FormItem label="描述：" prop="status">
-          <textarea placeholder="请输入模板内容" cols="40" rows="3" style="width: 380px" ></textarea>
+          <textarea
+            placeholder="请输入模板内容"
+            cols="40"
+            rows="3"
+            style="width: 380px"
+          ></textarea>
         </FormItem>
       </Form>
       <div slot="footer">
@@ -133,6 +154,7 @@ export default {
   },
   data() {
     return {
+      animal: "",
       editorOption: {},
       // notShown: 1,   // 是否显示
       numMer: 1,

@@ -90,8 +90,7 @@ export default {
           align: 'center',
           width: '150'
         },
-        { title: '邮件标题', key: 'memo', align: 'center', width: '200' },
-        { title: '邮件内容', key: 'memo', align: 'center' },
+        { title: '模板内容', key: 'memo', align: 'center' },
         {
           title: '变量释义',
           key: 'status',
@@ -107,6 +106,7 @@ export default {
           }
         },
         { title: '类型', key: 'memo', align: 'center', width: '100' },
+        { title: '模板描述', key: 'memo', align: 'center', width: '100' },
         {
           title: '操作',
           key: 'userCode',

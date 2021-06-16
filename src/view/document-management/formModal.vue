@@ -164,10 +164,7 @@ export default {
     getnumMer() {
       this.numMerr = Number(this.numMer);
     },
-    close() {
-      console.log("关闭窗口");
-      this.userForm = false;
-    },
+    
 
     submit() {
       this.$refs.formValidate.validate((valid) => {

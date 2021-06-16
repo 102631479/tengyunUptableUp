@@ -3,24 +3,22 @@
     <Modal
       width="700px"
       v-model="userForm"
-      title="添加公告"
-      @on-ok="handleSubmit('formValidate')"
-      @on-cancel="handleReset('formValidate')"
+      :title="edit ? '编辑公告' : '新建公告'"
     >
       <Form
         ref="formValidate"
-        :model="formValidate"
+        :model="form"
         :rules="ruleValidate"
         :label-width="100"
       >
         <FormItem label="标题：" prop="title">
-          <Input placeholder="输入标题" v-model="formValidate.title" />
+          <Input placeholder="输入标题" v-model="form.title" />
         </FormItem>
 
         <FormItem label="文档内容：" prop="noticeContent">
           <div class="edit_container">
             <quill-editor
-              v-model="formValidate.noticeContent"
+              v-model="form.noticeContent"
               ref="myQuillEditor"
               :options="editorOption"
               @blur="onEditorBlur($event)"
@@ -29,30 +27,44 @@
             ></quill-editor>
           </div>
         </FormItem>
-
-        <FormItem label="状态：" prop="status">
-          <RadioGroup v-model="formValidate.status">
-            <Radio :label="1">启用</Radio>
-            <Radio :label="0">禁用</Radio>
-          </RadioGroup>
-        </FormItem>
       </Form>
+      <div slot="footer" class="btn">
+        <Button type="text" @click="close">取消</Button>
+        <Button
+          type="primary"
+          :loading="loading"
+          @click="handleSubmit('formValidate')"
+        >
+          {{ edit ? "确认编辑" : "确认增加" }}</Button
+        >
+      </div>
     </Modal>
   </div>
 </template>
 <script>
-import axios from "axios";
-import { addNotice } from "@/api/system-notice";
+import Bus from "@/bus";
+import { addNotice, updateNotice } from "@/api/system-notice";
 import { quillEditor } from "vue-quill-editor"; //调用编辑器
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 export default {
   components: {
-    quillEditor
+    quillEditor,
   },
   data() {
     return {
+      editid: "",
+      form: {
+        receiveId: "1",
+        noticeType: "1",
+        businessType: "1",
+        messageType: "1",
+        isDelete: "1",
+        sendId: this.$store.state.user.userId,
+        title: "",
+        noticeContent: "",
+      },
       editorOption: {},
       userForm: false,
       edit: false,
@@ -60,14 +72,15 @@ export default {
       str: "",
       formValidate: {
         title: "",
-        status:1,
-        noticeContent: ""
+        noticeContent: "",
       },
+      loading: false,
       ruleValidate: {
         title: [{ required: true, message: "请输入标题", trigger: "blur" }],
-        status: [{ required: true, message: "请选择状态", trigger: "blur" }],
-        noticeContent: [{ required: true, message: "请输入文本", trigger: "blur" }]
-      }
+        noticeContent: [
+          { required: true, message: "请输入文本", trigger: "blur" },
+        ],
+      },
     };
   },
   mounted() {
@@ -77,22 +90,54 @@ export default {
   computed: {
     editor() {
       return this.$refs.myQuillEditor.quill;
-    }
+    },
   },
   methods: {
+    close() {
+      console.log("关闭窗口");
+      this.userForm = false;
+    },
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
-        if (!valid) return false;
-        let strs = this.escapeStringHTML(this.formValidate.noticeContent)
-        console.log(strs)
-        addNotice({ title: this.formValidate.title, noticeContent: strs, receiveId: this.$store.state.user.userId})
-          .then(res => {
-            this.$Message.success(res.msg);
-            this.$emit('success');
+      this.$refs[name].validate((valid) => {
+        if (!valid) return;
+        this.form.noticeContent = this.escapeStringHTML(
+          this.form.noticeContent
+        );
+        this.loading = true;
+        if (this.edit) {
+          updateNotice({
+            id: this.editid,
+            title: this.form.title,
+            noticeContent: this.escapeStringHTML(this.form.noticeContent),
           })
-          .catch(ev => {
-            this.$Message.error(ev.message);
-          });
+            .then((res) => {
+              this.loading = false;
+              this.$Message.success(res.msg);
+              this.$refs.formValidate.resetFields();
+              this.userForm = false;
+              Bus.$emit("system-notice-username", "ss");
+            })
+            .catch((ev) => {
+              this.loading = false;
+              this.$Message.error(ev.message);
+            });
+          console.log("我是编辑");
+        } else {
+          addNotice(this.form)
+            .then((res) => {
+              this.loading = false;
+              this.$Message.success(res.msg);
+              this.$refs.formValidate.resetFields();
+              this.userForm = false;
+              Bus.$emit("system-notice-username", "ss");
+            })
+            .catch((ev) => {
+              this.loading = false;
+              this.$Message.error(ev.message);
+            });
+        }
+
+        // this.loading = false;
       });
     },
     handleReset(name) {
@@ -102,16 +147,22 @@ export default {
     onEditorReady(editor) {
       // 准备编辑器
     },
-    onEditorBlur() {}, // 失去焦点事件
-    onEditorFocus() {}, // 获得焦点事件
-    onEditorChange() {}, // 内容改变事件
+    onEditorBlur(d) {
+      console.log(d, "失去焦点事件");
+    }, // 失去焦点事件
+    onEditorFocus(d) {
+      console.log(d, "获得焦点事件");
+    }, // 获得焦点事件
+    onEditorChange(d) {
+      console.log(d, "内容改变事件");
+    }, // 内容改变事件
     // 转码
     escapeStringHTML(str) {
       str = str.replace(/&lt;/g, "<");
       str = str.replace(/&gt;/g, ">");
       return str;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

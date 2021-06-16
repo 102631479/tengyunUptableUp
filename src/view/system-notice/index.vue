@@ -2,7 +2,7 @@
   <div>
     <div class="flex align-center"></div>
     <div>
-      <div class="title">公告列表</div>
+      <div class="title">新建公告</div>
     </div>
     <Card dis-hover>
       <div class="flex justify-between mb-10">
@@ -13,8 +13,10 @@
             @click="
               $refs.formModalt.userForm = true;
               $refs.formModalt.edit = false;
+              $refs.formModalt.form.title = '';
+              $refs.formModalt.form.noticeContent = '';
             "
-            >添加</Button
+            >新建</Button
           >
         </div>
         <div>
@@ -22,7 +24,7 @@
             type="text"
             class="mr-6"
             style="width: 200px"
-            v-model="info.userName"
+            v-model="info.title"
             placeholder="请输入模板名称"
             search
             enter-button
@@ -51,18 +53,19 @@
     </Card>
     <!-- 用户表单 -->
     <formModalt ref="formModalt" @success="init" />
-    <editForm ref="editForm" @success="init" />
+    <!-- <editForm ref="editForm" @success="init" /> -->
   </div>
 </template>
 
 <script>
+import Bus from "@/bus";
 import formModalt from "./formModalt";
-import editForm from "./editForm";
-import { getPages } from "@/api/system-notice";
+// import editForm from "./editForm";
+import { getData, delAuthority } from "@/api/system-notice";
 export default {
   components: {
     formModalt,
-    editForm,
+    // editForm,
   },
   data() {
     return {
@@ -70,9 +73,9 @@ export default {
       // 表头配置
       columns: [
         { title: "ID", key: "id", align: "center" },
-        { title: "标题", key: "title", align: "center" },
-        { title: "内容", key: "noticeContent", align: "center" },
-        { title: "创建人", key: "receiveId", align: "center" },
+        { title: "公告标题", key: "title", align: "center" },
+        { title: "公告内容", key: "noticeContent", align: "center" },
+        { title: "创建人", key: "sendName", align: "center" },
         { title: "创建时间", key: "dataCreateTime", align: "center" },
         {
           title: "操作",
@@ -90,17 +93,18 @@ export default {
                   marginRight: "5px",
                   color: "#0084ff",
                   cursor: "pointer",
-                },   
-                on: {  
-                  click: () => {   
-                    // getDetails(params.row.id).then(d => {
-                    //   this.details = d.data.data;
-                    //   console.log("d", this.details);
-                    // });
-                    this.$refs.editForm.userForm = true;
-                    this.$refs.editForm.edit = true;
+                },
+                on: {
+                  click: () => {
+                    console.log(params.row);
+                    this.$refs.formModalt.userForm = true;
+                    this.$refs.formModalt.edit = true;
+                    this.$refs.formModalt.form.title = params.row.title;
+                    this.$refs.formModalt.editid = params.row.id;
+                    this.$refs.formModalt.form.noticeContent =
+                      params.row.noticeContent;
                   },
-                }, 
+                },
               },
               "编辑"
             ),
@@ -140,7 +144,7 @@ export default {
       ],
       tabData: [],
       info: {
-        permissionName: "",
+        title: "",
         "limit.currentPage": 1,
         "limit.pageSize": 10,
       },
@@ -148,30 +152,32 @@ export default {
     };
   },
   created() {
+    Bus.$on("system-notice-username", (data) => {
+      this.init();
+    });
     this.init();
   },
   methods: {
-    /**
-     * 初始化数据
-     */
     async init() {
       this.loading = true;
-      await getPages(this.info).then((d) => {
-        this.tabData = d.data.list;
-        this.total = +d.data.pagination.total;
-      });
+      let _this = this;
+      await getData(this.info)
+        .then((d) => {
+          let data = d.data;
+          _this.total = Number(data.pagination.total);
+          _this.tabData = data.list;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       this.loading = false;
     },
-    /**
-     * 分页
-     */
+
     changePage(num) {
       this.info["limit.currentPage"] = num;
       this.init();
     },
-    /**
-     * 切换每页大小
-     */
+
     changePageSize(size) {
       this.info["limit.pageSize"] = size;
       this.init();

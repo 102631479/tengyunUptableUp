@@ -10,21 +10,39 @@ import platform from '@/config/platform'
 import axios from '@/libs/api.request'
 
 
-export const getPages = params => {
-    return axios.request({
-        url: platform.MSGS + "/content/page",
-        method: "get",
-        params
-    })
+export const getData = params => {
+  return axios.request({
+    url: platform.OPERATE + '/sys-notice/page',
+    method: "get",
+    params
+  })
 }
 
 
 // 添加
 
 export const addNotice = data => {
-    return axios.request({
-        url: platform.MSGS + "/content",
-        method: "post",
-        data
-    })
+  return axios.request({
+    url: platform.OPERATE + '/sys-notice',
+    method: "post",
+    data
+  })
+}
+// 修改
+
+export const updateNotice = data => {
+  return axios.request({
+    url: platform.OPERATE + '/update-sys-notice',
+    method: "post",
+    data
+  })
+}
+// 修改
+
+export const delAuthority = data => {
+  return axios.request({
+    url: platform.OPERATE + '/sys-notice/delete-sys-notice/' + data,
+    method: "delete",
+
+  })
 }

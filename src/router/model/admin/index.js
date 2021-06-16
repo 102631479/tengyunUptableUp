@@ -281,27 +281,25 @@ export default [{
   //     }
   //   ]
   // },
-  // {
-  //   path: '/system',
-  //   name: 'system',
-  //   meta: {
-  //     icon: 'icon-tengxunyunchanpinzonglan-2',
-  //     // access: ['system-notice'],
-  //     title: '系统公告'
-  //   },
-  //   component: Main,
-  //   children: [
-  //     {
-  //       path: 'system-notice',
-  //       name: 'system-notice',
-  //       meta: {
-  //         // icon: 'iconradio-button-on-outline',
-  //         title: '系统公告'
-  //       },
-  //       component: () => import('@/view/system-notice/index')
-  //     }
-  //   ]
-  // },
+  {
+    path: '/system',
+    name: 'system',
+    meta: {
+      icon: 'icon-tengxunyunchanpinzonglan-2',
+      // access: ['system-notice'],
+      title: '系统公告'
+    },
+    component: Main,
+    children: [{
+      path: 'system-notice',
+      name: 'system-notice',
+      meta: {
+        // icon: 'iconradio-button-on-outline',
+        title: '系统公告'
+      },
+      component: () => import('@/view/system-notice/index')
+    }]
+  },
   // {
   //   path: '/keyword',
   //   name: 'keyword',

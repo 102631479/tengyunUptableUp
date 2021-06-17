@@ -14,7 +14,6 @@
         <FormItem label="标题：" prop="title">
           <Input placeholder="输入标题" v-model="form.title" />
         </FormItem>
-
         <FormItem label="文档内容：" prop="noticeContent">
           <div class="edit_container">
             <quill-editor

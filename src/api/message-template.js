@@ -44,3 +44,22 @@ export const deleteWechat = data => {
     method: "delete"
   })
 }
+
+
+// message-Standinside      站内信api
+
+// 请求页面数据 
+export const getStandinside = params => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template/page",
+    method: "get",
+    params
+  })
+}
+export const addtStandinside = data => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template",
+    method: "post",
+    data
+  })
+}

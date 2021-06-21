@@ -58,8 +58,8 @@
 </template>
 
 <script>
-import { addtStandinside } from "@/api/message-template";
-
+import { addtStandinside, puttStandinside } from "@/api/message-template";
+import Bus from "@/bus";
 import { quillEditor } from "vue-quill-editor"; //调用编辑器
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
@@ -73,6 +73,7 @@ export default {
   },
   data() {
     return {
+      editid: "",
       templateDescribeNum: Number(200),
       editorOption: {
         placeholder:
@@ -115,12 +116,8 @@ export default {
 
   watch: {
     userForm(val) {
-      // this.$refs.formValidate.resetFields();
-      if (!val) {
-        // this.formValidate.resetFields();
-        // this.$refs.xxx.resetFields();
-        // 删除parms 传过来的
-        // this.formData.removeField("id");
+      if (!this.edit) {
+        this.$refs.formValidate.resetFields();
       }
     },
   },
@@ -151,10 +148,19 @@ export default {
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
-            console.log(valid);
-            this.$Message.success("编辑提交成功!");
-            this.userForm = false;
-            this.$refs.formValidate.resetFields();
+            _this.formValidate.id = _this.editid;
+            puttStandinside(_this.formValidate)
+              .then((res) => {
+                delete _this.formValidate.id;
+                this.$Message.success("编辑成功!");
+                this.userForm = false;
+                this.$refs.formValidate.resetFields();
+                Bus.$emit("message-Standinside-add", "ss");
+              })
+              .catch((ev) => {
+                this.$Message.error(ev.message);
+                console.log(ev);
+              });
           } else {
             this.$Message.error("编辑表单验证失败!");
           }

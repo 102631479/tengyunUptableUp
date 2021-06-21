@@ -59,7 +59,8 @@
 
 <script>
 // import { getStandinside } from "@/api/message-Standinside";
-import { getStandinside } from "@/api/message-template"; //调用编辑器
+import { getStandinside, deletStandinside } from "@/api/message-template"; //调用编辑器
+import Bus from "@/bus";
 
 import detailsPage from "./detailsPage";
 import formModal from "./formModal";
@@ -169,14 +170,13 @@ export default {
                 },
                 on: {
                   click: () => {
-                    // console.log(params.row.permissionName);
-                    // console.log(this.$refs.formValidate);
-                    // this.$Message.success("编辑");
                     this.$refs.formModal.edit = true;
-
                     this.$refs.formModal.userForm = true;
-                    this.$refs.formModal.formValidate.name =
-                      params.row.permissionName;
+                    this.$refs.formModal.editid = params.row.id;
+                    for (let item in this.$refs.formModal.formValidate) {
+                      this.$refs.formModal.formValidate[item] =
+                        params.row[item];
+                    }
                   },
                 },
               },
@@ -200,9 +200,14 @@ export default {
                       title: "提示",
                       content: "确认删除？",
                       onOk: () => {
-                        this.$Message.success(
-                          params.row.permissionName + " 已删除"
-                        );
+                        deletStandinside(params.row.id)
+                          .then((d) => {
+                            this.init();
+                            this.$Message.success(
+                              params.row.templateName + " 已删除"
+                            );
+                          })
+                          .catch(() => this.$Message.error("删除失败"));
                       },
                     });
                   },
@@ -224,13 +229,11 @@ export default {
     this.init();
   },
   methods: {
-    /**
-     * 初始化数据
-     */
     async init() {
+      let _this = this;
       await getStandinside(this.info).then((d) => {
-        this.tabData = d.data.list;
-        this.total = Number(d.data.pagination.total);
+        _this.tabData = d.data.list;
+        _this.totals = Number(d.data.pagination.total);
       });
     },
     openadd() {

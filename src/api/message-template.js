@@ -56,10 +56,27 @@ export const getStandinside = params => {
     params
   })
 }
+// 站内信添加
 export const addtStandinside = data => {
   return axios.request({
     url: platform.OPERATE + "/notify-template",
     method: "post",
     data
+  })
+}
+// 站内信修改
+export const puttStandinside = data => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template",
+    method: "put",
+    data
+  })
+}
+// 站内信修改
+export const deletStandinside = data => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template/"+data,
+    method: "delete",
+    
   })
 }

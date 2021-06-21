@@ -56,6 +56,7 @@ export const getStandinside = params => {
     params
   })
 }
+
 // 站内信添加
 export const addtStandinside = data => {
   return axios.request({
@@ -64,6 +65,7 @@ export const addtStandinside = data => {
     data
   })
 }
+
 // 站内信修改
 export const puttStandinside = data => {
   return axios.request({
@@ -72,6 +74,7 @@ export const puttStandinside = data => {
     data
   })
 }
+
 // 站内信修改
 export const deletStandinside = data => {
   return axios.request({

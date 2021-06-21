@@ -141,16 +141,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$Message.success("详情");
-
-                    // console.log("d", params.row.id);
-                    // getDetails(params.row.id).then((d) => {
-                    //   console.log("d", d);
-                    //   this.details = d.data.data;
-                    //   console.log("d", this.details);
-                    // });
+                    // this.$Message.success("详情");
                     this.$refs.detailsPage.userForm = true;
-                    // this.$refs.formDetails.edit = true;
+                    this.$refs.detailsPage.htmlData = params.row.templateContent;
+
                   },
                 },
               },
@@ -218,7 +212,6 @@ export default {
           ],
         },
       ],
-
       tabData: [],
     };
   },

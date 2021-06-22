@@ -90,8 +90,26 @@ export const deletStandinside = data => {
 // 请求页面数据 
 export const getTemplateData = params => {
   return axios.request({
-    url: platform.OPERATE + "/template/page",
+    url: platform.OPERATE + "/message-template/page",
     method: "get",
     params
+  })
+}
+
+
+// 站内信修改
+export const deleTemplate = data => {
+  return axios.request({
+    url: platform.OPERATE + "/message-template/template/" + data,
+    method: "delete",
+  })
+}
+
+// 站内信添加
+export const addTemplate = data => {
+  return axios.request({
+    url: platform.OPERATE + "/template",
+    method: "post",
+    data
   })
 }

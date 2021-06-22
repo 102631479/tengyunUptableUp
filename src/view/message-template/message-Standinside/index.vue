@@ -143,8 +143,8 @@ export default {
                   click: () => {
                     // this.$Message.success("详情");
                     this.$refs.detailsPage.userForm = true;
-                    this.$refs.detailsPage.htmlData = params.row.templateContent;
-
+                    this.$refs.detailsPage.htmlData =
+                      params.row.templateContent;
                   },
                 },
               },
@@ -223,11 +223,13 @@ export default {
   },
   methods: {
     async init() {
+      this.loading = true;
       let _this = this;
       await getStandinside(this.info).then((d) => {
         _this.tabData = d.data.list;
         _this.totals = Number(d.data.pagination.total);
       });
+      this.loading = false;
     },
     openadd() {
       this.$refs.formModal.edit = false;

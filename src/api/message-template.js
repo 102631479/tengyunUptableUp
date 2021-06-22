@@ -78,8 +78,20 @@ export const puttStandinside = data => {
 // 站内信修改
 export const deletStandinside = data => {
   return axios.request({
-    url: platform.OPERATE + "/notify-template/"+data,
+    url: platform.OPERATE + "/notify-template/" + data,
     method: "delete",
-    
+
+  })
+}
+
+
+
+// 短信模板
+// 请求页面数据 
+export const getTemplateData = params => {
+  return axios.request({
+    url: platform.OPERATE + "/template/page",
+    method: "get",
+    params
   })
 }

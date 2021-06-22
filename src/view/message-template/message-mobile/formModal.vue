@@ -11,22 +11,9 @@
         <FormItem label="模板名称：" prop="name">
           <Input placeholder="输入模板名称" v-model="formValidate.name" />
         </FormItem>
-        <!-- <FormItem label="变量数量：" prop="num">
-          <Select
-            style="80%"
-            placeholder="请选择变量备注的数量"
-            v-model="numMer"
-            @on-change="getnumMer"
-          >
-            <Option value="1">1个变量备注</Option>
-            <Option value="2">2个变量备注</Option>
-            <Option value="3">3个变量备注</Option>
-           <Option value="4">4个变量备注</Option>
-            <Option value="5">5个变量备注</Option> 
-          </Select>
-        </FormItem> -->
+
         <FormItem label="选择平台：" prop="name">
-          <RadioGroup v-model="animal">
+          <RadioGroup v-model="formValidate.animal">
             <Radio label="腾讯云"></Radio>
             <Radio label="阿里云"></Radio>
             <Radio label="文旅云"></Radio>
@@ -56,51 +43,7 @@
             />
           </div>
         </FormItem>
-        <!-- <Select
-        label="模板名称："
-          style="width: 380px"
-          placeholder="请选择变量备注的数量"
-          v-model="numMer"
-          @on-change="getnumMer"
-        >
-          <Option value="1">1个变量备注</Option>
-          <Option value="2">2个变量备注</Option>
-          <Option value="3">3个变量备注</Option>
-          <Option value="4">4个变量备注</Option>
-          <Option value="5">5个变量备注</Option>
-        </Select>
-        <FormItem label="变量备注：" prop="xxx">
-          <Input
-            v-if="notShown == 5"
-            v-model="formValidate.input1"
-            placeholder="输入模板名称"
-            style="width: 380px"
-          />
-          <Input
-            v-if="notShown == 5 || notShown == 4 "
-            v-model="formValidate.input2"
-            placeholder="输入模板名称"
-            style="width: 380px"
-          />
-          <Input
-            v-if="notShown == 5 || notShown == 4 || notShown == 3"
-            v-model="formValidate.input1"
-            placeholder="输入模板名称"
-            style="width: 380px"
-          />
-          <Input
-            v-if="notShown == 5 || notShown == 4 || notShown == 3|| notShown == 2"
-            v-model="formValidate.input2"
-            placeholder="输入模板名称"
-     
-          />
-          <Input
-            v-if="notShown == 5 || notShown == 4 || notShown == 3|| notShown == 2|| notShown == 1"
-            v-model="formValidate.input3"
-            placeholder="输入模板名称"
-            style="width: 380px"
-          />
-        </FormItem> -->
+
         <FormItem label="模板内容：" prop="memo">
           <div class="ditor-editor">
             <quill-editor
@@ -110,26 +53,21 @@
               ref="myQuillEditor"
             ></quill-editor>
           </div>
-          <!-- 富文本 -->
-          <!-- :options="editorOption"
-            @blur="onEditorBlur($event)"
-            @focus="onEditorFocus($event)"
-            @change="onEditorChange($event)" -->
-          <!-- placeholder="变量格式为：{1}，{2}                                         示例：您正在申请手机注册，验证码为：{1}，5分钟内有效！" -->
         </FormItem>
         <FormItem label="类型：" prop="xxx">
           <Select style="width: 380px" placeholder="请选择">
             <Option value="1">验证码</Option>
-            <Option value="2">短息通知</Option>
+            <Option value="2">营销短信</Option>
           </Select>
         </FormItem>
         <FormItem label="描述：" prop="status">
-          <textarea
-            placeholder="请输入模板内容"
-            cols="40"
-            rows="3"
-            style="width: 380px"
-          ></textarea>
+          <Input
+            :maxlength="templateDescribeNum"
+            placeholder="输入模板描述"
+            type="textarea"
+            v-model="formValidate.templateDescribe"
+            show-word-limit
+          />
         </FormItem>
       </Form>
       <div slot="footer">
@@ -154,6 +92,7 @@ export default {
   },
   data() {
     return {
+      templateDescribeNum: Number(200),
       animal: "",
       editorOption: {},
       // notShown: 1,   // 是否显示
@@ -167,13 +106,6 @@ export default {
       formValidate: {
         // input1: "",
         // input2: "",
-        // input3: "",
-        // input4: "",
-        // input5: "",
-        // noticeContent: "",
-        // name: "",
-        // num: "",
-        // xxx: "",
       },
       ruleValidate: {
         name: [{ required: true, message: "请输入模板名称", trigger: "blur" }],
@@ -220,8 +152,8 @@ export default {
       this.userForm = false;
     },
     async submit() {
-      // console.log(this.formValidate[0]);
-
+      console.log(this.formValidate);
+      return;
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {

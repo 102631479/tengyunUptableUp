@@ -69,6 +69,8 @@ export default {
   },
   data() {
     return {
+      templateDescribeNum: Number(200),
+
       totals: 0,
       // 请求配置
       info: {
@@ -213,7 +215,7 @@ export default {
       this.$refs.formModal.edit = false;
       this.$refs.formModal.userForm = true;
     },
-   
+
     changePage(num) {
       this.info.limit.currentPage = num;
     },

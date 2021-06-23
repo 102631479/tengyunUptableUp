@@ -22,6 +22,7 @@
             <Radio label="3">文旅云</Radio>
           </RadioGroup>
         </FormItem>
+
         <div v-show="formValidate.vendorType != 2">
           <FormItem label="变量数量：" prop="num">
             <Select
@@ -49,12 +50,13 @@
             </div>
           </FormItem>
         </div>
-        <FormItem label="模板审核描述：" prop="remark">
+
+        <FormItem label="模板内容" prop="templateContent">
           <Input
             :maxlength="templateDescribeNum"
-            placeholder="输入模板描述"
+            placeholder="变量格式为：{1}，{2} 示例：您正在申请手机注册，验证码为：{1}，5分钟内有效"
             type="textarea"
-            v-model="formValidate.remark"
+            v-model="formValidate.templateContent"
             show-word-limit
           />
         </FormItem>
@@ -69,6 +71,7 @@
             <Option value="2">营销短信</Option>
           </Select>
         </FormItem>
+
         <FormItem label="短信类型：" prop="international">
           <Select
             style="width: 380px"
@@ -79,15 +82,17 @@
             <Option value="1">国际/港澳台短信</Option>
           </Select>
         </FormItem>
-        <FormItem label="审核描述：" prop="examineDescribe">
+
+        <FormItem label="申请说明：" prop="remark">
           <Input
             :maxlength="templateDescribeNum"
             placeholder="输入模板描述"
             type="textarea"
-            v-model="formValidate.examineDescribe"
+            v-model="formValidate.remark"
             show-word-limit
           />
         </FormItem>
+
         <FormItem label="状态：" prop="enableStatus">
           <RadioGroup v-model="formValidate.enableStatus">
             <Radio label="1">启用</Radio>
@@ -121,12 +126,26 @@ export default {
       userForm: false,
       rule, // 表单配置
       option, // 弹框表单配置
+      //       {
+      //     "templateContent":"您的验证码为{1},请在{2}分钟内使用！",
+      //     "templateName":"平台验证码",
+      //     "examineDescribe":"通过",
+      //     "enableStatus":true,
+      //     "businessType":"c_  这是个随机数  时间戳 加随机数",
+      //     "templateType":0,
+      //     "templateParameter":"1,2",
+      //     "remark":"平台使用的验证码",
+      //     "definitions":"1:验证码，2:时间",
+      //     "vendorType":1,
+      //     "international":0
+      // }
       formValidate: {
-        templateParameter: "",
+        remark: "",
+        businessType: "",
         templateType: "0",
-        examineDescribe: "审核类型",
+        examineDescribe: null,
         international: "1",
-        remark: "模板审核",
+        templateContent: "模板内容",
         templateName: "模板名称",
         templateParameter: "",
         enableStatus: "1",
@@ -150,11 +169,11 @@ export default {
         international: [
           { required: true, message: "请选择短信类型", trigger: "blur" },
         ],
-        examineDescribe: [
-          { required: true, message: "请选择短信类型", trigger: "blur" },
-        ],
+        // examineDescribe: [
+        //   { required: true, message: "请选择短信类型", trigger: "blur" },
+        // ],
         remark: [
-          { required: true, message: "请选择短信类型", trigger: "blur" },
+          { required: true, message: "请输入模板申请说明", trigger: "blur" },
         ],
       },
     };
@@ -244,13 +263,14 @@ export default {
               }
               data.templateParameter = dataText.join(",");
             }
+            data.businessType = new Date().getTime();
             addTemplate(data)
               .then((res) => {
                 console.log(res);
                 this.$Message.success("增加提交成功!");
               })
               .catch((err) => {
-                console.log(err);
+                this.$Message.error(err.msg);
               });
           } else {
             this.$Message.error("增加表单验证失败!");

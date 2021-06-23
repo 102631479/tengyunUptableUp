@@ -108,7 +108,7 @@ export const deleTemplate = data => {
 // 站内信添加
 export const addTemplate = data => {
   return axios.request({
-    url: platform.OPERATE + "/template",
+    url: platform.OPERATE + "/message-template",
     method: "post",
     data
   })

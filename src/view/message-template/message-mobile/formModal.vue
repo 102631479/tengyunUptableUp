@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import Bus from "@/bus";
 import { addTemplate } from "@/api/message-template";
 // import option from "./options";
 // import rule from "./rule";
@@ -142,9 +143,9 @@ export default {
       formValidate: {
         remark: "",
         businessType: "",
-        templateType: "0",
+        templateType: "",
         examineDescribe: null,
-        international: "1",
+        international: "",
         templateContent: "",
         templateName: "",
         templateParameter: "",
@@ -180,11 +181,13 @@ export default {
   },
 
   created() {
-    // this.resolution();
+   
   },
   watch: {
     userForm(val) {
-      // this.$refs.formValidate.resetFields();
+      if (!this.edit) {
+        this.$refs.formValidate.resetFields();
+      }
       if (!val) {
         // this.formValidate.resetFields();
         // this.$refs.xxx.resetFields();
@@ -235,6 +238,8 @@ export default {
       return data;
     },
     async submit() {
+      console.log(this.formValidate.definitions);
+      return
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
@@ -268,8 +273,12 @@ export default {
             data.businessType = this.getSubstring();
             addTemplate(data)
               .then((res) => {
-                console.log(res);
-                this.$Message.success("增加提交成功!");
+                this.$Message.success("增加成功!");
+                this.$refs.formValidate.resetFields();
+                this.numMerr = 1;
+                this.numMer = "1";
+                this.userForm = false;
+                this.formValidate.definitions = [];
               })
               .catch((err) => {
                 this.$Message.error(err.msg);

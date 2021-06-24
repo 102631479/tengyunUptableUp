@@ -115,25 +115,53 @@ let columns = [{
             size: "small",
           },
           style: {
+            dispaly: 'none',
             marginRight: "8px",
             color: "#0084ff",
             cursor: "pointer",
           },
           on: {
             click: () => {
-              if (params.row.definitions) {
-                let data = JSON.parse(params.row.definitions);
-                console.log(data);
-              }
-
-              return;
               _this.$refs.formModal.edit = true;
               _this.$refs.formModal.userForm = true;
+              for (let item in _this.$refs.formModal.formValidate) {
+                if (item = "definitions") {
+                  break;
+                } else {
+                  if (params.row[item]) {
+                    _this.$refs.formModal.formValidate[item] =
+                      params.row[item];
+                  }
+                }
+              }
+              if (params.row.definitions) {
+                let data = JSON.parse(params.row.definitions);
+                if (data.length == 0) {
+                  _this.$refs.formModal.numMerr = 1
+                } else {
+                  _this.$refs.formModal.numMerr = Number(data.length);
+
+                }
+                let arrerData = []
+                data.map((item, index) => {
+                  console.log(item[index]);
+                  arrerData.push(
+                    item[index]
+                  )
+                })
+                _this.$refs.formModal.formValidate.definitions = arrerData
+                // console.log(_this.$refs.formModal.formValidate.definitions, 'sss');
+              }
+              console.log(_this.$refs.formModal.formValidate);
+
+
+
             },
           },
         },
-        "编辑"
+        _this.getEidet(params.row.vendorType, params.row.examineFlag)
       ),
+
       h(
         "span", {
           props: {

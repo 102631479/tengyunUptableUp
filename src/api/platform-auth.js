@@ -5,7 +5,10 @@ import platform from '@/config/platform'
 import axios from '@/libs/api.request'
 
 // 登录
-export const login = ({ userName, password }) => {
+export const login = ({
+  userName,
+  password
+}) => {
   const data = {
     account: userName,
     password
@@ -307,12 +310,11 @@ export const getAuths = params => {
 }
 
 // 授权
-export const setAuth = (data,id) => {
+export const setAuth = (data, id) => {
   return axios.request({
-    url : platform.OPERATE + `/user-manage/related-authorize?id=${id}`,
+    url: platform.OPERATE + `/user-manage/related-authorize?id=${id}`,
     method: 'post',
     data
   })
 }
 //  end-----
-

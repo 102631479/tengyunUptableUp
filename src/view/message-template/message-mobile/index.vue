@@ -18,7 +18,7 @@
               type="text"
               class="mr-6"
               style="width: 200px"
-              v-model="info.userName"
+              v-model="info.templateName"
               placeholder="请输入模板名称"
               search
               enter-button
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import Bus from "@/bus";
 import columns from "./columns";
 import { getTemplateData, deleTemplate } from "@/api/message-template";
 import formModal from "./formModal";
@@ -64,7 +65,7 @@ export default {
       templateDescribeNum: Number(200),
       totals: 0,
       info: {
-        templateName: 1,
+        templateName: "",
         "limit.currentPage": 1,
         "limit.pageSize": 10,
       },
@@ -87,10 +88,24 @@ export default {
       this.loading = false;
     },
     openadd() {
+      // console.log(this.$refs.formModal.formValidate);
+      this.$refs.formModal.numMerr = 1;
+      this.$refs.formModal.numMer = "1";
+      this.$refs.formModal.userForm = false;
+      this.$refs.formModal.formValidate.definitions = [];
       this.$refs.formModal.edit = false;
       this.$refs.formModal.userForm = true;
     },
-
+    getEidet(gs, sc) {
+      if (gs == 3) return "编辑";
+      if (gs == 1) {
+        if (sc == 1) return "";
+        return "编辑";
+      } else {
+        if (sc == 2) return "编辑";
+        return "";
+      }
+    },
     changePage(num) {
       console.log(num);
       this.info["limit.currentPage"] = num;

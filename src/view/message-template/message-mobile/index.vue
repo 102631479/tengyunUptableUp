@@ -47,146 +47,29 @@
         show-sizer
       />
     </Card>
-
-    <!-- 用户表单 -->
     <formModal ref="formModal" @success="init" />
-    <!-- 详情 -->
-    <detailsPage ref="detailsPage" @success="init" />
-
-    <!-- <formModalt ref="formModalt" @success="init" /> -->
   </div>
 </template>
 
 <script>
+import columns from "./columns";
 import { getTemplateData, deleTemplate } from "@/api/message-template";
-import detailsPage from "./detailsPage";
 import formModal from "./formModal";
 export default {
   components: {
-    detailsPage,
     formModal,
-    // import formModalt from "./formModalt";
   },
   data() {
     return {
       templateDescribeNum: Number(200),
-
       totals: 0,
-      // 请求配置
       info: {
         templateName: 1,
         "limit.currentPage": 1,
         "limit.pageSize": 10,
       },
       loading: false,
-      // 表头配置
-      columns: [
-        { title: "序号", align: "center", type: "index", width: "100" },
-        {
-          title: "短信商",
-          // key: "vendorType",
-          align: "center",
-          width: "150",
-          render: (h, params) => {
-            this.status = params.row.vendorType;
-            if (params.row.vendorType == 1) {
-              return h("span", "腾讯");
-            } else if (params.row.vendorType == 2) {
-              return h("span", "阿里");
-            } else {
-              return h("span", "票联");
-            }
-          },
-        },
-        { title: "模板CODE", key: "businessType", align: "center" },
-        { title: "模板名称", key: "templateName", align: "center" },
-        { title: "模板内容", key: "templateContent", align: "center" },
-        { title: "变量备注", key: "definitions", align: "center" },
-        {
-          title: "类型",
-          // key: "templateType",
-          align: "center",
-          render: (h, params) => {
-            if (params.row.templateType == 1) {
-              return h("span", "短信通知");
-            } else if (params.row.templateType == 2) {
-              return h("span", "推广短信");
-            } else if (params.row.templateType == 3) {
-              return h("span", "国际/港澳台消息");
-            } else {
-              return h("span", "验证码");
-            }
-          },
-        },
-        { title: "模板描述", key: "remark", align: "center" },
-        {
-          title: "操作",
-          key: "userCode",
-          width: 200,
-          align: "center",
-          render: (h, params) => [
-            h(
-              "span",
-              {
-                props: {
-                  type: "success",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "8px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-                },
-                on: {
-                  click: () => {
-                    this.$refs.formModal.edit = true;
-                    this.$refs.formModal.userForm = true;
-                    this.$refs.formModal.formValidate.name =
-                      params.row.permissionName;
-                  },
-                },
-              },
-              "编辑"
-            ),
-            h(
-              "span",
-              {
-                props: {
-                  type: "error",
-                  size: "small",
-                },
-                style: {
-                  marginRight: "8px",
-                  color: "#0084ff",
-                  cursor: "pointer",
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: "提示",
-                      content: "确认删除？",
-                      onOk: () => {
-                        deleTemplate(params.row.id)
-                          .then((res) => {
-                            this.$Message.success(
-                              params.row.permissionName + " 已删除"
-                            );
-                            this.init();
-                          })
-                          .catch((err) => {
-                            console.log(err);
-                          });
-                      },
-                    });
-                  },
-                },
-              },
-              "删除"
-            ),
-          ],
-        },
-      ],
-
+      columns: columns(this),
       tabData: [],
     };
   },
@@ -209,11 +92,15 @@ export default {
     },
 
     changePage(num) {
-      this.info.limit.currentPage = num;
+      console.log(num);
+      this.info["limit.currentPage"] = num;
+      this.init();
     },
 
     changePageSize(size) {
-      this.info.limit.pageSize = size;
+      console.log(size);
+      this.info["limit.pageSize"] = size;
+      this.init();
     },
   },
 };

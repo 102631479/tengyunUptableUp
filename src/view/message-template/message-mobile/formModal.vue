@@ -111,8 +111,8 @@
 
 <script>
 import { addTemplate } from "@/api/message-template";
-import option from "./options";
-import rule from "./rule";
+// import option from "./options";
+// import rule from "./rule";
 export default {
   data() {
     return {
@@ -124,8 +124,8 @@ export default {
       edit: false,
       loading: true,
       userForm: false,
-      rule, // 表单配置
-      option, // 弹框表单配置
+      // rule, // 表单配置
+      // option, // 弹框表单配置
       //       {
       //     "templateContent":"您的验证码为{1},请在{2}分钟内使用！",
       //     "templateName":"平台验证码",
@@ -145,8 +145,8 @@ export default {
         templateType: "0",
         examineDescribe: null,
         international: "1",
-        templateContent: "模板内容",
-        templateName: "模板名称",
+        templateContent: "",
+        templateName: "",
         templateParameter: "",
         enableStatus: "1",
         vendorType: "1",
@@ -229,7 +229,11 @@ export default {
         return data;
       }
     },
-
+    getSubstring() {
+      var str = new Date().getTime().toString();
+      let data = str.substring(str.length - 6);
+      return data;
+    },
     async submit() {
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
@@ -244,7 +248,6 @@ export default {
         });
       } else {
         this.$refs.formValidate.validate((valid) => {
-          // console.log(valid);
           if (valid) {
             let text = this.NUM_toString(true, this.formValidate.definitions);
             let data = JSON.parse(JSON.stringify(this.formValidate));
@@ -255,7 +258,6 @@ export default {
               data.enableStatus = false;
             }
             let _definitions = this.formValidate.definitions.length;
-            // 票联  变量是从 0开始     腾云是从 1 开始
             if (this.formValidate.vendorType == 1) {
               let dataText = [];
               for (let i = 0; i < _definitions; i++) {
@@ -263,7 +265,7 @@ export default {
               }
               data.templateParameter = dataText.join(",");
             }
-            data.businessType = new Date().getTime();
+            data.businessType = this.getSubstring();
             addTemplate(data)
               .then((res) => {
                 console.log(res);

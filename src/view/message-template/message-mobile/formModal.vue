@@ -142,12 +142,13 @@
 
 <script>
 import Bus from "@/bus";
-import { addTemplate } from "@/api/message-template";
+import { addTemplate, putTemplate } from "@/api/message-template";
 // import option from "./options";
 // import rule from "./rule";
 export default {
   data() {
     return {
+      putId: "",
       templateDescribeNum: Number(200),
       animal: "",
       editorOption: {},
@@ -283,16 +284,33 @@ export default {
       return data;
     },
     async submit() {
-      console.log(this.formValidate.definitions);
-      console.log(this.formValidate.definitions.length);
-      console.log(this.numMer, "s");
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
-            console.log(valid);
-            this.$Message.success("编辑提交成功!");
-            this.userForm = false;
-            this.$refs.formValidate.resetFields();
+            
+            let data = this.threeTakeOne(this.formValidate.vendorType);
+            let putData = {
+              id: this.putId,
+              templateContent: data.templateContent,
+              templateName: data.templateName,
+              templateType: data.templateType,
+              templateParameter: data.templateParameter,
+              remark: data.remark,
+              definitions: data.definitions,
+            };
+            console.log(putData,'编辑对象');
+            putTemplate(putData)
+              .then((res) => {
+                this.$Message.success("编辑成功!");
+                this.$refs.formValidate.resetFields();
+                this.numMerr = 1;
+                this.numMer = "1";
+                this.userForm = false;
+                this.formValidate.definitions = [];
+              })
+              .catch((err) => {
+                this.$Message.error(err.msg);
+              });
           } else {
             this.$Message.error("编辑表单验证失败!");
           }

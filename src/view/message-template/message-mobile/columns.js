@@ -143,6 +143,7 @@ let columns = [{
                 templateType: "",
               }
               _this.$refs.formModal.formValidate.international = '0'
+              _this.$refs.formModal.putId = params.row.id
               for (let item in textObj) {
                 if (item == 'templateType') {
                   _this.$refs.formModal.formValidate[item] =

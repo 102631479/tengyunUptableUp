@@ -113,3 +113,11 @@ export const addTemplate = data => {
     data
   })
 }
+// 短信修改
+export const putTemplate = data => {
+  return axios.request({
+    url: platform.OPERATE + "/message-template",
+    method: "put",
+    data
+  })
+}

@@ -66,7 +66,7 @@ export default {
       totals: 0,
       info: {
         templateName: "",
-        "limit.currentPage": 3,
+        "limit.currentPage": 1,
         "limit.pageSize": 10,
       },
       loading: false,

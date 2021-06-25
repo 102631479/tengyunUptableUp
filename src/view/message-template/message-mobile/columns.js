@@ -57,13 +57,25 @@ let columns = [{
       }
       let data = JSON.parse(params.row.definitions);
       let text = [];
-      data.map((item, index) => {
-        if (data.length == index + 1) {
-          text.push(index + " : " + item[index]);
-        } else {
-          text.push(index + " : " + item[index] + " , ");
-        }
-      });
+      if (params.row.vendorType == 1) {
+        data.map((item, index) => {
+          if (data.length == index + 1) {
+            text.push(index + 1 + " : " + item[index]);
+          } else {
+            text.push(index + 1 + " : " + item[index] + " , ");
+          }
+        });
+      } else if (params.row.vendorType == 2) {
+        text = []
+      } else {
+        data.map((item, index) => {
+          if (data.length == index + 1) {
+            text.push(index + " : " + item[index]);
+          } else {
+            text.push(index + " : " + item[index] + " , ");
+          }
+        });
+      }
       return h("span", text);
     },
   },
@@ -121,40 +133,53 @@ let columns = [{
             cursor: "pointer",
           },
           on: {
-            click: () => {
-              _this.$refs.formModal.edit = true;
-              _this.$refs.formModal.userForm = true;
-              for (let item in _this.$refs.formModal.formValidate) {
-                if (item = "definitions") {
-                  break;
-                } else {
-                  if (params.row[item]) {
-                    _this.$refs.formModal.formValidate[item] =
-                      params.row[item];
-                  }
+            click: async () => {
+              let textObj = {
+                templateName: "",
+                vendorType: "",
+                definitions: "",
+                templateContent: "",
+                remark: "",
+                templateType: "",
+              }
+              _this.$refs.formModal.formValidate.international = '0'
+              for (let item in textObj) {
+                if (item == 'templateType') {
+                  _this.$refs.formModal.formValidate[item] =
+                    params.row[item].toString()
+                  break
                 }
+
+                _this.$refs.formModal.formValidate[item] =
+                  params.row[item];
               }
               if (params.row.definitions) {
                 let data = JSON.parse(params.row.definitions);
-                if (data.length == 0) {
+                if (data.length == 0 || data == "") {
                   _this.$refs.formModal.numMerr = 1
                 } else {
                   _this.$refs.formModal.numMerr = Number(data.length);
-
                 }
                 let arrerData = []
-                data.map((item, index) => {
-                  console.log(item[index]);
-                  arrerData.push(
-                    item[index]
-                  )
-                })
+                if (params.row.vendorType == 3) {
+                  await data.map((item, index) => {
+                    arrerData.push(
+                      item[index]
+                    )
+                  })
+                } else if (params.row.vendorType == 2) {
+                  arrerData = []
+                } else {
+                  await data.map((item, index) => {
+                    arrerData.push(
+                      item[index]
+                    )
+                  })
+                }
                 _this.$refs.formModal.formValidate.definitions = arrerData
-                // console.log(_this.$refs.formModal.formValidate.definitions, 'sss');
+                _this.$refs.formModal.edit = true;
+                _this.$refs.formModal.userForm = true;
               }
-              console.log(_this.$refs.formModal.formValidate);
-
-
 
             },
           },

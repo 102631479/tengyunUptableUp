@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- :loading="loading" -->
-    <Modal v-model="userForm" :title="edit ? '编辑用户' : '新增用户'">
+    <Modal v-model="userForm" :title="edit ? '编辑模板' : '新增模板'">
       <Form
         ref="formValidate"
         :model="formValidate"
@@ -14,16 +14,17 @@
             v-model="formValidate.templateName"
           />
         </FormItem>
+        <div v-show="!edit">
+          <FormItem label="选择平台：" prop="vendorType">
+            <RadioGroup v-model="formValidate.vendorType">
+              <Radio label="1">腾讯云</Radio>
+              <Radio label="2">阿里云</Radio>
+              <Radio label="3">文旅云</Radio>
+            </RadioGroup>
+          </FormItem>
+        </div>
 
-        <FormItem label="选择平台：" prop="vendorType">
-          <RadioGroup v-model="formValidate.vendorType">
-            <Radio label="1">腾讯云</Radio>
-            <Radio label="2">阿里云</Radio>
-            <Radio label="3">文旅云</Radio>
-          </RadioGroup>
-        </FormItem>
-
-        <div v-show="formValidate.vendorType != 2">
+        <div v-show="formValidate.vendorType == 3">
           <FormItem label="变量数量：" prop="num">
             <Select
               style="width: 380px"
@@ -41,10 +42,38 @@
 
           <FormItem label="变量备注：" prop="definitions">
             <div v-for="(item, index) in numMerr" :key="index" class="ipt-top">
+              <label for="" class="label-with"> [{{ index }}] </label>
+              <Input
+                v-model="formValidate.definitions[index]"
+                placeholder="输入变量备注"
+                style="width: 365px"
+              />
+            </div>
+          </FormItem>
+        </div>
+
+        <div v-show="formValidate.vendorType == 1">
+          <FormItem label="变量数量：" prop="num">
+            <Select
+              style="width: 380px"
+              placeholder="请选择变量备注的数量"
+              v-model="numMer"
+              @on-change="getnumMer"
+            >
+              <Option value="1">1个变量备注</Option>
+              <Option value="2">2个变量备注</Option>
+              <Option value="3">3个变量备注</Option>
+              <Option value="4">4个变量备注</Option>
+              <Option value="5">5个变量备注</Option>
+            </Select>
+          </FormItem>
+
+          <FormItem label="变量备注：" prop="definitions">
+            <div v-for="(item, index) in numMerr" :key="index" class="ipt-top">
               <label for="" class="label-with"> [{{ index + 1 }}] </label>
               <Input
                 v-model="formValidate.definitions[index]"
-                placeholder="输入模板名称"
+                placeholder="输入变量备注"
                 style="width: 365px"
               />
             </div>
@@ -72,21 +101,23 @@
           </Select>
         </FormItem>
 
-        <FormItem label="短信类型：" prop="international">
-          <Select
-            style="width: 380px"
-            v-model="formValidate.international"
-            placeholder="请选择"
-          >
-            <Option value="0">国内短信</Option>
-            <Option value="1">国际/港澳台短信</Option>
-          </Select>
-        </FormItem>
+        <div v-show="!edit">
+          <FormItem label="短信类型：" prop="international">
+            <Select
+              style="width: 380px"
+              v-model="formValidate.international"
+              placeholder="请选择"
+            >
+              <Option value="0">国内短信</Option>
+              <Option value="1">国际/港澳台短信</Option>
+            </Select>
+          </FormItem>
+        </div>
 
         <FormItem label="申请说明：" prop="remark">
           <Input
             :maxlength="templateDescribeNum"
-            placeholder="输入模板描述"
+            placeholder="请输入模板申请说明，例如申请原因，使用场景等。"
             type="textarea"
             v-model="formValidate.remark"
             show-word-limit
@@ -125,21 +156,6 @@ export default {
       edit: false,
       loading: true,
       userForm: false,
-      // rule, // 表单配置
-      // option, // 弹框表单配置
-      //       {
-      //     "templateContent":"您的验证码为{1},请在{2}分钟内使用！",
-      //     "templateName":"平台验证码",
-      //     "examineDescribe":"通过",
-      //     "enableStatus":true,
-      //     "businessType":"c_  这是个随机数  时间戳 加随机数",
-      //     "templateType":0,
-      //     "templateParameter":"1,2",
-      //     "remark":"平台使用的验证码",
-      //     "definitions":"1:验证码，2:时间",
-      //     "vendorType":1,
-      //     "international":0
-      // }
       formValidate: {
         remark: "",
         businessType: "",
@@ -157,10 +173,10 @@ export default {
         templateName: [
           { required: true, message: "请输入模板名称", trigger: "blur" },
         ],
+        templateContent: [
+          { required: true, message: "请输入模板名称", trigger: "blur" },
+        ],
         num: [{ required: false, message: "请选择变量数量", trigger: "blur" }],
-        // definitions: [
-        //   { required: false, message: "请输入变asdasdsa量释义", trigger: "blur" },
-        // ],
         enableStatus: [
           { required: true, message: "请选择状态", trigger: "blur" },
         ],
@@ -168,11 +184,12 @@ export default {
           { required: true, message: "请选择短信类型", trigger: "blur" },
         ],
         international: [
-          { required: true, message: "请选择短信类型", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择短信类型",
+            trigger: "blur",
+          },
         ],
-        // examineDescribe: [
-        //   { required: true, message: "请选择短信类型", trigger: "blur" },
-        // ],
         remark: [
           { required: true, message: "请输入模板申请说明", trigger: "blur" },
         ],
@@ -180,19 +197,22 @@ export default {
     };
   },
 
-  created() {
-   
+  created() {},
+  computed: {
+    eleDateNew() {
+      return JSON.parse(JSON.stringify(this.formValidate.vendorType));
+    },
   },
   watch: {
     userForm(val) {
       if (!this.edit) {
         this.$refs.formValidate.resetFields();
       }
-      if (!val) {
-        // this.formValidate.resetFields();
-        // this.$refs.xxx.resetFields();
-        // 删除parms 传过来的
-        // this.formData.removeField("id");
+    },
+    eleDateNew(val) {
+      if (this.edit) {
+        console.log(this.edit ? "编辑" : "新增");
+        this.formValidate.definitions = [];
       }
     },
   },
@@ -205,6 +225,39 @@ export default {
         this.formValidate = "";
       }
     },
+    threeTakeOne(vendorType) {
+      let text = this.NUM_toString(true, this.formValidate.definitions);
+      let data = JSON.parse(JSON.stringify(this.formValidate));
+      data.definitions = text;
+
+      if (this.formValidate.enableStatus == 1) {
+        data.enableStatus = true;
+      } else {
+        data.enableStatus = false;
+      }
+      let _definitions = this.formValidate.definitions.length;
+
+      if (vendorType == 1) {
+        let dataText = [];
+        for (let i = 0; i < _definitions; i++) {
+          dataText.push(i + 1);
+        }
+        data.templateParameter = dataText.join(",");
+      } else if (vendorType == 2) {
+        data.definitions = "";
+        data.templateParameter = "";
+      } else {
+        let dataText = [];
+        for (let i = 0; i < _definitions; i++) {
+          dataText.push(i);
+        }
+        data.templateParameter = dataText.join(",");
+      }
+
+      data.businessType = this.getSubstring();
+      return data;
+    },
+
     getnumMer() {
       // JSON.parse(JSON.stringify(this.numMer))
       this.numMerr = Number(this.numMer);
@@ -214,14 +267,6 @@ export default {
       console.log("关闭窗口");
       this.userForm = false;
     },
-
-    /*
-    true  
-    @prams :   Arrey    返回字符串
-
-    false
-    @prams :   String    返回数组
-    */
     NUM_toString(buler, Arrey) {
       if (buler) {
         let arr = [];
@@ -239,7 +284,8 @@ export default {
     },
     async submit() {
       console.log(this.formValidate.definitions);
-      return
+      console.log(this.formValidate.definitions.length);
+      console.log(this.numMer, "s");
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
@@ -254,23 +300,7 @@ export default {
       } else {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
-            let text = this.NUM_toString(true, this.formValidate.definitions);
-            let data = JSON.parse(JSON.stringify(this.formValidate));
-            data.definitions = text;
-            if (this.formValidate.enableStatus == 1) {
-              data.enableStatus = true;
-            } else {
-              data.enableStatus = false;
-            }
-            let _definitions = this.formValidate.definitions.length;
-            if (this.formValidate.vendorType == 1) {
-              let dataText = [];
-              for (let i = 0; i < _definitions; i++) {
-                dataText.push(i + 1);
-              }
-              data.templateParameter = dataText.join(",");
-            }
-            data.businessType = this.getSubstring();
+            let data = this.threeTakeOne(this.formValidate.vendorType);
             addTemplate(data)
               .then((res) => {
                 this.$Message.success("增加成功!");

@@ -119,6 +119,9 @@ export default {
     },
   },
   methods: {
+    close() {
+      this.userForm = false;
+    },
     removeUpload() {
       if (this.userForm) {
         if (this.updataHtml.length == 1) {
@@ -164,7 +167,6 @@ export default {
     getnumMer() {
       this.numMerr = Number(this.numMer);
     },
-    
 
     submit() {
       this.$refs.formValidate.validate((valid) => {

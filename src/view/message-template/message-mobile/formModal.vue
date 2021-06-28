@@ -287,7 +287,6 @@ export default {
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
-            
             let data = this.threeTakeOne(this.formValidate.vendorType);
             let putData = {
               id: this.putId,

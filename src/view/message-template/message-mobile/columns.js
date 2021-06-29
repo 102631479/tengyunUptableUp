@@ -15,7 +15,6 @@ let columns = [{
   },
   {
     title: "短信商",
-    // key: "vendorType",
     align: "center",
     width: "150",
     render: (h, params) => {
@@ -46,7 +45,6 @@ let columns = [{
   },
   {
     title: "变量备注",
-    // key: "definitions",
     align: "center",
     render: (h, params) => {
       if (params.row.vendorType == 2) {
@@ -81,7 +79,6 @@ let columns = [{
   },
   {
     title: "类型",
-    // key: "templateType",
     align: "center",
     render: (h, params) => {
       if (params.row.templateType == 1) {

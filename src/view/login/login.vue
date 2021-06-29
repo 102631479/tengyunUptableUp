@@ -104,6 +104,7 @@ export default {
   },
   created() {
     if (this.$router.history.current.query) {
+      console.log(this.$router.history.current.query,'有值跳转');
     }
   },
   methods: {

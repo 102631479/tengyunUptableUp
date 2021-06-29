@@ -278,6 +278,15 @@ export default {
         return data;
       }
     },
+    Array_TonNum(arr, num) {
+      let dataArr = JSON.parse(JSON.stringify(arr));
+      let newArr = [];
+      for (let i = 0; i < Number(num); i++) {
+        console.log(i);
+        newArr.push(dataArr[i]);
+      }
+      return newArr;
+    },
     getSubstring() {
       var str = new Date().getTime().toString();
       let data = str.substring(str.length - 6);
@@ -287,6 +296,12 @@ export default {
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
+            this.formValidate.definitions = this.Array_TonNum(
+              this.formValidate.definitions,
+              this.numMer
+            );
+            // console.log(dataArr, "definitions");
+            // return;
             let data = this.threeTakeOne(this.formValidate.vendorType);
             let putData = {
               id: this.putId,
@@ -297,7 +312,7 @@ export default {
               remark: data.remark,
               definitions: data.definitions,
             };
-            console.log(putData,'编辑对象');
+            console.log(putData, "编辑对象");
             putTemplate(putData)
               .then((res) => {
                 this.$Message.success("编辑成功!");

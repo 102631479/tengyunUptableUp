@@ -97,10 +97,10 @@ export const getTemplateData = params => {
 }
 
 
-// 站内信修改
+// dele
 export const deleTemplate = data => {
   return axios.request({
-    url: platform.OPERATE + "/message-template/template/" + data,
+    url: platform.OPERATE + "/message-template/" + data,
     method: "delete",
   })
 }

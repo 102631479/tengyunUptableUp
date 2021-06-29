@@ -142,6 +142,7 @@ let columns = [{
                 remark: "",
                 templateType: "",
               }
+
               _this.$refs.formModal.formValidate.international = '0'
               _this.$refs.formModal.putId = params.row.id
               for (let item in textObj) {
@@ -159,6 +160,7 @@ let columns = [{
                 if (data.length == 0 || data == "") {
                   _this.$refs.formModal.numMerr = 1
                 } else {
+                  _this.$refs.formModal.numMer= data.length.toString();
                   _this.$refs.formModal.numMerr = Number(data.length);
                 }
                 let arrerData = []

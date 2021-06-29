@@ -152,7 +152,7 @@ export default {
       templateDescribeNum: Number(200),
       animal: "",
       editorOption: {},
-      numMer: "1",
+      numMer:Number('1') ,
       numMerr: 1,
       edit: false,
       loading: true,
@@ -300,8 +300,6 @@ export default {
               this.formValidate.definitions,
               this.numMer
             );
-            // console.log(dataArr, "definitions");
-            // return;
             let data = this.threeTakeOne(this.formValidate.vendorType);
             let putData = {
               id: this.putId,

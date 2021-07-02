@@ -1,61 +1,66 @@
 <template>
-  <div class="login-box">
-    <div
-      v-if="backLogo"
-      class="login-left"
-      :style="{ 'background-image': 'url(' + backLogo + ')' }"
-    ></div>
-    <div v-else class="boxLeft"><div class="logo"></div></div>
-    <div class="login-center">
-      <div class="dr">
-        <span class="tit">{{ title }}</span>
-        <div class="form-con">
-          <div class="zhangHao">
-            <label for>账号</label>
-            <input
-              placeholder="请输入账号"
-              autocomplete="off"
-              type="text"
-              class="inputText"
-              v-model="loginForm.userName"
-            />
-          </div>
-
-          <div class="passWord">
-            <label for>密码</label>
-            <input
-              placeholder="请输入密码"
-              type="password"
-              class="inputText"
-              v-model="loginForm.password"
-              @keyup.enter="submitBtn"
-            />
-          </div>
-          <button class="submit" @click="submitBtn">登 录</button>
-        </div>
-      </div>
-      <!-- <div class="beian">Copyright © 2002-2020 北京华夏票联 版权所有</div> -->
+  <div>
+    <div>
+      <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
+    <div class="login-box" v-show="!spinShow">
+      <div
+        v-if="backLogo"
+        class="login-left"
+        :style="{ 'background-image': 'url(' + backLogo + ')' }"
+      ></div>
+      <div v-else class="boxLeft"><div class="logo"></div></div>
+      <div class="login-center">
+        <div class="dr">
+          <span class="tit">{{ title }}</span>
+          <div class="form-con">
+            <div class="zhangHao">
+              <label for>账号</label>
+              <input
+                placeholder="请输入账号"
+                autocomplete="off"
+                type="text"
+                class="inputText"
+                v-model="loginForm.userName"
+              />
+            </div>
 
-    <Modal v-model="modal" title="身份选择" @on-ok="modalOk">
-      <RadioGroup v-model="identitiesVal">
-        <Radio
-          v-for="item in identities"
-          :key="item.value"
-          :label="item.value"
-          :false-value="1"
-          >{{ identitiesMap.get(item.value) }}</Radio
-        >
-      </RadioGroup>
-    </Modal>
+            <div class="passWord">
+              <label for>密码</label>
+              <input
+                placeholder="请输入密码"
+                type="password"
+                class="inputText"
+                v-model="loginForm.password"
+                @keyup.enter="submitBtn"
+              />
+            </div>
+            <button class="submit" @click="submitBtn">登 录</button>
+          </div>
+        </div>
+        <!-- <div class="beian">Copyright © 2002-2020 北京华夏票联 版权所有</div> -->
+      </div>
 
-    <verify
-      ref="verify"
-      @success="success"
-      :mode="'pop'"
-      :captchaType="'blockPuzzle'"
-      :imgSize="{ width: '330px', height: '155px' }"
-    />
+      <Modal v-model="modal" title="身份选择" @on-ok="modalOk">
+        <RadioGroup v-model="identitiesVal">
+          <Radio
+            v-for="item in identities"
+            :key="item.value"
+            :label="item.value"
+            :false-value="1"
+            >{{ identitiesMap.get(item.value) }}</Radio
+          >
+        </RadioGroup>
+      </Modal>
+
+      <verify
+        ref="verify"
+        @success="success"
+        :mode="'pop'"
+        :captchaType="'blockPuzzle'"
+        :imgSize="{ width: '330px', height: '155px' }"
+      />
+    </div>
   </div>
 </template>
 
@@ -71,6 +76,7 @@ export default {
   components: { verify },
   data() {
     return {
+      spinShow: true,
       title: "",
       backLogo: "",
       modal: false,
@@ -103,11 +109,25 @@ export default {
     });
   },
   created() {
-    if (this.$router.history.current.query) {
-      console.log(this.$router.history.current.query,'有值跳转');
+    if (this.$router.history.current.query.account) {
+      this.getclear();
+      this.spinShow = true;
+      let data = {
+        userName: this.$router.history.current.query.account,
+        password: this.$router.history.current.query.password,
+      };
+      this.gologin(data);
+    } else {
+      this.getclear();
+      this.spinShow = false;
     }
   },
   methods: {
+    getclear() {
+      this.$store.commit("setToken", "");
+      this.$store.commit("setAccess", []);
+      this.$store.commit("setCertInfo", "");
+    },
     gmcryptSm4(password) {
       let sm4Config = {
         key: "gph2i2xxfln0w9sj",
@@ -133,12 +153,9 @@ export default {
       // this.$refs.verify.show();
       this.success();
     },
-
-    async success() {
-      let data = JSON.parse(JSON.stringify(this.loginForm));
-      data.password = this.gmcryptSm4(data.password);
+    gologin(data) {
       this.loading = true;
-      await login(data)
+      login(data)
         .then(async (d) => {
           this.$store.commit("setTagNavList", []);
           if (process.env.NODE_ENV === "development") {
@@ -178,6 +195,11 @@ export default {
         // console.log(d.data.userName);
       });
       this.loading = false;
+    },
+    async success() {
+      let data = JSON.parse(JSON.stringify(this.loginForm));
+      data.password = this.gmcryptSm4(data.password);
+      await this.gologin(data);
     },
 
     modalOk() {

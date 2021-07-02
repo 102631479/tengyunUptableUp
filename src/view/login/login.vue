@@ -3,7 +3,7 @@
     <div>
       <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
-    <div class="login-box" v-show="!spinShow">
+    <div class="login-box" v-show="spinShow">
       <div
         v-if="backLogo"
         class="login-left"
@@ -76,7 +76,7 @@ export default {
   components: { verify },
   data() {
     return {
-      spinShow: true,
+      spinShow: false,
       title: "",
       backLogo: "",
       modal: false,
@@ -185,7 +185,10 @@ export default {
             this.modal = true;
           });
         })
-        .catch((err) => this.$Message.error(err.msg));
+        .catch((err) => {
+          this.$Message.error(err.msg);
+          this.spinShow = false;
+        });
       /* 获取用户信息 */
       getUserInfo().then((d) => {
         this.$store.commit("setAvatar", avatar);

@@ -3,7 +3,7 @@
     <div>
       <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
-    <div class="login-box" v-show="spinShow">
+    <div class="login-box" v-show="!spinShow">
       <div
         v-if="backLogo"
         class="login-left"

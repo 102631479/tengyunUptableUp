@@ -3,7 +3,7 @@
     <!-- <div class="search">
       <searchFrom ref="searchFrom"></searchFrom>
     </div> -->
-    <div class="title">站内信模板</div>
+    <div class="title">站内信ss模板</div>
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
@@ -22,10 +22,7 @@
               placeholder="请输入模板名称"
               search
               enter-button
-              @on-search="
-                init();
-                ('limit.currentPage=1');
-              "
+              @on-search="sercher"
             />
           </div>
         </div>
@@ -38,6 +35,7 @@
         :loading="loading"
       ></Table>
       <Page
+        v-if="pageshow"
         class="t-center mt-10"
         :page-size="info['limit.pageSize']"
         :total="totals"
@@ -71,6 +69,7 @@ export default {
   },
   data() {
     return {
+      pageshow: true,
       totals: 0,
       // 请求配置
       info: {
@@ -222,7 +221,16 @@ export default {
     this.init();
   },
   methods: {
-    async init() {
+    sercher() {
+      this.pageshow = false;
+      this.info["limit.currentPage"] = 1;
+      this.init();
+      ("limit.currentPage=1");
+      this.$nextTick(() => {
+        this.pageshow = true;
+      });
+    },
+    async init(data) {
       this.loading = true;
       let _this = this;
       await getStandinside(this.info).then((d) => {
@@ -237,13 +245,13 @@ export default {
     },
 
     changePage(num) {
-      console.log(num);
+      // console.log(num);
       this.info["limit.currentPage"] = num;
       this.init();
     },
 
     changePageSize(size) {
-      console.log(size);
+      // console.log(size);
       this.info["limit.pageSize"] = size;
       this.init();
     },

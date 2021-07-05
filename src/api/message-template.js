@@ -127,11 +127,12 @@ export const putTemplate = data => {
 // 邮件模板请求页面数据 
 export const getMail = params => {
   return axios.request({
-    url: platform.OPERATE + "/notify-template/page",
+    url: platform.OPERATE + "/mail-template/page",
     method: "get",
     params
   })
 }
+
 
 //邮件模板添加
 export const addtMail = data => {
@@ -141,6 +142,7 @@ export const addtMail = data => {
     data
   })
 }
+
 
 //邮件模板修改
 export const puttMail = data => {

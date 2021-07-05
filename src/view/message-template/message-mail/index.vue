@@ -82,13 +82,13 @@ export default {
         { title: "序号", align: "center", type: "index", width: "100" },
         {
           title: "模板名称",
-          key: "title",
+          key: "subject",
           align: "center",
           width: "150",
         },
         {
           title: "邮件标题",
-          key: "templateName",
+          key: "subject",
           align: "center",
           width: "200",
         },

@@ -157,7 +157,7 @@ let columns = [{
                 if (data.length == 0 || data == "") {
                   _this.$refs.formModal.numMerr = 1
                 } else {
-                  _this.$refs.formModal.numMer= data.length.toString();
+                  _this.$refs.formModal.numMer = data.length.toString();
                   _this.$refs.formModal.numMerr = Number(data.length);
                 }
                 let arrerData = []
@@ -207,7 +207,7 @@ let columns = [{
                   deleTemplate(params.row.id)
                     .then((res) => {
                       _this.$Message.success(
-                        params.row.permissionName + " 已删除"
+                        "删除成功"
                       );
                       _this.init();
                     })

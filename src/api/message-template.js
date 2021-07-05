@@ -75,7 +75,7 @@ export const puttStandinside = data => {
   })
 }
 
-// 站内信修改
+// 站内信删除
 export const deletStandinside = data => {
   return axios.request({
     url: platform.OPERATE + "/notify-template/" + data,
@@ -119,5 +119,43 @@ export const putTemplate = data => {
     url: platform.OPERATE + "/message-template",
     method: "put",
     data
+  })
+}
+
+
+// 邮件模板
+// 邮件模板请求页面数据 
+export const getMail = params => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template/page",
+    method: "get",
+    params
+  })
+}
+
+//邮件模板添加
+export const addtMail = data => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template",
+    method: "post",
+    data
+  })
+}
+
+//邮件模板修改
+export const puttMail = data => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template",
+    method: "put",
+    data
+  })
+}
+
+//邮件模板删除
+export const deletMail = data => {
+  return axios.request({
+    url: platform.OPERATE + "/notify-template/" + data,
+    method: "delete",
+
   })
 }

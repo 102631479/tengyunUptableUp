@@ -12,6 +12,7 @@
               >新增模板</Button
             >
           </div>
+
           <div>
             <Input
               type="text"
@@ -21,10 +22,7 @@
               placeholder="请输入模板名称"
               search
               enter-button
-              @on-search="
-                init();
-                ('limit.currentPage=1');
-              "
+              @on-search="sercher"
             />
           </div>
         </div>
@@ -37,8 +35,9 @@
         :loading="loading"
       ></Table>
       <Page
+        v-if="pageshow"
         class="t-center mt-10"
-        :page-size="info.limit.pageSize"
+        :page-size="info['limit.pageSize']"
         :total="totals"
         @on-page-size-change="changePageSize"
         @on-change="changePage"
@@ -51,59 +50,55 @@
     <formModal ref="formModal" @success="init" />
     <!-- 详情 -->
     <detailsPage ref="detailsPage" @success="init" />
+
     <!-- <formModalt ref="formModalt" @success="init" /> -->
   </div>
 </template>
 
 <script>
+// import { getMail } from "@/api/message-Mail";
+import { getMail, deletMail } from "@/api/message-template"; //调用编辑器
+import Bus from "@/bus";
+
 import detailsPage from "./detailsPage";
 import formModal from "./formModal";
 export default {
   components: {
     detailsPage,
     formModal,
-    // import formModalt from "./formModalt";
   },
   data() {
     return {
-      totals: 100,
+      pageshow: true,
+      totals: 0,
       // 请求配置
       info: {
-        userName: "",
-        permissionName: "",
-        limit: {
-          currentPage: 1,
-          pageSize: 10,
-        },
+        "limit.currentPage": 1,
+        "limit.pageSize": 10,
       },
-
       loading: false,
       // 表头配置
       columns: [
         { title: "序号", align: "center", type: "index", width: "100" },
         {
           title: "模板名称",
-          key: "permissionName",
+          key: "title",
           align: "center",
           width: "150",
         },
-        { title: "邮件标题", key: "memo", align: "center", width: "200" },
-        { title: "邮件内容", key: "memo", align: "center" },
         {
-          title: "变量释义",
-          key: "status",
+          title: "邮件标题",
+          key: "templateName",
           align: "center",
           width: "200",
-          render: (h, params) => {
-            this.status = params.row.status;
-            if (params.row.status == 2) {
-              return h("span", "启用");
-            } else {
-              return h("span", "禁用");
-            }
-          },
         },
-        { title: "类型", key: "memo", align: "center", width: "100" },
+        { title: "邮件内容", key: "templateContent", align: "center" },
+        {
+          title: "模板描述",
+          key: "templateDescribe",
+          align: "center",
+          width: "100",
+        },
         {
           title: "操作",
           key: "userCode",
@@ -124,15 +119,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$Message.success("详情");
-                    // console.log("d", params.row.id);
-                    // getDetails(params.row.id).then((d) => {
-                    //   console.log("d", d);
-                    //   this.details = d.data.data;
-                    //   console.log("d", this.details);
-                    // });
+                    // this.$Message.success("详情");
                     this.$refs.detailsPage.userForm = true;
-                    // this.$refs.formDetails.edit = true;
+                    this.$refs.detailsPage.htmlData =
+                      params.row.templateContent;
                   },
                 },
               },
@@ -152,13 +142,13 @@ export default {
                 },
                 on: {
                   click: () => {
-                    // console.log(params.row.permissionName);
-                    // console.log(this.$refs.formValidate);
-                    // this.$Message.success("编辑");
                     this.$refs.formModal.edit = true;
                     this.$refs.formModal.userForm = true;
-                    this.$refs.formModal.formValidate.name =
-                      params.row.permissionName;
+                    this.$refs.formModal.editid = params.row.id;
+                    for (let item in this.$refs.formModal.formValidate) {
+                      this.$refs.formModal.formValidate[item] =
+                        params.row[item];
+                    }
                   },
                 },
               },
@@ -182,9 +172,14 @@ export default {
                       title: "提示",
                       content: "确认删除？",
                       onOk: () => {
-                        this.$Message.success(
-                          params.row.permissionName + " 已删除"
-                        );
+                        deletMail(params.row.id)
+                          .then((d) => {
+                            this.init();
+                            this.$Message.success(
+                              params.row.templateName + " 已删除"
+                            );
+                          })
+                          .catch(() => this.$Message.error("删除失败"));
                       },
                     });
                   },
@@ -195,97 +190,49 @@ export default {
           ],
         },
       ],
-
-      tabData: [
-        {
-          id: "1",
-          permissionName: "邮件模板",
-          memo: "11",
-        },
-
-        {
-          id: "1",
-          permissionName: "邮件模板",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮件11模板",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮件模板",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮件模板",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮件板",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮件模板",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮件模板",
-          memo: "11",
-        },
-        {
-          id: "1",
-          permissionName: "邮件模板",
-          memo: "11",
-        }
-     
-      ],
+      tabData: [],
     };
   },
   created() {
+    Bus.$on("message-Mail-add", (data) => {
+      this.init();
+    });
     this.init();
   },
   methods: {
-    /**
-     * 初始化数据
-     */
-    async init() {
-      // await getAuthorityList(this.info).then(d => {
-      //   this.tabData = d.data.list;
-      //   this.total = d.data.pagination.total;
-      // });
-      this.totals = this.tabData.length;
+    sercher() {
+      this.pageshow = false;
+      this.info["limit.currentPage"] = 1;
+      this.init();
+      ("limit.currentPage=1");
+      this.$nextTick(() => {
+        this.pageshow = true;
+      });
+    },
+    async init(data) {
       this.loading = true;
+      let _this = this;
+      await getMail(this.info).then((d) => {
+        _this.tabData = d.data.list;
+        _this.totals = Number(d.data.pagination.total);
+      });
       this.loading = false;
-      // this.$Message.success(
-      //   this.info.userName == "" ? "没有输入内容" : this.info.userName
-      // );
     },
     openadd() {
       this.$refs.formModal.edit = false;
       this.$refs.formModal.userForm = true;
     },
-    /**
-     * 分页
-     */
+
     changePage(num) {
-      this.info.limit.currentPage = num;
+      // console.log(num);
+      this.info["limit.currentPage"] = num;
+      this.init();
     },
-    /**
-     * 切换每页大小
-     */
+
     changePageSize(size) {
-      this.info.limit.pageSize = size;
+      // console.log(size);
+      this.info["limit.pageSize"] = size;
+      this.init();
     },
   },
 };

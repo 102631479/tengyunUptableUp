@@ -57,7 +57,7 @@ export default {
       form: {
         receiveId: "1",
         noticeType: "1",
-        businessType: "1",
+        // businessType: "1",
         messageType: "1",
         isDelete: "1",
         sendId: this.$store.state.user.userId,

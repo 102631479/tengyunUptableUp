@@ -3,7 +3,7 @@
     <!-- <div class="search">
       <searchFrom ref="searchFrom"></searchFrom>
     </div> -->
-    <div class="title">站内信ss模板</div>
+    <div class="title">站内信模板</div>
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
@@ -214,10 +214,12 @@ export default {
       tabData: [],
     };
   },
-  created() {
+  mounted() {
     Bus.$on("message-Standinside-add", (data) => {
       this.init();
     });
+  },
+  created() {
     this.init();
   },
   methods: {

@@ -146,6 +146,7 @@ export default {
         this.$refs.formValidate.validate((valid) => {
           if (valid) {
             _this.formValidate.id = _this.editid;
+            _this.formValidate.isDelete = 1;
             puttMail(_this.formValidate)
               .then((res) => {
                 delete _this.formValidate.id;
@@ -164,12 +165,10 @@ export default {
         });
       } else {
         this.$refs.formValidate.validate((valid) => {
-          console.log(valid);
           if (valid) {
             _this.formValidate.businessType = this.getSubstring();
             addtMail(_this.formValidate)
               .then((res) => {
-                console.log(res, "ssssss");
                 this.$Message.success("增加提交成功!");
                 this.userForm = false;
                 this.$refs.formValidate.resetFields();

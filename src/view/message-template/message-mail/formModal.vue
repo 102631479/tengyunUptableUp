@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import config from "@/config";
+
 import { addtMail, puttMail } from "@/api/message-template";
 import Bus from "@/bus";
 import { quillEditor } from "vue-quill-editor"; //调用编辑器

@@ -58,7 +58,6 @@
 
 <script>
 import config from "@/config";
-
 import Bus from "@/bus";
 import option from "./options";
 import rule from "./rule";

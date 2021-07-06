@@ -20,7 +20,6 @@ export const getData = params => {
 
 
 // 添加
-
 export const addNotice = data => {
   return axios.request({
     url: platform.OPERATE + '/sys-notice',
@@ -29,16 +28,14 @@ export const addNotice = data => {
   })
 }
 // 修改
-
 export const updateNotice = data => {
   return axios.request({
-    url: platform.OPERATE + '/update-sys-notice',
+    url: platform.OPERATE + '/sys-notice/update-sys-notice',
     method: "post",
     data
   })
 }
 // 修改
-
 export const delAuthority = data => {
   return axios.request({
     url: platform.OPERATE + '/sys-notice/delete-sys-notice/' + data,

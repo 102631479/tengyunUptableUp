@@ -2,7 +2,7 @@
   <div>
     <Modal
       v-model="userForm"
-      :title="edit ? '编辑用户' : '新增用户'"
+      :title="edit ? '编辑模板' : '新增模板'"
       width="680px"
     >
       <Form
@@ -17,34 +17,27 @@
             v-model="formValidate.templateName"
           />
         </FormItem>
-        <FormItem label="消息标题：" prop="title">
-          <Input placeholder="输入消息标题" v-model="formValidate.title" />
+        <FormItem label="邮件标题：" prop="subject">
+          <Input placeholder="输入消息标题" v-model="formValidate.subject" />
         </FormItem>
-        <FormItem label="模板内容：" prop="templateContent">
+        <FormItem label="邮件内容：" prop="content">
           <div class="ditor-editor">
             <quill-editor
               @blur="onEditorBlur"
               @focus="onEditorFocus($event)"
               @change="onEditorChange($event)"
               :options="editorOption"
-              v-model="formValidate.templateContent"
+              v-model="formValidate.content"
               ref="myQuillEditor"
             ></quill-editor>
           </div>
         </FormItem>
-        <!-- <FormItem label="类型：" prop="relevanceServe">
-          <Select placeholder="选择类型" v-model="formValidate.relevanceServe">
-            <Option value="2">审核消息</Option>
-            <Option value="3">订单消息</Option>
-            <Option value="4">财务消息</Option>
-          </Select>
-        </FormItem> -->
-        <FormItem label="模板描述：" prop="templateDescribe">
+        <FormItem label="描述：" prop="remarks">
           <Input
             :maxlength="templateDescribeNum"
-            placeholder="输入模板描述"
+            placeholder="输入邮件描述"
             type="textarea"
-            v-model="formValidate.templateDescribe"
+            v-model="formValidate.remarks"
             show-word-limit
           />
         </FormItem>
@@ -87,25 +80,24 @@ export default {
       rule, // 表单配置
       option, // 弹框表单配置
       formValidate: {
+        businessType: "",
         templateName: "",
-        title: "",
-        templateContent: "",
-        // relevanceServe: "",
-        templateDescribe: "",
-        state: "1",
+        subject: "",
+        content: "",
+        remarks: "",
       },
       ruleValidate: {
         templateName: [
           { required: true, message: "请输入模板名称", trigger: "blur" },
         ],
-        title: [{ required: true, message: "请输入消息标题", trigger: "blur" }],
+        subject: [
+          { required: true, message: "请输入消息标题", trigger: "blur" },
+        ],
         templateContent: [
           { required: true, message: "请输入模板内容", trigger: "blur" },
         ],
-        // relevanceServe: [
-        //   { required: true, message: "请选择类型", trigger: "blur" },
-        // ],
-        templateDescribe: [
+
+        remarks: [
           { required: false, message: "请输入模板描述", trigger: "blur" },
         ],
       },
@@ -122,9 +114,14 @@ export default {
     },
   },
   methods: {
+    getSubstring() {
+      var str = new Date().getTime().toString();
+      let data = str.substring(str.length - 6);
+      return data;
+    },
     onEditorBlur(e) {}, // 失去焦点事件
     onEditorFocus(d) {
-      this.$refs.myQuillEditor._options.placeholder = "sss";
+      // this.$refs.myQuillEditor._options.placeholder = "sss";
       console.log(d, "获得焦点事件");
     }, // 获得焦点事件
     onEditorChange(d) {
@@ -169,6 +166,7 @@ export default {
         this.$refs.formValidate.validate((valid) => {
           console.log(valid);
           if (valid) {
+            _this.formValidate.businessType = this.getSubstring();
             addtMail(_this.formValidate)
               .then((res) => {
                 console.log(res, "ssssss");

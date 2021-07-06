@@ -137,7 +137,7 @@ export const getMail = params => {
 //邮件模板添加
 export const addtMail = data => {
   return axios.request({
-    url: platform.OPERATE + "/notify-template",
+    url: platform.OPERATE + "/mail-template",
     method: "post",
     data
   })
@@ -147,7 +147,7 @@ export const addtMail = data => {
 //邮件模板修改
 export const puttMail = data => {
   return axios.request({
-    url: platform.OPERATE + "/notify-template",
+    url: platform.OPERATE + "/mail-template",
     method: "put",
     data
   })
@@ -156,7 +156,7 @@ export const puttMail = data => {
 //邮件模板删除
 export const deletMail = data => {
   return axios.request({
-    url: platform.OPERATE + "/notify-template/" + data,
+    url: platform.OPERATE + "/mail-template/" + data,
     method: "delete",
 
   })

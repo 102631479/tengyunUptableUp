@@ -82,7 +82,7 @@ export default {
         { title: "序号", align: "center", type: "index", width: "100" },
         {
           title: "模板名称",
-          key: "subject",
+          key: "templateName",
           align: "center",
           width: "150",
         },
@@ -92,7 +92,7 @@ export default {
           align: "center",
           width: "200",
         },
-        { title: "邮件内容", key: "templateContent", align: "center" },
+        { title: "邮件内容", key: "contents", align: "center" },
         {
           title: "模板描述",
           key: "templateDescribe",
@@ -121,8 +121,7 @@ export default {
                   click: () => {
                     // this.$Message.success("详情");
                     this.$refs.detailsPage.userForm = true;
-                    this.$refs.detailsPage.htmlData =
-                      params.row.templateContent;
+                    this.$refs.detailsPage.htmlData = params.row.contents;
                   },
                 },
               },
@@ -146,6 +145,11 @@ export default {
                     this.$refs.formModal.userForm = true;
                     this.$refs.formModal.editid = params.row.id;
                     for (let item in this.$refs.formModal.formValidate) {
+                      if (item == "contents") {
+                        this.$refs.formModal.formValidate.content =
+                          params.row.contents;
+                        break;
+                      }
                       this.$refs.formModal.formValidate[item] =
                         params.row[item];
                     }

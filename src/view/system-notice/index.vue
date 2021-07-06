@@ -74,7 +74,7 @@ export default {
       columns: [
         { title: "ID", key: "id", align: "center" },
         { title: "公告标题", key: "title", align: "center" },
-        { title: "公告内容", key: "noticeContent", align: "center" },
+        { title: "公告内容", key: "noticeContents", align: "center" },
         { title: "创建人", key: "sendName", align: "center" },
         { title: "创建时间", key: "dataCreateTime", align: "center" },
         {

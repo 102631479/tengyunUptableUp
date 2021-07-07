@@ -246,13 +246,11 @@ export default {
     },
 
     changePage(num) {
-      // console.log(num);
       this.info["limit.currentPage"] = num;
       this.init();
     },
 
     changePageSize(size) {
-      // console.log(size);
       this.info["limit.pageSize"] = size;
       this.init();
     },

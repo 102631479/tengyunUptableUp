@@ -192,11 +192,11 @@ export default {
     },
     onEditorBlur(e) {}, // 失去焦点事件
     onEditorFocus(d) {
-      this.$refs.myQuillEditor._options.placeholder = "sss";
-      console.log(d, "获得焦点事件");
+      // this.$refs.myQuillEditor._options.placeholder = "sss";
+      // console.log(d, "获得焦点事件");
     }, // 获得焦点事件
     onEditorChange(d) {
-      console.log(d, "内容改变事件");
+      // console.log(d, "内容改变事件");
     }, //
     // false 编辑  true 增加
     // 打开窗口分辨新增还是编辑

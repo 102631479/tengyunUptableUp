@@ -21,72 +21,71 @@
 </template>
 
 <script>
-import option from "./options";
-import rule from "./rule";
-import { passAndAuth } from "@/api/applyMgr";
+import option from './options'
+import rule from './rule'
+import { passAndAuth } from '@/api/applyMgr'
 
 export default {
-  data() {
+  data () {
     return {
       edit: false,
-      uid: "",
+      uid: '',
       loading: true,
       userForm: false,
       formData: {},
       rule, // 表单配置
-      option, // 弹框表单配置
-    };
+      option // 弹框表单配置
+    }
   },
   watch: {
-    userForm(val) {
+    userForm (val) {
       if (!val) {
-        this.formData.resetFields();
-        this.formData.removeField("id");
-        this.formData.removeField("_rowKey");
-        this.formData.removeField("_index");
-        this.formData.removeField("dataVersion");
-        this.formData.removeField("dataUpdateTime");
-        this.formData.removeField("dataCreateTime");
-        this.formData.removeField("dataVersion");
+        this.formData.resetFields()
+        this.formData.removeField('id')
+        this.formData.removeField('_rowKey')
+        this.formData.removeField('_index')
+        this.formData.removeField('dataVersion')
+        this.formData.removeField('dataUpdateTime')
+        this.formData.removeField('dataCreateTime')
+        this.formData.removeField('dataVersion')
       }
-    },
+    }
   },
   methods: {
-    async submit() {
+    async submit () {
       this.formData.submit(
         async (data) => {
           if (this.edit) {
             await editUser(data)
               .then((d) => {
-                this.$Message.success("编辑成功");
-                this.$emit("success");
+                this.$Message.success('编辑成功')
+                this.$emit('success')
               })
-              .catch((err) => this.$Message.error("编辑失败"));
+              .catch((err) => this.$Message.error('编辑失败'))
           } else {
             await passAndAuth({
               ...data,
               expireDateTime: data.expireDateTime[1],
-              id: this.uid,
+              id: this.uid
             })
               .then((d) => {
-                this.$Message.success("提交成功!");
-                this.$emit("success");
+                this.$Message.success('提交成功!')
+                this.$emit('success')
               })
               .catch((e) => {
-                this.$Message.error(e.message);
-              });
+                this.$Message.error(e.message)
+              })
           }
-          this.userForm = false;
+          this.userForm = false
         },
         () => {
-          this.loading = false;
+          this.loading = false
           this.$nextTick(() => {
-            this.loading = true;
-          });
+            this.loading = true
+          })
         }
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>
- 

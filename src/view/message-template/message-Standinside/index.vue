@@ -140,7 +140,6 @@ export default {
                 },
                 on: {
                   click: () => {
-                    // this.$Message.success("详情");
                     this.$refs.detailsPage.userForm = true;
                     this.$refs.detailsPage.htmlData =
                       params.row.templateContent;

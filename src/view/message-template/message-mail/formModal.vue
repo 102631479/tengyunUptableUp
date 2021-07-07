@@ -30,6 +30,21 @@
               v-model="formValidate.content"
               ref="myQuillEditor"
             ></quill-editor>
+            <div style="display: none">
+              <upload
+                name="file"
+                listType="picture-card"
+                class="avatar-uploader"
+                :showUploadList="false"
+                :on-success="handleChange"
+                @change="handleChange"
+                :action="actionUrl"
+              >
+                <div ref="aUpload">
+                  <div class="ant-upload-text">Upload</div>
+                </div>
+              </upload>
+            </div>
           </div>
         </FormItem>
         <FormItem label="描述：" prop="remarks">
@@ -61,13 +76,24 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import option from "./options";
 import rule from "./rule";
+import { quillRedefine } from "vue-quill-editor-upload";
+
+import ImageResize from "quill-image-resize-module";
+Quill.register("modules/imageResize", ImageResize);
 // import { addUser, editUser } from "@/api/platform-auth";
 export default {
   components: {
     quillEditor,
+    quillRedefine,
   },
   data() {
     return {
+      actionUrl:
+        process.env.NODE_ENV === "development"
+          ? config.baseUrl.dev + "/platform-file/file/img/upload"
+          : process.env.NODE_ENV === "testing"
+          ? config.baseUrl.test + "/platform-file/file/img/upload"
+          : config.baseUrl.pro + "/platform-file/file/img/upload",
       editid: "",
       templateDescribeNum: Number(200),
       editorOption: {
@@ -106,7 +132,43 @@ export default {
     };
   },
 
-  created() {},
+  created() {
+    let vm = this;
+    const modules = {
+      imageResize: {
+        displayStyles: {
+          backgroundColor: "black",
+          border: "none",
+          color: "white",
+        },
+        modules: ["Resize", "DisplaySize", "Toolbar"],
+      },
+      toolbar: {
+        container: [
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote", "code-block"],
+          [{ header: 1 }, { header: 2 }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "sub" }, { script: "super" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          [{ direction: "rtl" }],
+          [{ size: ["small", false, "large", "huge"] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }],
+          ["link", "image"],
+          ["clean"],
+        ],
+        handlers: {
+          image: function (value) {
+            vm.$refs.aUpload.click();
+          },
+        },
+      },
+    };
+    vm.editorOption.modules = modules;
+  },
 
   watch: {
     userForm(val) {
@@ -131,7 +193,13 @@ export default {
     }, //
     // false 编辑  true 增加
     // 打开窗口分辨新增还是编辑
-
+    handleChange(file) {
+      let url = file.data[0].fileAddress;
+      let quill = this.$refs.myQuillEditor.quill;
+      let length = quill.getSelection().index; // 获取当前鼠标焦点位置
+      quill.insertEmbed(length, "image", url); // 插入<img src='url'/>
+      quill.setSelection(length + 1);
+    },
     getnumMer() {
       // JSON.parse(JSON.stringify(this.numMer))
       this.numMerr = Number(this.numMer);
@@ -207,7 +275,7 @@ export default {
 }
 /deep/.ql-toolbar.ql-snow + .ql-container.ql-snow {
   border-top: 0px;
-  height: 150px;
+  height: 400px;
 }
 /deep/.ql-toolbar.ql-snow .ql-formats {
   margin-right: 4px;

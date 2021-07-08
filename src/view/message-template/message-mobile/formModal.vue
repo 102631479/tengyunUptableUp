@@ -83,7 +83,11 @@
         <FormItem label="模板内容" prop="templateContent">
           <Input
             :maxlength="templateDescribeNum"
-            placeholder="变量格式为：{1}，{2} 示例：您正在申请手机注册，验证码为：{1}，5分钟内有效"
+            :placeholder="
+              formValidate.vendorType == '2'
+                ? '变量格式为：${变量}，${变量} 示例：您正在申请手机注册，验证码为：${变量}，5分钟内有效'
+                : '变量格式为：{1}，{2} 示例：您正在申请手机注册，验证码为：{1}，5分钟内有效'
+            "
             type="textarea"
             v-model="formValidate.templateContent"
             show-word-limit
@@ -96,22 +100,28 @@
             v-model="formValidate.templateType"
             placeholder="请选择"
           >
-            <Option value="0">验证码</Option>
-            <Option value="2">营销短信</Option>
+            <Option
+              v-for="item in templateTypeList"
+              :key="item.id"
+              :value="item.id"
+              >{{ item.name }}</Option
+            >
           </Select>
         </FormItem>
 
         <div v-show="!edit">
-          <FormItem label="短信类型：" prop="international">
-            <Select
-              style="width: 380px"
-              v-model="formValidate.international"
-              placeholder="请选择"
-            >
-              <Option value="0">国内短信</Option>
-              <Option value="1">国际/港澳台短信</Option>
-            </Select>
-          </FormItem>
+          <div v-show="formValidate.vendorType != '2'">
+            <FormItem label="短信类型：" prop="international">
+              <Select
+                style="width: 380px"
+                v-model="formValidate.international"
+                placeholder="请选择"
+              >
+                <Option value="0">国内短信</Option>
+                <Option value="1">国际/港澳台短信</Option>
+              </Select>
+            </FormItem>
+          </div>
         </div>
 
         <FormItem label="申请说明：" prop="remark">
@@ -152,7 +162,7 @@ export default {
       templateDescribeNum: Number(200),
       animal: "",
       editorOption: {},
-      numMer:Number('1') ,
+      numMer: Number("1"),
       numMerr: 1,
       edit: false,
       loading: true,
@@ -170,6 +180,7 @@ export default {
         vendorType: "1",
         definitions: [],
       },
+
       ruleValidate: {
         templateName: [
           { required: true, message: "请输入模板名称", trigger: "blur" },
@@ -186,7 +197,7 @@ export default {
         ],
         international: [
           {
-            required: true,
+            required: false,
             message: "请选择短信类型",
             trigger: "blur",
           },
@@ -200,6 +211,41 @@ export default {
 
   created() {},
   computed: {
+    templateTypeList() {
+      if (this.formValidate.vendorType == "2") {
+        let data = [
+          {
+            id: "0",
+            name: "验证码",
+          },
+          {
+            id: "1",
+            name: "短信通知",
+          },
+          {
+            id: "2",
+            name: "推广短信",
+          },
+          {
+            id: "3",
+            name: "国际/港澳台短信",
+          },
+        ];
+        return data;
+      } else {
+        let data = [
+          {
+            id: "0",
+            name: "验证码",
+          },
+          {
+            id: "2",
+            name: "营销短信",
+          },
+        ];
+        return data;
+      }
+    },
     eleDateNew() {
       return JSON.parse(JSON.stringify(this.formValidate.vendorType));
     },
@@ -210,6 +256,7 @@ export default {
         this.$refs.formValidate.resetFields();
       }
     },
+
     eleDateNew(val) {
       if (this.edit) {
         console.log(this.edit ? "编辑" : "新增");

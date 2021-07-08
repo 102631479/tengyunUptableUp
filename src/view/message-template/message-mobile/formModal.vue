@@ -108,7 +108,6 @@
             >
           </Select>
         </FormItem>
-
         <div v-show="!edit">
           <div v-show="formValidate.vendorType != '2'">
             <FormItem label="短信类型：" prop="international">
@@ -123,7 +122,6 @@
             </FormItem>
           </div>
         </div>
-
         <FormItem label="申请说明：" prop="remark">
           <Input
             :maxlength="templateDescribeNum"
@@ -133,7 +131,6 @@
             show-word-limit
           />
         </FormItem>
-
         <FormItem label="状态：" prop="enableStatus">
           <RadioGroup v-model="formValidate.enableStatus">
             <Radio label="1">启用</Radio>
@@ -141,7 +138,6 @@
           </RadioGroup>
         </FormItem>
       </Form>
-
       <div slot="footer">
         <Button type="text" @click="close">取消</Button>
         <Button type="primary" @click="submit">确认</Button>
@@ -151,10 +147,7 @@
 </template>
 
 <script>
-import Bus from "@/bus";
 import { addTemplate, putTemplate } from "@/api/message-template";
-// import option from "./options";
-// import rule from "./rule";
 export default {
   data() {
     return {
@@ -214,34 +207,16 @@ export default {
     templateTypeList() {
       if (this.formValidate.vendorType == "2") {
         let data = [
-          {
-            id: "0",
-            name: "验证码",
-          },
-          {
-            id: "1",
-            name: "短信通知",
-          },
-          {
-            id: "2",
-            name: "推广短信",
-          },
-          {
-            id: "3",
-            name: "国际/港澳台短信",
-          },
+          {id: "0",name: "验证码",},
+          {id: "1",name: "短信通知",},
+          {id: "2",name: "推广短信",},
+          {id: "3",name: "国际/港澳台短信",},
         ];
         return data;
       } else {
         let data = [
-          {
-            id: "0",
-            name: "验证码",
-          },
-          {
-            id: "2",
-            name: "营销短信",
-          },
+          {id: "0",name: "验证码",},
+          {id: "2", name: "营销短信",},
         ];
         return data;
       }
@@ -265,11 +240,8 @@ export default {
     },
   },
   methods: {
-    // false 编辑  true 增加
-    // 打开窗口分辨新增还是编辑
     resolution() {
       if (this.edit) {
-        //增加置空表单元素列表
         this.formValidate = "";
       }
     },
@@ -307,9 +279,7 @@ export default {
     },
 
     getnumMer() {
-      // JSON.parse(JSON.stringify(this.numMer))
       this.numMerr = Number(this.numMer);
-      // this.notShown = Number(this.numMer);
     },
     close() {
       console.log("关闭窗口");

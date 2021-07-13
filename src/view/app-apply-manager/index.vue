@@ -284,11 +284,44 @@ export default {
                     },
                     on: {
                       click: () => {
-                        if (!params.row.state == 1) return;
+                        // console.log()
+                        let data = this.$refs.authModal.formData;
+                        console.log(
+                          params.row.appListId,
+                          "params.row.appListId"
+                        );
+                        data.setValue({
+                          ["expireDateTime"]: params.row.expireDateTime,
+                          ["appListId"]: params.row.appListId,
+                        });
+                        // data.expireDateTime=params.row.expireDateTime
+                        console.log(
+                          data,
+                          "ssssssssssfApi.setValue({[field1]:value1,[field2]:value2})"
+                        );
+                        // this.$refs.authModal.formData.form.appListId = JSON.parse(JSON.stringify(this.$refs.authModal.formData.form.appListId))
+                        if (params.row.state !== 1) {
+                          console.log("更新模板");
+                          console.log(params.row, "params.row");
+                          console.log(params.row.expireDateTime, "到期时间");
+                        }
+
+                        if (params.row.permissionMap) {
+                          console.log(
+                            params.row.permissionMap,
+                            "permissionMap"
+                          );
+                        }
+
                         this.$refs.authModal.userForm = true;
                         this.getAuths(params.row.appListId);
                         this.$refs.authModal.uid = params.row.id;
                         this.getTags(params.row.appListId);
+
+                        console.log(
+                          this.$refs.authModal.formData.form,
+                          "authModal"
+                        );
                       },
                     },
                   },
@@ -340,7 +373,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      if (!params.row.state == 1) return;
+                      // if (!params.row.state == 1) return;
                       this.$refs.authModal.userForm = true;
                       this.getAuths(params.row.appListId);
                       this.$refs.authModal.uid = params.row.id;

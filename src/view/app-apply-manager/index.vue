@@ -265,37 +265,64 @@ export default {
           align: "center",
           minWidth: 200,
           render: (h, params) => {
-            /*
             if (params.row.state !== 1) {
               // return h("span", "--");
-              return[  h(
-                "span",
-                {
-                  style: {
-                    marginLeft: "8px",
-                    marginRight: "8px",
-                    color: "#0084ff",
-                    cursor: "pointer",
-                    display: hasOneOf(
-                      ["operate:application-apply:add-remark"],
-                      this.$store.state.user.access
-                    )
-                      ? "inline-block"
-                      : "none",
-                  },
-                  on: {
-                    click: () => {
-                      // if (!params.row.state == 1) return;
-                      this.showFlag = true;
-                      this.columns_id = params.row.id;
+              return [
+                h(
+                  "span",
+                  {
+                    style: {
+                      marginRight: "8px",
+                      color: "#0084ff",
+                      cursor: "pointer",
+                      display: hasOneOf(
+                        ["operate:application-apply:apply-agree"],
+                        this.$store.state.user.access
+                      )
+                        ? "inline-block"
+                        : "none",
+                    },
+                    on: {
+                      click: () => {
+                        if (!params.row.state == 1) return;
+                        this.$refs.authModal.userForm = true;
+                        this.getAuths(params.row.appListId);
+                        this.$refs.authModal.uid = params.row.id;
+                        this.getTags(params.row.appListId);
+                      },
                     },
                   },
-                },
-                // params.row.state == 1 ? "添加备注" : ""
-                "添加备注"
-              ),]
+                  "更新授权"
+                ),
+                h(
+                  "span",
+                  {
+                    style: {
+                      marginLeft: "8px",
+                      marginRight: "8px",
+                      color: "#0084ff",
+                      cursor: "pointer",
+                      display: hasOneOf(
+                        ["operate:application-apply:add-remark"],
+                        this.$store.state.user.access
+                      )
+                        ? "inline-block"
+                        : "none",
+                    },
+                    on: {
+                      click: () => {
+                        // if (!params.row.state == 1) return;
+                        this.showFlag = true;
+                        this.columns_id = params.row.id;
+                      },
+                    },
+                  },
+                  // params.row.state == 1 ? "添加备注" : ""
+                  "添加备注"
+                ),
+              ];
             }
-            */
+
             return [
               h(
                 "span",
@@ -360,8 +387,7 @@ export default {
                     },
                   },
                 },
-               "拒绝"
-               
+                "拒绝"
               ),
               h(
                 "span",
@@ -389,7 +415,6 @@ export default {
                 // params.row.state == 1 ? "添加备注" : ""
                 "添加备注"
               ),
-          
             ];
           },
         },

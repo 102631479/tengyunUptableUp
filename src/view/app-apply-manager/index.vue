@@ -265,15 +265,42 @@ export default {
           align: "center",
           minWidth: 200,
           render: (h, params) => {
+            /*
             if (params.row.state !== 1) {
-              return h("span", "--");
+              // return h("span", "--");
+              return[  h(
+                "span",
+                {
+                  style: {
+                    marginLeft: "8px",
+                    marginRight: "8px",
+                    color: "#0084ff",
+                    cursor: "pointer",
+                    display: hasOneOf(
+                      ["operate:application-apply:add-remark"],
+                      this.$store.state.user.access
+                    )
+                      ? "inline-block"
+                      : "none",
+                  },
+                  on: {
+                    click: () => {
+                      // if (!params.row.state == 1) return;
+                      this.showFlag = true;
+                      this.columns_id = params.row.id;
+                    },
+                  },
+                },
+                // params.row.state == 1 ? "添加备注" : ""
+                "添加备注"
+              ),]
             }
+            */
             return [
               h(
                 "span",
                 {
                   style: {
-                    width: "30px",
                     marginRight: "8px",
                     color: "#0084ff",
                     cursor: "pointer",
@@ -294,14 +321,12 @@ export default {
                     },
                   },
                 },
-                // params.row.state == 1 ? "同意" : ""
-                "同意"
+                "同意并授权"
               ),
               h(
                 "span",
                 {
                   style: {
-                    width: "30px",
                     marginRight: "8px",
                     marginLeft: "8px",
                     color: "#0084ff",
@@ -335,16 +360,14 @@ export default {
                     },
                   },
                 },
-                // params.row.state == 1 ? "拒绝" : "--"
-                "拒绝"
+               "拒绝"
+               
               ),
               h(
                 "span",
                 {
                   style: {
                     marginLeft: "8px",
-
-                    width: "50px",
                     marginRight: "8px",
                     color: "#0084ff",
                     cursor: "pointer",
@@ -357,7 +380,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      if (!params.row.state == 1) return;
+                      // if (!params.row.state == 1) return;
                       this.showFlag = true;
                       this.columns_id = params.row.id;
                     },
@@ -366,6 +389,7 @@ export default {
                 // params.row.state == 1 ? "添加备注" : ""
                 "添加备注"
               ),
+          
             ];
           },
         },

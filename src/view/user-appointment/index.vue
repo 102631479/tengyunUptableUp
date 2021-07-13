@@ -112,6 +112,8 @@ export default {
       srcUserFormIMg: "",
       total: 0,
       info: {
+        order: "DESC",
+        sort: "dataCreateTime",
         userName: "",
         "limit.currentPage": 1,
         "limit.pageSize": 10,

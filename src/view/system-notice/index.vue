@@ -144,6 +144,8 @@ export default {
       ],
       tabData: [],
       info: {
+        order:"DESC",
+        sort:"dataUpdateTime",
         title: "",
         "limit.currentPage": 1,
         "limit.pageSize": 10,

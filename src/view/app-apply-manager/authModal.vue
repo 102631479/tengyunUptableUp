@@ -55,6 +55,7 @@ export default {
     async submit () {
       this.formData.submit(
         async (data) => {
+          // console.log(data,'data');
           if (this.edit) {
             await editUser(data)
               .then((d) => {
@@ -65,7 +66,7 @@ export default {
           } else {
             await passAndAuth({
               ...data,
-              expireDateTime: data.expireDateTime[1],
+              // expireDateTime: data.expireDateTime[1],
               id: this.uid
             })
               .then((d) => {

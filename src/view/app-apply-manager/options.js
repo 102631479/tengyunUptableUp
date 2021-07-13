@@ -13,7 +13,7 @@ export default {
       "*": {
         col: {
           span: 24,
-          labelWidth: 100
+          labelWidth: 150
   
         },
         validate: [

@@ -19,11 +19,11 @@ export const getInit = data => {
 
 // 获取应用列表
 
-export const getAppList = data => {
+export const getAppList = () => {
   return axios.request({
-    url: platform.OPERATE + "/application-apply/app-all",
-    method: "post",
-    data
+    url: platform.OPERATE + "/application-apply/appl-all",
+    method: "get",
+  
   })
 }
 

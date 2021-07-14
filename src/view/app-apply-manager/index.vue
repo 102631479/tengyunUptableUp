@@ -124,6 +124,7 @@ export default {
   },
   data() {
     return {
+      permissionIdList: [],
       info_agentType: "",
       cityList: [
         {
@@ -285,19 +286,33 @@ export default {
                     },
                     on: {
                       click: async () => {
+                        if (params.row.permissionMap) {
+                          let powerArrey = [];
+                          for (var item in params.row.permissionMap) {
+                            powerArrey.push(item);
+                          }
+                          this.permissionIdList = powerArrey;
+                        }
+
                         this.$refs.authModal.userForm = true;
                         let data = this.$refs.authModal.formData;
                         this.$refs.authModal.edit = false;
                         await this.getAuths(params.row.appListId);
                         await this.getTags(params.row.appListId);
                         this.$refs.authModal.uid = params.row.id;
+
                         setTimeout(() => {
                           data.setValue({
                             ["expireDateTime"]: params.row.expireDateTime,
                             ["appListId"]: params.row.appListId,
+                            // ["permissionIdList"]: powerArrey,
                           });
                         }, 1);
-                        console.log(data, " this.userForm = false;");
+                        // console.log(params.row, " this.userForm = false;");
+                        // console.log(
+                        //   this.$refs.authModal.formData,
+                        //   " this.$refs.authModal.formData;"
+                        // );
                         // if (params.row.state !== 1) {
                         //   console.log("更新模板");
                         //   console.log(params.row, "params.row");
@@ -520,22 +535,22 @@ export default {
         .then((d) => {
           this.authlists = d.data;
           let arr = this.filterTreeData(d.data, null, this.permissionIdList);
-          // this.$nextTick(() => {
-          this.$refs.authModal.formData.updateRule(
-            "permissionIdList",
-            {
-              props: {
-                value: this.permissionIdList,
-                multiple: true,
-                showCheckbox: true,
-                type: "checked",
-                data: arr,
+          this.$nextTick(() => {
+            this.$refs.authModal.formData.updateRule(
+              "permissionIdList",
+              {
+                props: {
+                  value: this.permissionIdList,
+                  multiple: true,
+                  showCheckbox: true,
+                  type: "checked",
+                  data: arr,
+                },
               },
-            },
-            true
-          );
-          this.$refs.authModal.formData.refresh(true);
-          // });
+              true
+            );
+            this.$refs.authModal.formData.refresh(true);
+          });
         })
         .catch((e) => {
           this.$Message.error(e.message);
@@ -568,9 +583,7 @@ export default {
     },
 
     getAppList() {
-      getAppList({
-        userId: this.$store.state.user.userId,
-      })
+      getAppList()
         .then((d) => {
           console.log(d.data);
           this.appList = d.data;

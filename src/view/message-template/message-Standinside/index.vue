@@ -17,7 +17,7 @@
               type="text"
               class="mr-6"
               style="width: 200px"
-              v-model="info.userName"
+              v-model="info.templateName"
               placeholder="请输入模板名称"
               search
               enter-button
@@ -98,7 +98,7 @@ export default {
           align: "center",
           width: "200",
         },
-        { title: "消息内容", key: "templateContent", align: "center" },
+        { title: "消息内容", key: "templateContents", align: "center" },
         {
           title: "模板类型",
           key: "businessType",

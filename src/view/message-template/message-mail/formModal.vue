@@ -11,6 +11,21 @@
         :rules="ruleValidate"
         :label-width="100"
       >
+        <div v-show="!edit">
+          <FormItem label="模板CODE：" prop="businessType">
+            <div style="display: flex">
+              <Input
+                placeholder="模板CODE"
+                :width="100"
+                v-model="formValidate.businessType"
+              ></Input>
+              <Button style="margin-left: 10px" @click="getCODE"
+                >获取随机code</Button
+              >
+            </div>
+          </FormItem>
+        </div>
+
         <FormItem label="模板名称：" prop="templateName">
           <Input
             placeholder="输入模板名称"
@@ -128,6 +143,9 @@ export default {
         remarks: [
           { required: false, message: "请输入模板描述", trigger: "blur" },
         ],
+        businessType: [
+          { required: false, message: "模板code", trigger: "blur" },
+        ],
       },
     };
   },
@@ -178,6 +196,9 @@ export default {
     },
   },
   methods: {
+    getCODE() {
+      this.formValidate.businessType = this.getSubstring();
+    },
     getSubstring() {
       var str = new Date().getTime().toString();
       let data = str.substring(str.length - 6);

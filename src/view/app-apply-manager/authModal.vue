@@ -10,12 +10,15 @@
     <Modal
       :mask-closable="false"
       v-model="userForm"
-      title="同意并授权"
+      :title="edit ? '同意并授权' : '更新授权'"
       :loading="loading"
       width="30%"
-      @on-ok="submit"
     >
       <formCreate :rule="rule" :option="option" v-model="formData"></formCreate>
+      <div slot="footer">
+        <Button type="text" @click="close">取消</Button>
+        <Button type="primary" @click="submit">确认</Button>
+      </div>
     </Modal>
   </div>
 </template>
@@ -28,7 +31,7 @@ import { passAndAuth } from "@/api/applyMgr";
 export default {
   data() {
     return {
-      edit: false,
+      edit: true,
       uid: "",
       loading: true,
       userForm: false,
@@ -40,9 +43,7 @@ export default {
   watch: {
     userForm(val) {
       if (!val) {
-        
         this.formData.resetFields();
-
         this.formData.removeField("id");
         this.formData.removeField("_rowKey");
         this.formData.removeField("_index");
@@ -54,6 +55,9 @@ export default {
     },
   },
   methods: {
+    close() {
+      this.userForm = false;
+    },
     async submit() {
       // console.log(data,'data');
       this.formData.submit(
@@ -63,10 +67,15 @@ export default {
           if (this.edit) {
             await editUser(data)
               .then((d) => {
+                this.loading = false;
                 this.$Message.success("编辑成功");
                 this.$emit("success");
+                this.userForm = false;
               })
-              .catch((err) => this.$Message.error("编辑失败"));
+              .catch((err) => {
+                this.loading = false;
+                this.$Message.error(err.msg);
+              });
           } else {
             await passAndAuth({
               ...data,
@@ -74,14 +83,16 @@ export default {
               id: this.uid,
             })
               .then((d) => {
+                this.loading = false;
                 this.$Message.success("提交成功!");
                 this.$emit("success");
+                this.userForm = false;
               })
               .catch((e) => {
-                this.$Message.error(e.message);
+                this.loading = false;
+                this.$Message.error(e.msg);
               });
           }
-          this.userForm = false;
         },
         () => {
           this.loading = false;

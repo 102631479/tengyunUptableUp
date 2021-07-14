@@ -39,7 +39,7 @@
       ></Table>
       <Page
         class="t-center mt-10"
-        :page-size="info['limit.pageSize']"
+        :page-size='info["limit.pageSize"]'
         :total="totals"
         @on-page-size-change="changePageSize"
         @on-change="changePage"
@@ -76,6 +76,12 @@ export default {
   },
   created() {
     this.init();
+  },
+  mounted() {
+    Bus.$on("message-Mobile-add", (data) => {
+      console.log("数据更新了");
+      this.init();
+    });
   },
   methods: {
     async init() {

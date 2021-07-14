@@ -53,7 +53,17 @@ let columns = [{
       if (params.row.definitions == "[]") {
         return h("span", "暂无备注");
       }
+      // if (JSON.parse(params.row.definitions)) {
       let data = JSON.parse(params.row.definitions);
+      // }
+      // let data=['']
+      // console.log(params.row.definitions,'params.row.definitions');
+      // if (JSON.parse(params.row.definitions) == Array){
+      //   var data = JSON.parse(params.row.definitions);
+      // }else{
+      //   var data = [];
+      // }
+
       let text = [];
       if (params.row.vendorType == 1) {
         data.map((item, index) => {

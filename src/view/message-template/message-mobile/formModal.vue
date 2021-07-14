@@ -8,6 +8,20 @@
         :rules="ruleValidate"
         :label-width="100"
       >
+        <div v-show="!edit">
+          <FormItem label="模板CODE：" prop="businessType">
+            <div style="display: flex">
+              <Input
+                placeholder="模板CODE"
+                :width="100"
+                v-model="formValidate.businessType"
+              ></Input>
+              <Button style="margin-left: 10px" @click="getCODE"
+                >获取随机code</Button
+              >
+            </div>
+          </FormItem>
+        </div>
         <FormItem label="模板名称：" prop="templateName">
           <Input
             placeholder="输入模板名称"
@@ -147,6 +161,8 @@
 </template>
 
 <script>
+import Bus from "@/bus";
+
 import { addTemplate, putTemplate } from "@/api/message-template";
 export default {
   data() {
@@ -178,6 +194,9 @@ export default {
         templateName: [
           { required: true, message: "请输入模板名称", trigger: "blur" },
         ],
+        businessType: [
+          { required: false, message: "模板code", trigger: "blur" },
+        ],
         templateContent: [
           { required: true, message: "请输入模板名称", trigger: "blur" },
         ],
@@ -187,6 +206,9 @@ export default {
         ],
         templateType: [
           { required: true, message: "请选择短信类型", trigger: "blur" },
+        ],
+        businessType: [
+          { required: false, message: "模板code", trigger: "blur" },
         ],
         international: [
           {
@@ -207,16 +229,16 @@ export default {
     templateTypeList() {
       if (this.formValidate.vendorType == "2") {
         let data = [
-          {id: "0",name: "验证码",},
-          {id: "1",name: "短信通知",},
-          {id: "2",name: "推广短信",},
-          {id: "3",name: "国际/港澳台短信",},
+          { id: "0", name: "验证码" },
+          { id: "1", name: "短信通知" },
+          { id: "2", name: "推广短信" },
+          { id: "3", name: "国际/港澳台短信" },
         ];
         return data;
       } else {
         let data = [
-          {id: "0",name: "验证码",},
-          {id: "2", name: "营销短信",},
+          { id: "0", name: "验证码" },
+          { id: "2", name: "营销短信" },
         ];
         return data;
       }
@@ -240,6 +262,9 @@ export default {
     },
   },
   methods: {
+    getCODE() {
+      this.formValidate.businessType = this.getSubstring();
+    },
     resolution() {
       if (this.edit) {
         this.formValidate = "";
@@ -247,7 +272,9 @@ export default {
     },
     threeTakeOne(vendorType) {
       let text = this.NUM_toString(true, this.formValidate.definitions);
+
       let data = JSON.parse(JSON.stringify(this.formValidate));
+
       data.definitions = text;
 
       if (this.formValidate.enableStatus == 1) {
@@ -273,8 +300,10 @@ export default {
         }
         data.templateParameter = dataText.join(",");
       }
+      if (!data.businessType) {
+        data.businessType = this.getSubstring();
+      }
 
-      data.businessType = this.getSubstring();
       return data;
     },
 
@@ -336,6 +365,7 @@ export default {
                 this.numMer = "1";
                 this.userForm = false;
                 this.formValidate.definitions = [];
+                Bus.$emit("message-Mobile-add", "ss");
               })
               .catch((err) => {
                 this.$Message.error(err.msg);
@@ -356,6 +386,7 @@ export default {
                 this.numMer = "1";
                 this.userForm = false;
                 this.formValidate.definitions = [];
+                Bus.$emit("message-Mobile-add", "ss");
               })
               .catch((err) => {
                 this.$Message.error(err.msg);
@@ -372,6 +403,7 @@ export default {
 <style scoped>
 .ipt-top {
   margin-bottom: 10px;
+
   /* margin-top: 10px; */
 }
 .ditor-editor {

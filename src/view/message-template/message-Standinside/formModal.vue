@@ -11,6 +11,18 @@
         :rules="ruleValidate"
         :label-width="100"
       >
+        <!-- <FormItem label="模板CODE：" prop="businessType">
+          <div style="display: flex">
+            <Input
+              placeholder="模板CODE"
+              :width="100"
+              v-model="formValidate.businessType"
+            ></Input>
+            <Button style="margin-left: 10px" @click="getCODE"
+              >获取随机code</Button
+            >
+          </div>
+        </FormItem> -->
         <FormItem label="模板名称：" prop="templateName">
           <Input
             placeholder="输入模板名称"
@@ -73,7 +85,7 @@
 </template>
 
 <script>
-import config from '@/config'
+import config from "@/config";
 
 import { addtStandinside, puttStandinside } from "@/api/message-template";
 import Bus from "@/bus";
@@ -133,6 +145,7 @@ export default {
         templateDescribe: [
           { required: false, message: "请输入模板描述", trigger: "blur" },
         ],
+       
       },
     };
   },
@@ -183,6 +196,7 @@ export default {
     },
   },
   methods: {
+ 
     handleChange(file) {
       let url = file.data[0].fileAddress;
       let quill = this.$refs.myQuillEditor.quill;
@@ -276,7 +290,7 @@ export default {
 }
 /deep/.ql-toolbar.ql-snow + .ql-container.ql-snow {
   border-top: 0px;
-  height: 400;
+  height: 300px;
 }
 /deep/.ql-toolbar.ql-snow .ql-formats {
   margin-right: 4px;

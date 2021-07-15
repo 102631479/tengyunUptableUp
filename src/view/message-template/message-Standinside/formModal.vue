@@ -64,6 +64,8 @@
             <Option value="2">审核消息</Option>
             <Option value="3">订单消息</Option>
             <Option value="4">财务消息</Option>
+            <Option value="6">系统消息</Option>
+            <Option value="7">工单消息</Option>
           </Select>
         </FormItem>
         <FormItem label="模板描述：" prop="templateDescribe">

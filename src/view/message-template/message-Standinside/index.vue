@@ -233,10 +233,15 @@ export default {
     async init(data) {
       this.loading = true;
       let _this = this;
-      await getStandinside(this.info).then((d) => {
-        _this.tabData = d.data.list;
-        _this.totals = Number(d.data.pagination.total);
-      });
+      await getStandinside(this.info)
+        .then((d) => {
+          _this.tabData = d.data.list;
+          _this.totals = Number(d.data.pagination.total);
+        })
+        .catch((err) => {
+          this.$Message.error(err.msg);
+          this.loading = false;
+        });
       this.loading = false;
     },
     openadd() {

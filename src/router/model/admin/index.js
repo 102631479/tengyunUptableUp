@@ -142,7 +142,7 @@ export default [{
     name: 'message',
     meta: {
       icon: 'iconpricetags-outline',
-      // access: ['message-template'],
+      access: ['message-template'],
       title: '消息模板管理'
     },
     component: Main,

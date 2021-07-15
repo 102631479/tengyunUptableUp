@@ -39,7 +39,7 @@
       ></Table>
       <Page
         class="t-center mt-10"
-        :page-size='info["limit.pageSize"]'
+        :page-size="info['limit.pageSize']"
         :total="totals"
         @on-page-size-change="changePageSize"
         @on-change="changePage"
@@ -87,10 +87,15 @@ export default {
     async init() {
       this.loading = true;
       let _this = this;
-      await getTemplateData(this.info).then((d) => {
-        _this.tabData = d.data.list;
-        _this.totals = Number(d.data.pagination.total);
-      });
+      await getTemplateData(this.info)
+        .then((d) => {
+          _this.tabData = d.data.list;
+          _this.totals = Number(d.data.pagination.total);
+        })
+        .catch((err) => {
+          this.$Message.error(err.msg);
+          this.loading = false;
+        });
       this.loading = false;
     },
     openadd() {

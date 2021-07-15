@@ -204,34 +204,27 @@ export default {
       let data = str.substring(str.length - 6);
       return data;
     },
-    onEditorBlur(e) {}, // 失去焦点事件
+    onEditorBlur(e) {}, 
     onEditorFocus(d) {
-      // this.$refs.myQuillEditor._options.placeholder = "sss";
-      // console.log(d, "获得焦点事件");
-    }, // 获得焦点事件
+
+    }, 
     onEditorChange(d) {
-      // console.log(d, "内容改变事件");
-    }, //
-    // false 编辑  true 增加
-    // 打开窗口分辨新增还是编辑
+    }, 
+
     handleChange(file) {
       let url = file.data[0].fileAddress;
       let quill = this.$refs.myQuillEditor.quill;
-      let length = quill.getSelection().index; // 获取当前鼠标焦点位置
-      quill.insertEmbed(length, "image", url); // 插入<img src='url'/>
+      let length = quill.getSelection().index; 
+      quill.insertEmbed(length, "image", url); 
       quill.setSelection(length + 1);
     },
     getnumMer() {
-      // JSON.parse(JSON.stringify(this.numMer))
       this.numMerr = Number(this.numMer);
-      // this.notShown = Number(this.numMer);
     },
     close() {
-      // console.log("关闭窗口");
       this.userForm = false;
     },
     async submit() {
-      // console.log(this.formValidate[0]);
       let _this = this;
       if (this.edit) {
         this.$refs.formValidate.validate((valid) => {
@@ -281,7 +274,6 @@ export default {
 <style scoped>
 .ipt-top {
   margin-bottom: 10px;
-  /* margin-top: 10px; */
 }
 .ditor-editor {
   width: 100%;
@@ -289,7 +281,6 @@ export default {
 </style>
 <style lang="less" scoped>
 .ivu-select {
-  // width: 30%;
 }
 .edit_container {
   width: 100%;
@@ -302,17 +293,14 @@ export default {
   margin-right: 4px;
 }
 /deep/.ql-snow .ql-picker.ql-size {
-  // width: 75px;
 }
 /deep/.ql-snow .ql-picker.ql-header {
-  // width: 75px;
 }
 /deep/.ql-snow .ql-picker {
   color: #444;
   display: inline-block;
   font-size: 14px;
   font-weight: 500;
-  // height: 32px;
   position: relative;
   vertical-align: middle;
 }

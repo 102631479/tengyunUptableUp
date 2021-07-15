@@ -122,7 +122,8 @@
             >
           </Select>
         </FormItem>
-        <div v-show="!edit">
+
+        <div v-show="formValidate.vendorType == '1'">
           <div v-show="formValidate.vendorType != '2'">
             <FormItem label="短信类型：" prop="international">
               <Select
@@ -136,6 +137,7 @@
             </FormItem>
           </div>
         </div>
+
         <FormItem label="申请说明：" prop="remark">
           <Input
             :maxlength="templateDescribeNum"
@@ -145,12 +147,14 @@
             show-word-limit
           />
         </FormItem>
+
         <FormItem label="状态：" prop="enableStatus">
           <RadioGroup v-model="formValidate.enableStatus">
             <Radio label="1">启用</Radio>
             <Radio label="2">禁用</Radio>
           </RadioGroup>
         </FormItem>
+
       </Form>
       <div slot="footer">
         <Button type="text" @click="close">取消</Button>
@@ -237,7 +241,7 @@ export default {
         return data;
       } else {
         let data = [
-          { id: "0", name: "验证码" },
+          { id: "1", name: "普通短信" },
           { id: "2", name: "营销短信" },
         ];
         return data;
@@ -272,18 +276,14 @@ export default {
     },
     threeTakeOne(vendorType) {
       let text = this.NUM_toString(true, this.formValidate.definitions);
-
       let data = JSON.parse(JSON.stringify(this.formValidate));
-
       data.definitions = text;
-
       if (this.formValidate.enableStatus == 1) {
         data.enableStatus = true;
       } else {
         data.enableStatus = false;
       }
       let _definitions = this.formValidate.definitions.length;
-
       if (vendorType == 1) {
         let dataText = [];
         for (let i = 0; i < _definitions; i++) {
@@ -303,15 +303,12 @@ export default {
       if (!data.businessType) {
         data.businessType = this.getSubstring();
       }
-
       return data;
     },
-
     getnumMer() {
       this.numMerr = Number(this.numMer);
     },
     close() {
-      console.log("关闭窗口");
       this.userForm = false;
     },
     NUM_toString(buler, Arrey) {
@@ -348,6 +345,7 @@ export default {
             );
             let data = this.threeTakeOne(this.formValidate.vendorType);
             let putData = {
+              international: data.international,
               id: this.putId,
               templateContent: data.templateContent,
               templateName: data.templateName,
@@ -356,7 +354,6 @@ export default {
               remark: data.remark,
               definitions: data.definitions,
             };
-            console.log(putData, "编辑对象");
             putTemplate(putData)
               .then((res) => {
                 this.$Message.success("编辑成功!");

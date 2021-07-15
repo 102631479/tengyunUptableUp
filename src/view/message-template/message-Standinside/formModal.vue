@@ -2,7 +2,7 @@
   <div>
     <Modal
       v-model="userForm"
-      :title="edit ? '编辑用户' : '新增用户'"
+      :title="edit ? '编辑模板' : '新增模板'"
       width="680px"
     >
       <Form

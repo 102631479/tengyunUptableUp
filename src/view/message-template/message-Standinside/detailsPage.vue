@@ -22,24 +22,7 @@
           <a href="/user/test/xxxx.txt" class="dolown" download="1.txt"
             >文件名xx.PDF</a
           >
-          <a href="/user/test/xxxx.txt" class="dolown" download="2.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="3.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="4.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="5.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="6.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="7.txt"
-            >文件名xx.PDF</a
-          > -->
+         -->
           <div class="dolown" style="color: #657180">
             此敬<br />智慧文旅云团队
           </div>

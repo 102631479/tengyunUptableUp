@@ -300,14 +300,20 @@ export default {
                         await this.getAuths(params.row.appListId);
                         await this.getTags(params.row.appListId);
                         this.$refs.authModal.uid = params.row.id;
-
-                        setTimeout(() => {
-                          data.setValue({
-                            ["expireDateTime"]: params.row.expireDateTime,
-                            ["appListId"]: params.row.appListId,
-                            // ["permissionIdList"]: powerArrey,
-                          });
-                        }, 1);
+                        console.log(
+                          params.row.dataCreateTime,
+                          "params.row.dataCreateTime"
+                        );
+                        // setTimeout(() => {
+                        data.setValue({
+                          ["expireDateTime"]: params.row.expireDateTime,
+                          ["appListId"]: params.row.appListId,
+                          ["dataCreateTime"]: params.row.dataCreateTime,
+                          ["phone"]: params.row.phone,
+                          ["userId"]: params.row.userId,
+                          // ["permissionIdList"]: powerArrey,
+                        });
+                        // }, 1);
                         // console.log(params.row, " this.userForm = false;");
                         // console.log(
                         //   this.$refs.authModal.formData,
@@ -382,11 +388,16 @@ export default {
                   on: {
                     click: () => {
                       this.$refs.authModal.edit = true;
-                      // if (!params.row.state == 1) return;
                       this.$refs.authModal.userForm = true;
                       this.getAuths(params.row.appListId);
                       this.$refs.authModal.uid = params.row.id;
                       this.getTags(params.row.appListId);
+                      let data = this.$refs.authModal.formData;
+                      data.setValue({
+                        ["dataCreateTime"]: params.row.dataCreateTime,
+                        ["phone"]: params.row.phone,
+                        ["userId"]: params.row.userId,
+                      });
                     },
                   },
                 },

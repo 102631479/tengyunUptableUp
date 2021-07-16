@@ -17,7 +17,11 @@ import {
   maker
 } from '@form-create/iview'
 export default [
-  maker.hidden('fileId'),
+  // maker.hidden('fileId'),
+  // maker.hidden('dataCreateTime'),
+  maker.hidden('phone'),
+  maker.hidden('userId'),
+  maker.hidden('dataCreateTime'),
   // maker.date('到期时间：', 'expireDateTime', {}).validate([{
   //   required: true,
   //   message: '请输入到期时间'

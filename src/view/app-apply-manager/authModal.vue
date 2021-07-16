@@ -27,7 +27,6 @@
 import option from "./options";
 import rule from "./rule";
 import { passAndAuth } from "@/api/applyMgr";
-
 export default {
   data() {
     return {
@@ -49,7 +48,7 @@ export default {
         this.formData.removeField("_index");
         this.formData.removeField("dataVersion");
         this.formData.removeField("dataUpdateTime");
-        this.formData.removeField("dataCreateTime");
+        // this.formData.removeField("dataCreateTime");
         this.formData.removeField("dataVersion");
       }
     },
@@ -64,19 +63,19 @@ export default {
         async (data) => {
           console.log(data, "data");
           // return
-          if (this.edit) {
-            await editUser(data)
-              .then((d) => {
-                this.loading = false;
-                this.$Message.success("编辑成功");
-                this.$emit("success");
-                this.userForm = false;
-              })
-              .catch((err) => {
-                this.loading = false;
-                this.$Message.error(err.msg);
-              });
-          } else {
+          // if (!this.edit) {
+          //   await editUser(data)
+          //     .then((d) => {
+          //       this.loading = false;
+          //       this.$Message.success("编辑成功");
+          //       this.$emit("success");
+          //       this.userForm = false;
+          //     })
+          //     .catch((err) => {
+          //       this.loading = false;
+          //       this.$Message.error(err.msg);
+          //     });
+          // } else {
             await passAndAuth({
               ...data,
               // expireDateTime: data.expireDateTime[1],
@@ -92,7 +91,7 @@ export default {
                 this.loading = false;
                 this.$Message.error(e.msg);
               });
-          }
+          // }
         },
         () => {
           this.loading = false;

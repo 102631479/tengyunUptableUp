@@ -211,8 +211,8 @@ let columns = [{
           on: {
             click: () => {
               _this.$Modal.confirm({
-                title: "提示",
-                content: "确认删除？",
+                title: "删除警告！",
+                content: "删除消息模板将导致短信通知发送失败且模板不可恢复，再次确定是否删除本条模板？",
                 onOk: () => {
                   deleTemplate(params.row.id)
                     .then((res) => {

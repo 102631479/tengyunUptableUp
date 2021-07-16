@@ -40,10 +40,8 @@ export default {
     },
 
     userForm(val) {
-      // console.log(this.formData);
       if (!val) {
         this.formData.resetFields();
-        // this.formData.removeField('id')
         this.formData.removeField("_rowKey");
         this.formData.removeField("_index");
         this.formData.removeField("dataVersion");

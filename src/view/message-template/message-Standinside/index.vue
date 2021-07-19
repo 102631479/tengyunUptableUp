@@ -206,6 +206,8 @@ export default {
                       title: "提示",
                       content: "确认删除？",
                       onOk: () => {
+
+
                         deletStandinside(params.row.id)
                           .then((d) => {
                             this.init();
@@ -214,6 +216,7 @@ export default {
                             );
                           })
                           .catch(() => this.$Message.error("删除失败"));
+                          
                       },
                     });
                   },

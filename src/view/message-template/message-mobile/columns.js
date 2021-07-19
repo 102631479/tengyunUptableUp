@@ -210,12 +210,57 @@ let columns = [{
           },
           on: {
             click: () => {
-
-
               _this.$Modal.confirm({
                 title: "删除警告！",
                 content: "删除消息模板将导致短信通知发送失败且模板不可恢复，再次确定是否删除本条模板？",
+                render: (h, params) => [
+
+                  h('span', {
+                    style: {
+                      marginRight: "8px",
+                    },
+                  }, '删除消息模板将导致短信通知发送失败且模板不可恢复，再次确定是否删除本条模板？'),
+
+                  h('br'),
+
+                  h('span', {
+                    style: {
+                      marginRight: "8px",
+                    },
+                    on: {
+                      'on-blur': event => {
+                        console.log(event);
+                      },
+                    },
+                  }, '请在输入框输入"立即删除" '),
+
+
+                  h('input', {
+                    props: {
+                      type: "error",
+                      size: "small",
+                    },
+                    style: {
+                      width: "190px",
+                      textAlign: "center",
+                      color: "red",
+                      cursor: "pointer",
+                    },
+                    on: {
+                      'on-blur': event => {
+                        console.log(event);
+                      },
+                    },
+                  })
+                ],
+                on: {
+                  'on-blur': event => {
+                    console.log(event);
+                  },
+                },
                 onOk: () => {
+                  console.log(params);
+                  return
                   deleTemplate(params.row.id)
                     .then((res) => {
                       _this.$Message.success(
@@ -228,8 +273,6 @@ let columns = [{
                     });
                 },
               });
-
-              
             },
           },
         },

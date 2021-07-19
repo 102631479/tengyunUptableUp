@@ -2,14 +2,14 @@
   <div>
     <Modal v-model="userForm" title="详情">
       <div class="mail-details">
-        <div class="first-hear">邮件详情:</div>
+        <div class="first-hear">{{ htmlDetails }}:</div>
         <span class="boxi-text"
           >尊敬的智慧文旅云用户，您好！恭喜您通过代理商认证，我们准备了项目资料，您可下载查看</span
         >
       </div>
 
       <div class="mail-text">
-        <div class="first-hear">邮件详情:</div>
+        <div class="first-hear">{{ htmlDetails }}:</div>
         <div class="boxi-text">
           <!-- <div>
             您（账号ID：45446464646，昵称：admin123）于2020-12-31 22:56:23
@@ -18,27 +18,7 @@
             您可下载查看
           </div>
 
-          <a href="/user/test/xxxx.txt" class="dolown" download="1.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="2.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="3.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="4.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="5.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="6.txt"
-            >文件名xx.PDF</a
-          >
-          <a href="/user/test/xxxx.txt" class="dolown" download="7.txt"
-            >文件名xx.PDF</a
-          > -->
+          -->
           <div v-html="htmlData"></div>
 
           <div class="dolown" style="color: #657180">
@@ -52,7 +32,8 @@
         <span class="boxi-text">代理商通过后发多送的消息模板</span>
       </div>
       <div slot="footer">
-        <Button type="primary" @click="close">关闭窗口</Button>
+        <slot name="header">
+        </slot>
       </div>
     </Modal>
   </div>
@@ -60,10 +41,29 @@
 
 <script>
 export default {
+  name: "detailsPage",
+  props: {
+    htmlData: {
+      type: String,
+      default: () => {
+        return ``;
+      },
+    },
+    htmlDetails: {
+      type: String,
+      default: () => {
+        return "模板";
+      },
+    },
+    userForm: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
-      htmlData: ``,
-      userForm: false,
+      // htmlData: ``,
+      // userForm: false,
     };
   },
   methods: {
@@ -71,8 +71,9 @@ export default {
       this.$Message.success("提交");
     },
     close() {
-      this.$Message.success("关闭");
-      this.userForm = false;
+      // this.$Message.success("关闭");
+      // console.log(userForm, "this.userForm = false;");
+      // this.userForm = false;
     },
   },
 };

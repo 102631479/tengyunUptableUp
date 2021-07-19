@@ -8,6 +8,7 @@ export default [
     { required: true, message: '请输入邮箱' },
     { pattern: /^\s*[a-zA-Z0-9]+((?:\.{0,1})(?:\-{0,1})(?:\_{0,1})[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+\s*$/, message: '邮箱格式不正确' }
   ]),
+  
   maker.input('电话', 'phone').validate([
     { required: true, message: '请输入电话' },
     { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' }
@@ -17,6 +18,7 @@ export default [
     { value: 2, label: '挂失' },
     { value: 3, label: '封禁' },
     { value: 4, label: '注销' }
+
   ]).validate([ { required: true, message: '请输入状态' } ]),
   maker.radio('类型', 'userType', 1).options([
     { value: 1, label: '平台用户' },

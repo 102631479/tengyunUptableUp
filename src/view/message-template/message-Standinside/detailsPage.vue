@@ -53,7 +53,7 @@ export default {
       this.$Message.success("提交");
     },
     close() {
-      this.$Message.success("关闭");
+      // this.$Message.success("关闭");
       this.userForm = false;
     },
   },

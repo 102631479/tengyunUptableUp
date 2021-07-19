@@ -49,7 +49,16 @@
     <!-- 用户表单 -->
     <formModal ref="formModal" @success="init" />
     <!-- 详情 -->
-    <detailsPage ref="detailsPage" @success="init" />
+    <!-- <detailsPage ref="detailsPage" @success="init" /> -->
+    <detailsPage
+      :htmlData="detailHtmlData"
+      :htmlDetails="detailhtmlDetails"
+      :userForm="detailUserForm"
+    >
+      <template v-slot:header>
+        <Button type="primary" @click="detailUserForm = false">关闭</Button>
+      </template>
+    </detailsPage>
 
     <!-- <formModalt ref="formModalt" @success="init" /> -->
   </div>
@@ -60,7 +69,7 @@
 import { getMail, deletMail } from "@/api/message-template"; //调用编辑器
 import Bus from "@/bus";
 
-import detailsPage from "./detailsPage";
+import detailsPage from "../../../components/message-template/detailsPage";
 import formModal from "./formModal";
 export default {
   components: {
@@ -69,6 +78,9 @@ export default {
   },
   data() {
     return {
+      detailHtmlData: "",
+      detailhtmlDetails: "邮件模板",
+      detailUserForm: false,
       pageshow: true,
       totals: 0,
       // 请求配置
@@ -119,6 +131,9 @@ export default {
                 },
                 on: {
                   click: () => {
+                    this.detailUserForm = true;
+                    this.detailHtmlData = params.row.content;
+                    return;
                     // this.$Message.success("详情");
                     this.$refs.detailsPage.userForm = true;
                     this.$refs.detailsPage.htmlData = params.row.content;

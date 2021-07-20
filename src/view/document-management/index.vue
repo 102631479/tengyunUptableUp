@@ -464,18 +464,14 @@ export default {
                               : "输入正确可以删除"
                           ),
                         ],
-
                         onOk: () => {
                           if (this.ifDele) {
-                            // this.$Modal.remove();
-                            // this.$Message.success("删除成功");
-                            // return
                             getDocumentdelete(params.row.id)
                               .then((res) => {
                                 if (this.tabData.length == 1)
                                   this.info["limit.currentPage"] =
                                     this.info["limit.currentPage"] - 1;
-                                console.log(res);
+                                // console.log(res);
                                 this.$Message.success(
                                   params.row.fileName + " 已删除"
                                 );

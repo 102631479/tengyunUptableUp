@@ -109,6 +109,7 @@ export default {
     });
   },
   created() {
+    console.log(this.$router.history.current.query,'http://localhost:8080/#/login?username=ldm151&password=yr5yfesHZYZobe%2FvlEDA5Q%3D%3D');
     if (this.$router.history.current.query.account) {
       this.getclear();
       this.spinShow = true;
@@ -116,6 +117,7 @@ export default {
         userName: this.$router.history.current.query.account,
         password: this.$router.history.current.query.password,
       };
+      console.log(data,'http://localhost:8080/#/login?username=ldm151&password=yr5yfesHZYZobe%2FvlEDA5Q%3D%3D');
       this.gologin(data);
     } else {
       this.getclear();

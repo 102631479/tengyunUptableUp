@@ -1,10 +1,10 @@
+
 const express = require('express')
 const app = express()
 
 const admin = require('./admin')
 
 const router = [...admin]
-
 //设置允许跨域访问该服务.
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');

@@ -154,7 +154,6 @@
             <Radio label="2">禁用</Radio>
           </RadioGroup>
         </FormItem>
-
       </Form>
       <div slot="footer">
         <Button type="text" @click="close">取消</Button>
@@ -171,6 +170,7 @@ import { addTemplate, putTemplate } from "@/api/message-template";
 export default {
   data() {
     return {
+     
       putId: "",
       templateDescribeNum: Number(200),
       animal: "",

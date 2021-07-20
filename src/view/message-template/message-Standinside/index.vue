@@ -77,6 +77,8 @@ export default {
   },
   data() {
     return {
+      ifDele: false,
+      ifDeleData: "",
       detailHtmlData: "",
       detailhtmlDetails: "邮件模板",
       detailUserForm: false,
@@ -200,24 +202,132 @@ export default {
                   color: "#0084ff",
                   cursor: "pointer",
                 },
+                // on: {
+                //   click: () => {
+                //     this.$Modal.confirm({
+                //       title: "提示",
+                //       content: "确认删除？",
+                //       onOk: () => {
+                //         deletStandinside(params.row.id)
+                //           .then((d) => {
+                //             this.init();
+                //             this.$Message.success(
+                //               params.row.templateName + " 已删除"
+                //             );
+                //           })
+                //           .catch(() => this.$Message.error("删除失败"));
+                //       },
+                //     });
+                //   },
+                // },
                 on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: "提示",
-                      content: "确认删除？",
-                      onOk: () => {
+                  click: async () => {
+                    this.ifDeleData = "";
+                    this.ifDele = false;
+                    this.$nextTick(() => {
+                      this.$Modal.confirm({
+                        loading: true,
+                        title: "删除警告！",
+                        okText: "确认",
+                        cancelText: "取消",
+                        render: (h, params) => [
+                          h(
+                            "span",
+                            {
+                              style: {
+                                marginRight: "8px",
+                              },
+                            },
+                            "删除消息模板将导致邮件通知发送失败且模板不可恢复，再次确定是否删除本条模板？"
+                          ),
 
+                          h("br"),
 
-                        deletStandinside(params.row.id)
-                          .then((d) => {
-                            this.init();
-                            this.$Message.success(
-                              params.row.templateName + " 已删除"
-                            );
-                          })
-                          .catch(() => this.$Message.error("删除失败"));
-                          
-                      },
+                          h(
+                            "span",
+                            {
+                              style: {
+                                marginRight: "8px",
+                              },
+                              on: {
+                                "on-blur": (event) => {
+                                  console.log(event);
+                                },
+                              },
+                            },
+                            '请在输入框输入"立即删除" '
+                          ),
+
+                          h("Input", {
+                            props: {
+                              value: "",
+                              autofocus: true,
+                              width: "100px",
+                              styles: {
+                                // width: "190px",
+                                width: "190px",
+                                textAlign: "center",
+                                color: "red",
+                                cursor: "pointer",
+                              },
+                            },
+                            style: {
+                              width: "190px",
+                              textAlign: "center",
+                              color: "red",
+                              cursor: "pointer",
+                            },
+                            on: {
+                              input: (val) => {
+                                this.ifDeleData = val;
+                                if (val == "立即删除") {
+                                  console.log("可以删除");
+                                  this.ifDele = true;
+                                  return;
+                                }
+                                this.ifDele = false;
+                              },
+                            },
+                          }),
+
+                          h(
+                            "div",
+                            {
+                              style: {
+                                width: "300px",
+                                marginTop: "8px",
+                                textAlign: "right",
+                                color: "red",
+                                cursor: "pointer",
+                              },
+                            },
+                            this.ifDele == false
+                              ? this.ifDeleData == ""
+                                ? ""
+                                : "*文字输入不正确"
+                              : "输入正确可以删除"
+                          ),
+                        ],
+
+                        onOk: () => {
+                          if (this.ifDele) {
+                            this.$Modal.remove();
+                            // this.$Message.success("删除成功");
+                            // return
+                            deletStandinside(params.row.id)
+                              .then((res) => {
+                                this.$Message.success("删除成功");
+                                this.init();
+                                this.$Modal.remove();
+                              })
+                              .catch((err) => {
+                                console.log(err);
+                              });
+                          } else {
+                            this.$Modal.remove();
+                          }
+                        },
+                      });
                     });
                   },
                 },

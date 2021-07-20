@@ -62,6 +62,8 @@ export default {
   },
   data() {
     return {
+      ifDele: false,
+      ifDeleData: "",
       templateDescribeNum: Number(200),
       totals: 0,
       info: {
@@ -75,9 +77,12 @@ export default {
     };
   },
   created() {
+    // this.ifDeleData = "";
+
     this.init();
   },
   mounted() {
+   
     Bus.$on("message-Mobile-add", (data) => {
       console.log("数据更新了");
       this.init();

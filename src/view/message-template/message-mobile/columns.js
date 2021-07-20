@@ -209,70 +209,113 @@ let columns = [{
             cursor: "pointer",
           },
           on: {
-            click: () => {
-              _this.$Modal.confirm({
-                title: "删除警告！",
-                content: "删除消息模板将导致短信通知发送失败且模板不可恢复，再次确定是否删除本条模板？",
-                render: (h, params) => [
-
-                  h('span', {
-                    style: {
-                      marginRight: "8px",
-                    },
-                  }, '删除消息模板将导致短信通知发送失败且模板不可恢复，再次确定是否删除本条模板？'),
-
-                  h('br'),
-
-                  h('span', {
-                    style: {
-                      marginRight: "8px",
-                    },
-                    on: {
-                      'on-blur': event => {
-                        console.log(event);
+            click: async () => {
+              _this.ifDeleData = ""
+              _this.ifDele = false;
+              _this.$nextTick(() => {
+                _this.$Modal.confirm({
+                  loading: true,
+                  title: "删除警告！",
+                  okText: "确认",
+                  cancelText: '取消',
+                  render: (h, params) => [
+                    h('span', {
+                      style: {
+                        marginRight: "8px",
                       },
-                    },
-                  }, '请在输入框输入"立即删除" '),
+                    }, '删除消息模板将导致短信通知发送失败且模板不可恢复，再次确定是否删除本条模板？'),
 
+                    h('br'),
 
-                  h('input', {
-                    props: {
-                      type: "error",
-                      size: "small",
-                    },
-                    style: {
-                      width: "190px",
-                      textAlign: "center",
-                      color: "red",
-                      cursor: "pointer",
-                    },
-                    on: {
-                      'on-blur': event => {
-                        console.log(event);
+                    h('span', {
+                      style: {
+                        marginRight: "8px",
                       },
-                    },
-                  })
-                ],
-                on: {
-                  'on-blur': event => {
-                    console.log(event);
+                      on: {
+                        'on-blur': event => {
+                          console.log(event);
+                        },
+                      },
+                    }, '请在输入框输入"立即删除" '),
+
+                    h('Input', {
+                      props: {
+                        value: '',
+                        autofocus: true,
+                        width: '100px',
+                        styles: {
+                          // width: "190px",
+                          width: "190px",
+                          textAlign: "center",
+                          color: "red",
+                          cursor: "pointer",
+                        }
+                      },
+                      style: {
+                        width: "190px",
+                        textAlign: "center",
+                        color: "red",
+                        cursor: "pointer",
+                      },
+                      on: {
+                        input: (val) => {
+                          _this.ifDeleData = val
+                          if (val == '立即删除') {
+                            console.log('可以删除');
+                            _this.ifDele = true
+                            return
+                          }
+                          _this.ifDele = false
+
+                        }
+                      },
+                    }),
+
+                    h('div', {
+                        style: {
+                          width: "300px",
+                          marginTop: "8px",
+                          textAlign: "right",
+                          color: "red",
+                          cursor: "pointer",
+                        },
+                      },
+                      _this.ifDele == false ? _this.ifDeleData == "" ? '' : '*文字输入不正确' : "输入正确可以删除"
+
+
+                    ),
+                  ],
+
+                  onOk: () => {
+                    if (_this.ifDele) {
+                      _this.$Modal.remove()
+                      // _this.$Message.success(
+                      //   "删除成功"
+                      // );
+                      // return
+                      deleTemplate(params.row.id)
+                        .then((res) => {
+                          _this.$Message.success(
+                            "删除成功"
+                          );
+                          _this.init();
+                          _this.$Modal.remove()
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    } else {
+                      _this.$Modal.remove()
+                    }
+
+
                   },
-                },
-                onOk: () => {
-                  console.log(params);
-                  return
-                  deleTemplate(params.row.id)
-                    .then((res) => {
-                      _this.$Message.success(
-                        "删除成功"
-                      );
-                      _this.init();
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                },
+                });
+
+
+
               });
+
             },
           },
         },

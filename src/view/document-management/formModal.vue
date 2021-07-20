@@ -72,10 +72,7 @@ export default {
   data() {
     return {
       updataHtml: [
-        // {
-        //   name: "",
-        //   id: "",
-        // },
+     
       ],
       actionUrl:
         process.env.NODE_ENV === "development"
@@ -94,6 +91,7 @@ export default {
         fileName: "",
         status: 1,
         fileId: "",
+        fileAddress: "",
       },
       ruless: {
         fileName: [
@@ -158,7 +156,8 @@ export default {
     },
     handleSuccess(res, file) {
       this.formValidate.fileId = res.data[0].id;
-      console.log(res.data[0].id, "res上传成功的函数");
+      this.formValidate.fileAddress = res.data[0].fileAddress;
+      console.log(res.data, "res上传成功的函数");
     },
     // false 编辑  true 增加
     // 打开窗口分辨新增还是编辑

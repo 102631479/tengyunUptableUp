@@ -325,13 +325,9 @@ export default {
                             name: res.data[0].oldName,
                             id: res.data[0].fileId,
                           });
-                          // console.log(this.$refs.formModal.updataHtml);
-                          console.log(res);
                         }
                       })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                      .catch((err) => {});
                   },
                 },
               },
@@ -355,28 +351,145 @@ export default {
                     ? "inline-block"
                     : "none",
                 },
+                // on: {
+                //   click: () => {
+                //     this.$Modal.confirm({
+                //       title: "提示",
+                //       content: "确认删除？",
+                //       onOk: () => {
+                //         getDocumentdelete(params.row.id)
+                //           .then((res) => {
+                //             if (this.tabData.length == 1)
+                //               this.info["limit.currentPage"] =
+                //                 this.info["limit.currentPage"] - 1;
+                //             console.log(res);
+                //             this.$Message.success(
+                //               params.row.fileName + " 已删除"
+                //             );
+                //             this.init();
+                //           })
+                //           .catch((e) => {
+                //             let ev = e.msg ? e.msg : e.message;
+                //             this.$Message.error(ev);
+                //           });
+                //       },
+                //     });
+                //   },
+                // },
                 on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: "提示",
-                      content: "确认删除？",
-                      onOk: () => {
-                        getDocumentdelete(params.row.id)
-                          .then((res) => {
-                            if (this.tabData.length == 1)
-                              this.info["limit.currentPage"] =
-                                this.info["limit.currentPage"] - 1;
-                            console.log(res);
-                            this.$Message.success(
-                              params.row.fileName + " 已删除"
-                            );
-                            this.init();
-                          })
-                          .catch((e) => {
-                            let ev = e.msg ? e.msg : e.message;
-                            this.$Message.error(ev);
-                          });
-                      },
+                  click: async () => {
+                    this.ifDeleData = "";
+                    this.ifDele = false;
+                    this.$nextTick(() => {
+                      this.$Modal.confirm({
+                        loading: true,
+                        title: "删除警告！",
+                        okText: "确认",
+                        cancelText: "取消",
+                        render: (h, params) => [
+                          h(
+                            "span",
+                            {
+                              style: {
+                                marginRight: "8px",
+                              },
+                            },
+                            "删除文档模板将导致邮件文档发送失败且模板不可恢复，再次确定是否删除本条模板？"
+                          ),
+
+                          h("br"),
+
+                          h(
+                            "span",
+                            {
+                              style: {
+                                marginRight: "8px",
+                              },
+                              on: {
+                                "on-blur": (event) => {
+                                  console.log(event);
+                                },
+                              },
+                            },
+                            '请在输入框输入"立即删除" '
+                          ),
+
+                          h("Input", {
+                            props: {
+                              value: "",
+                              autofocus: true,
+                              width: "100px",
+                              styles: {
+                                // width: "190px",
+                                width: "190px",
+                                textAlign: "center",
+                                color: "red",
+                                cursor: "pointer",
+                              },
+                            },
+                            style: {
+                              width: "190px",
+                              textAlign: "center",
+                              color: "red",
+                              cursor: "pointer",
+                            },
+                            on: {
+                              input: (val) => {
+                                this.ifDeleData = val;
+                                if (val == "立即删除") {
+                                  console.log("可以删除");
+                                  this.ifDele = true;
+                                  return;
+                                }
+                                this.ifDele = false;
+                              },
+                            },
+                          }),
+
+                          h(
+                            "div",
+                            {
+                              style: {
+                                width: "300px",
+                                marginTop: "8px",
+                                textAlign: "right",
+                                color: "red",
+                                cursor: "pointer",
+                              },
+                            },
+                            this.ifDele == false
+                              ? this.ifDeleData == ""
+                                ? ""
+                                : "*文字输入不正确"
+                              : "输入正确可以删除"
+                          ),
+                        ],
+
+                        onOk: () => {
+                          if (this.ifDele) {
+                            // this.$Modal.remove();
+                            // this.$Message.success("删除成功");
+                            // return
+                            getDocumentdelete(params.row.id)
+                              .then((res) => {
+                                if (this.tabData.length == 1)
+                                  this.info["limit.currentPage"] =
+                                    this.info["limit.currentPage"] - 1;
+                                console.log(res);
+                                this.$Message.success(
+                                  params.row.fileName + " 已删除"
+                                );
+                                this.init();
+                                this.$Modal.remove();
+                              })
+                              .catch((err) => {
+                                console.log(err);
+                              });
+                          } else {
+                            this.$Modal.remove();
+                          }
+                        },
+                      });
                     });
                   },
                 },

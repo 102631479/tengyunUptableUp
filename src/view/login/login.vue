@@ -66,6 +66,7 @@
 
 <script>
 const SM4 = require("gm-crypt").sm4;
+const md5 = require("md5-node");
 import { login, identities, getUserInfo } from "@/api/user";
 import Cookie from "js-cookie";
 import { flattenDeep } from "lodash";
@@ -109,7 +110,10 @@ export default {
     });
   },
   created() {
-    console.log(this.$router.history.current.query,'http://localhost:8080/#/login?username=ldm151&password=yr5yfesHZYZobe%2FvlEDA5Q%3D%3D');
+    console.log(
+      this.$router.history.current.query,
+      "http://localhost:8080/#/login?username=ldm151&password=yr5yfesHZYZobe%2FvlEDA5Q%3D%3D"
+    );
     if (this.$router.history.current.query.account) {
       this.getclear();
       this.spinShow = true;
@@ -117,7 +121,10 @@ export default {
         userName: this.$router.history.current.query.account,
         password: this.$router.history.current.query.password,
       };
-      console.log(data,'http://localhost:8080/#/login?username=ldm151&password=yr5yfesHZYZobe%2FvlEDA5Q%3D%3D');
+      console.log(
+        data,
+        "http://localhost:8080/#/login?username=ldm151&password=yr5yfesHZYZobe%2FvlEDA5Q%3D%3D"
+      );
       this.gologin(data);
     } else {
       this.getclear();
@@ -130,12 +137,19 @@ export default {
       this.$store.commit("setAccess", []);
       this.$store.commit("setCertInfo", "");
     },
-    gmcryptSm4(password) {
+    //字符串转base64
+    encode(str) {
+      // 对字符串进行编码
+      var encode = encodeURI(str);
+      // 对编码的字符串转化base64
+      var base64 = btoa(encode);
+      return base64;
+    },
+    gmcryptSm4(password, md5Data) {
+      // console.log(this.encode(md5Data),'this.encode(md5Data)');
       let sm4Config = {
-        key: "gph2i2xxfln0w9sj",
-        // mode: "cbc",
-        iv: "8r13qykaklic5su7",
-        // cipherType: "base64",
+        key: md5Data.substring(md5Data.length-16),
+        iv:  md5Data.substring(md5Data.length-16),
       };
       let sm4 = new SM4(sm4Config);
       let newPassword = password.trim();
@@ -203,7 +217,8 @@ export default {
     },
     async success() {
       let data = JSON.parse(JSON.stringify(this.loginForm));
-      data.password = this.gmcryptSm4(data.password);
+      let md5Data = md5(data.password);
+      data.password = this.gmcryptSm4(data.password, md5Data);
       await this.gologin(data);
     },
 

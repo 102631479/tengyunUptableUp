@@ -307,35 +307,12 @@ export default {
                         // setTimeout(() => {
                         data.setValue({
                           ["expireDateTime"]: params.row.expireDateTime,
-                          ["appListId"]: params.row.appListId,
+                          // ["appListId"]: params.row.appListId,
                           ["dataCreateTime"]: params.row.dataCreateTime,
                           ["phone"]: params.row.phone,
                           ["userId"]: params.row.userId,
                           // ["permissionIdList"]: powerArrey,
                         });
-                        // }, 1);
-                        // console.log(params.row, " this.userForm = false;");
-                        // console.log(
-                        //   this.$refs.authModal.formData,
-                        //   " this.$refs.authModal.formData;"
-                        // );
-                        // if (params.row.state !== 1) {
-                        //   console.log("更新模板");
-                        //   console.log(params.row, "params.row");
-                        //   console.log(params.row.expireDateTime, "到期时间");
-                        // }
-
-                        // if (params.row.permissionMap) {
-                        //   console.log(
-                        //     params.row.permissionMap,
-                        //     "permissionMap"
-                        //   );
-                        // }
-
-                        // console.log(
-                        //   this.$refs.authModal.formData.form,
-                        //   "authModal"
-                        // );
                       },
                     },
                   },
@@ -544,6 +521,15 @@ export default {
     getAuths(params) {
       getAuth({ appListId: params })
         .then((d) => {
+          console.log(d.data);
+          let dataArrey = [];
+          d.data.map((item) => {
+            dataArrey.push(item.id);
+          });
+          let data = this.$refs.authModal.formData;
+          data.setValue({
+            ["appListId"]: dataArrey,
+          });
           this.authlists = d.data;
           let arr = this.filterTreeData(d.data, null, this.permissionIdList);
           this.$nextTick(() => {

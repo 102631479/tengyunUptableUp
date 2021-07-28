@@ -31,6 +31,7 @@
     "iview-area": "^1.5.17",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.15",
+    "md5-node": "^1.0.1",
     "qiankun": "^2.0.5",
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module": "^3.0.0",

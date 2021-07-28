@@ -71,9 +71,7 @@ import {
 export default {
   data() {
     return {
-      updataHtml: [
-     
-      ],
+      updataHtml: [],
       actionUrl:
         process.env.NODE_ENV === "development"
           ? config.baseUrl.dev + "/platform-file/file/img/upload"
@@ -103,7 +101,6 @@ export default {
       },
     };
   },
-
   created() {},
   watch: {
     userForm(val) {
@@ -147,7 +144,6 @@ export default {
         this.formValidate.fileId = "";
       }
     },
-
     handleBeforeUpload() {
       this.$refs.fileIdupload.clearFiles();
     },
@@ -161,7 +157,6 @@ export default {
     },
     // false 编辑  true 增加
     // 打开窗口分辨新增还是编辑
-
     getnumMer() {
       this.numMerr = Number(this.numMer);
     },

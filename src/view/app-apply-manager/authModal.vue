@@ -61,7 +61,7 @@ export default {
       // console.log(data,'data');
       this.formData.submit(
         async (data) => {
-          console.log(data, "data");
+          // console.log(data, "data");
           // return
           // if (!this.edit) {
           //   await editUser(data)
@@ -76,21 +76,38 @@ export default {
           //       this.$Message.error(err.msg);
           //     });
           // } else {
-            await passAndAuth({
-              ...data,
-              // expireDateTime: data.expireDateTime[1],
-              id: this.uid,
+          // console.log(data.permissionIdList,'FormattedMessage');
+          // console.log(data.permissionIdList, "data");
+          let dataArret = [];
+          data.appListId.map((item) => {
+            let isFalse = false;
+            data.permissionIdList.map((itemm) => {
+              if (itemm == item) {
+                isFalse = true;
+              }
+            });
+            if (isFalse) {
+              dataArret.push(item);
+            }
+          });
+          data.appListId = dataArret;
+          // console.log(data, "dataArretdataArret");
+          // return;
+          await passAndAuth({
+            ...data,
+            // expireDateTime: data.expireDateTime[1],
+            id: this.uid,
+          })
+            .then((d) => {
+              this.loading = false;
+              this.$Message.success("提交成功!");
+              this.$emit("success");
+              this.userForm = false;
             })
-              .then((d) => {
-                this.loading = false;
-                this.$Message.success("提交成功!");
-                this.$emit("success");
-                this.userForm = false;
-              })
-              .catch((e) => {
-                this.loading = false;
-                this.$Message.error(e.msg);
-              });
+            .catch((e) => {
+              this.loading = false;
+              this.$Message.error(e.msg);
+            });
           // }
         },
         () => {

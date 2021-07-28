@@ -96,6 +96,14 @@ export const getTemplateData = params => {
   })
 }
 
+//短信模板Code修改
+export const putMobileCode = data => {
+  return axios.request({
+    url: platform.OPERATE + "/message-template/update-template-id",
+    method: "post",
+    data
+  })
+}
 
 // dele
 export const deleTemplate = data => {
@@ -161,3 +169,7 @@ export const deletMail = data => {
 
   })
 }
+
+
+
+

@@ -111,6 +111,7 @@ export default {
       if (!val) this.srcUserFormIMg = "";
     },
   },
+  computed: {},
   data() {
     return {
       pageshow: true,
@@ -140,12 +141,14 @@ export default {
                 },
                 on: {
                   click: () => {
+                    console.log();
+                    console.log(params.row.oldName);
                     this.srcUserFormIMg = params.row.fileAddress;
                     this.userFormIMg = true;
                   },
                 },
               },
-              "查看"
+              this.LookReturn(params.row.oldName)
             ),
             h(
               "span",
@@ -503,6 +506,12 @@ export default {
     this.init();
   },
   methods: {
+    // 查看返回
+    LookReturn(d) {
+      console.log(d.indexOf("md"),'d.indexOf("md")');
+      if (d.indexOf("md") > 0) return "";
+      return "查看";
+    },
     sercher() {
       this.pageshow = false;
       this.init();

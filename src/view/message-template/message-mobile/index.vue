@@ -30,7 +30,31 @@
           </div>
         </div>
       </div>
+      <Modal
+        v-model="editCodeShow"
+        title="修改运行商短信模板code"
+        :mask-closable="false"
+      >
+        <div style="display: flex">
+          <Input
+            :disabled="editCodeStatus"
+            placeholder="输入要修改的code"
+            v-model="editCodeData"
+            :width="100"
+          />
+          <Button
+            style="margin-left: 10px"
+            @click="editCodeStatus = false"
+            type="text"
+            >修改code</Button
+          >
+        </div>
 
+        <div slot="footer" class="btn">
+          <Button type="text" @click="editCodeShow = false">取消</Button>
+          <Button type="primary" @click="editCode">提交</Button>
+        </div>
+      </Modal>
       <Table
         border
         :columns="columns"
@@ -54,7 +78,11 @@
 <script>
 import Bus from "@/bus";
 import columns from "./columns";
-import { getTemplateData, deleTemplate } from "@/api/message-template";
+import {
+  getTemplateData,
+  deleTemplate,
+  putMobileCode,
+} from "@/api/message-template";
 import formModal from "./formModal";
 export default {
   components: {
@@ -62,6 +90,10 @@ export default {
   },
   data() {
     return {
+      editCodeID: "",
+      editCodeStatus: true,
+      editCodeData: "",
+      editCodeShow: false,
       ifDele: false,
       ifDeleData: "",
       templateDescribeNum: Number(200),
@@ -82,7 +114,6 @@ export default {
     this.init();
   },
   mounted() {
-   
     Bus.$on("message-Mobile-add", (data) => {
       console.log("数据更新了");
       this.init();
@@ -121,6 +152,25 @@ export default {
         if (sc == 2) return "编辑";
         return "";
       }
+    },
+    editCode() {
+      if (this.editCodeStatus) {
+        this.editCodeShow = false;
+        return;
+      }
+      putMobileCode({
+        tripartiteTemplateId: this.editCodeData,
+        id: this.editCodeID,
+      })
+        .then((res) => {
+          this.editCodeShow = false;
+          this.$Message.success("修改成功!");
+          console.log(res);
+        })
+        .catch((err) => {
+          this.$Message.error(err.msg);
+          console.log(err);
+        });
     },
     changePage(num) {
       console.log(num);

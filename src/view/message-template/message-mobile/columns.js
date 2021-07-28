@@ -196,7 +196,30 @@ let columns = [{
         },
         _this.getEidet(params.row.vendorType, params.row.examineFlag)
       ),
-
+      h(
+        "span", {
+          props: {
+            type: "success",
+            size: "small",
+          },
+          style: {
+            marginRight: "8px",
+            color: "#0084ff",
+            cursor: "pointer",
+          },
+          on: {
+            click: () => {
+              let data = params.row
+              console.log(data);
+              _this.editCodeData = data.businessType
+              _this.editCodeShow = true
+              _this.editCodeStatus = true
+              _this.editCodeID = data.id
+            },
+          },
+        },
+        "修改code"
+      ),
       h(
         "span", {
           props: {

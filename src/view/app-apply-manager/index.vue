@@ -124,7 +124,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      let $fapi =  this.$refs.authModal.formData;
+      let $fapi = this.$refs.authModal.formData;
       $fapi.on("application-id-list-on-change", (id) => {
         if (!id) {
           $fapi.updateRule("permissionIdList", {
@@ -596,7 +596,7 @@ export default {
 
     getAuths(params) {
       getAuth({ appListId: params })
-        .then((d) => {
+        .then(async (d) => {
           console.log(d.data);
           let dataArrey = [];
           d.data.map((item) => {
@@ -607,36 +607,21 @@ export default {
             this.$refs.authModal.TreeData,
             "this.$refs.authModal.TreeData"
           );
-          console.log(dataArrey,'dataArrey');
+          console.log(dataArrey, "dataArrey");
           // data.setValue({
           //   ["appListId"]: dataArrey,
           // });
           this.authlists = d.data;
           let arr = this.filterTreeData(d.data, null, this.permissionIdList);
-          console.log(arr, "树形图数据");
-          this.$refs.authModal.TreeData = this.filterTreeData(
-            d.data,
-            null,
-            this.permissionIdList
-          );
-          this.modelHidenFn(d.data);
-          // this.$nextTick(() => {
-          // this.$refs.authModal.formData.updateRule(
-          //   "permissionIdList",
-          //   {
-          //     props: {
-          //       // value: this.permissionIdList,
-          //       multiple: false,
-          //       showCheckbox: true,
-          //       // type: "checked",
-          //       // checkStrictly: true,
-          //       data: arr,
-          //     },
-          //   },
-          //   true
+          this.$refs.authModal.data2 = JSON.parse(JSON.stringify(arr));
+          // arr.map()
+          // this.$refs.authModal.TreeData = JSON.parse(JSON.stringify(arr));
+          // this.$refs.authModal.TreeData = this.filterTreeData(
+          //   d.data,
+          //   null,
+          //   this.permissionIdList
           // );
-          // this.$refs.authModal.formData.refresh(true);
-          // });
+          this.modelHidenFn(d.data);
         })
         .catch((e) => {
           this.$Message.error(e.message);
@@ -694,7 +679,7 @@ export default {
           props: {
             multiple: true,
             showCheckbox: true,
-            data: arr,
+            data: JSON.parse(JSON.stringify(arr)),
           },
         },
         true
@@ -704,8 +689,8 @@ export default {
     // 处理树形图数据
     filterTreeData(data, pid = null, list = []) {
       data.map((item) => {
-        item.indeterminate = true;
-        delete item.indeterminate;
+        // item.indeterminate = true;
+        // delete item.indeterminate;
         // item.pid = pid;
         item.id = item.permissionId ? item.permissionId : item.id;
         item.title = item.permissionName ? item.permissionName : item.appName;

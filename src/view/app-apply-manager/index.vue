@@ -123,6 +123,7 @@ export default {
     authModal,
   },
   mounted() {
+    return
     this.$nextTick(() => {
       let $fapi = this.$refs.authModal.formData;
       $fapi.on("application-id-list-on-change", (id) => {
@@ -689,9 +690,7 @@ export default {
     // 处理树形图数据
     filterTreeData(data, pid = null, list = []) {
       data.map((item) => {
-        // item.indeterminate = true;
-        // delete item.indeterminate;
-        // item.pid = pid;
+        item.pid = pid;
         item.id = item.permissionId ? item.permissionId : item.id;
         item.title = item.permissionName ? item.permissionName : item.appName;
         item.checked = list.includes(item.id);

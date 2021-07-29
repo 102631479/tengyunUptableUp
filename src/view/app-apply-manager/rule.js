@@ -52,7 +52,7 @@ export default [
   // }),
   maker.tree('权限设置：', 'permissionIdList', []).emit(['on-check-change']).props({
     multiple: true,
-    showCheckbox: false,
+    showCheckbox: true,
     checkStrictly: true,
     data: [],
   }),

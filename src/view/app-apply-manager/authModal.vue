@@ -113,6 +113,7 @@ export default {
           // console.log(data.permissionIdList,'FormattedMessage');
           // console.log(data.permissionIdList, "data");
           let dataArret = [];
+          console.log(data);
           data.appListId.map((item) => {
             let isFalse = false;
             data.permissionIdList.map((itemm) => {

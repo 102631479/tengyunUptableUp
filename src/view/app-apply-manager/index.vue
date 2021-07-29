@@ -608,9 +608,9 @@ export default {
             "this.$refs.authModal.TreeData"
           );
           console.log(dataArrey, "dataArrey");
-          // data.setValue({
-          //   ["appListId"]: dataArrey,
-          // });
+          data.setValue({
+            ["appListId"]: dataArrey,
+          });
           this.authlists = d.data;
           let arr = this.filterTreeData(d.data, null, this.permissionIdList);
           this.$refs.authModal.data2 = JSON.parse(JSON.stringify(arr));

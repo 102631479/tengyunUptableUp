@@ -11,6 +11,20 @@
         :rules="ruleValidate"
         :label-width="100"
       >
+        <div v-show="!edit">
+          <FormItem label="模板CODE：" prop="businessType">
+            <div style="display: flex">
+              <Input
+                placeholder="模板CODE"
+                :width="100"
+                v-model="formValidate.businessType"
+              ></Input>
+              <Button style="margin-left: 10px" @click="getCODE"
+                >获取随机code</Button
+              >
+            </div>
+          </FormItem>
+        </div>
         <!-- <FormItem label="模板CODE：" prop="businessType">
           <div style="display: flex">
             <Input
@@ -126,6 +140,7 @@ export default {
       rule, // 表单配置
       option, // 弹框表单配置
       formValidate: {
+        businessType: "",
         templateName: "",
         title: "",
         templateContent: "",
@@ -147,7 +162,6 @@ export default {
         templateDescribe: [
           { required: false, message: "请输入模板描述", trigger: "blur" },
         ],
-       
       },
     };
   },
@@ -198,7 +212,6 @@ export default {
     },
   },
   methods: {
- 
     handleChange(file) {
       let url = file.data[0].fileAddress;
       let quill = this.$refs.myQuillEditor.quill;
@@ -225,6 +238,14 @@ export default {
     close() {
       console.log("关闭窗口");
       this.userForm = false;
+    },
+    getCODE() {
+      this.formValidate.businessType = this.getSubstring();
+    },
+    getSubstring() {
+      var str = new Date().getTime().toString();
+      let data = str.substring(str.length - 6);
+      return data;
     },
     async submit() {
       // console.log(this.formValidate[0]);

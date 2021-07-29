@@ -96,7 +96,7 @@ export default {
         { title: "序号", align: "center", type: "index", width: "100" },
         {
           title: "唯一标识",
-          key: "id",
+          key: "businessType",
           align: "center",
           width: "150",
         },

@@ -15,6 +15,7 @@
       width="30%"
     >
       <formCreate :rule="rule" :option="option" v-model="formData"></formCreate>
+      <Tree :data="TreeData" show-checkbox></Tree>
       <div slot="footer">
         <Button type="text" @click="close">取消</Button>
         <Button type="primary" @click="submit">确认</Button>
@@ -30,6 +31,7 @@ import { passAndAuth } from "@/api/applyMgr";
 export default {
   data() {
     return {
+      TreeData: [],
       edit: true,
       uid: "",
       loading: true,

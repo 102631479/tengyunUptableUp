@@ -22,7 +22,7 @@ export default [
   maker.hidden('phone'),
   maker.hidden('userId'),
   maker.hidden('dataCreateTime'),
-  maker.hidden( 'appListId', []),
+  maker.hidden('appListId', []),
   // maker.date('到期时间：', 'expireDateTime', {}).validate([{
   //   required: true,
   //   message: '请输入到期时间'
@@ -43,11 +43,18 @@ export default [
   // }]).props({
   //   multiple: true
   // }),
+  // maker.tree('权限设置：', 'permissionIdList', []).emit(['on-check-change']).props({
+
+  //   // multiple: true,
+  //   // showCheckbox: false,
+  //   // checkStrictly: true,
+  //   data: [],
+  // }),
   maker.tree('权限设置：', 'permissionIdList', []).emit(['on-check-change']).props({
-    
-    // multiple: true,
-    // showCheckbox: false,
-    // checkStrictly: true,
+    multiple: true,
+    showCheckbox: false,
+    checkStrictly: true,
     data: [],
   }),
+
 ]

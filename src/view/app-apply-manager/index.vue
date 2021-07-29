@@ -122,6 +122,63 @@ export default {
   components: {
     authModal,
   },
+  mounted() {
+    this.$nextTick(() => {
+      let $fapi =  this.$refs.authModal.formData;
+      $fapi.on("application-id-list-on-change", (id) => {
+        if (!id) {
+          $fapi.updateRule("permissionIdList", {
+            props: {
+              multiple: true,
+              showCheckbox: true,
+              data: [],
+            },
+          });
+          $fapi.refresh(true);
+          return;
+        }
+        getTreePermission(id).then(({ data }) => {
+          let arr = this.filterTreeData(data);
+          $fapi.updateRule(
+            "permissionIdList",
+            {
+              props: {
+                multiple: true,
+                showCheckbox: true,
+                data: arr,
+              },
+            },
+            true
+          );
+          $fapi.refresh(true);
+        });
+      });
+      $fapi.on("permission-id-list-on-check-change", (payload) => {
+        // let arr = $fapi.el('permissionIdList').getCheckedAndIndeterminateNodes();
+        // console.log($fapi.el('permissionIdList'));
+        // let arr = $fapi.el('permissionIdList').$refs.tree.getCheckedAndIndeterminateNodes();
+        //   arr = arr.map(item => item.id)
+        // console.log(arr);
+        // this.$refs.crudTable.$refs.formModal.formData.setValue('permissionIdList',arr);
+        // let arr = payload.filter((item) => {
+        //   return !item.isApplication;
+        // });
+        // console.log(arr);
+        // $fapi.updateRule(
+        //   "permissionIdList",
+        //   {
+        //     props: {
+        //       multiple: true,
+        //       showCheckbox: true,
+        //       data: arr,
+        //     },
+        //   },
+        //   true
+        // );
+        // $fapi.refresh(true);
+      });
+    });
+  },
   data() {
     return {
       permissionIdList: [],
@@ -375,6 +432,25 @@ export default {
                         ["phone"]: params.row.phone,
                         ["userId"]: params.row.userId,
                       });
+                      // let arr = this.filterTreeData(
+                      //   data,
+                      //   null,
+                      //   this.permissionIdList
+                      // );
+                      this.$nextTick(() => {
+                        this.$refs.authModal.formData.updateRule(
+                          "permissionIdList",
+                          {
+                            props: {
+                              value: this.permissionIdList,
+                              multiple: true,
+                              showCheckbox: true,
+                              data: arr,
+                            },
+                          },
+                          true
+                        );
+                      });
                     },
                   },
                 },
@@ -527,27 +603,40 @@ export default {
             dataArrey.push(item.id);
           });
           let data = this.$refs.authModal.formData;
-          data.setValue({
-            ["appListId"]: dataArrey,
-          });
+          console.log(
+            this.$refs.authModal.TreeData,
+            "this.$refs.authModal.TreeData"
+          );
+          console.log(dataArrey,'dataArrey');
+          // data.setValue({
+          //   ["appListId"]: dataArrey,
+          // });
           this.authlists = d.data;
           let arr = this.filterTreeData(d.data, null, this.permissionIdList);
-          this.$nextTick(() => {
-            this.$refs.authModal.formData.updateRule(
-              "permissionIdList",
-              {
-                props: {
-                  value: this.permissionIdList,
-                  multiple: true,
-                  showCheckbox: true,
-                  type: "checked",
-                  data: arr,
-                },
-              },
-              true
-            );
-            this.$refs.authModal.formData.refresh(true);
-          });
+          console.log(arr, "树形图数据");
+          this.$refs.authModal.TreeData = this.filterTreeData(
+            d.data,
+            null,
+            this.permissionIdList
+          );
+          this.modelHidenFn(d.data);
+          // this.$nextTick(() => {
+          // this.$refs.authModal.formData.updateRule(
+          //   "permissionIdList",
+          //   {
+          //     props: {
+          //       // value: this.permissionIdList,
+          //       multiple: false,
+          //       showCheckbox: true,
+          //       // type: "checked",
+          //       // checkStrictly: true,
+          //       data: arr,
+          //     },
+          //   },
+          //   true
+          // );
+          // this.$refs.authModal.formData.refresh(true);
+          // });
         })
         .catch((e) => {
           this.$Message.error(e.message);
@@ -565,18 +654,17 @@ export default {
           }
         }
       }
-
-      // this.$nextTick(() => {
-      let res = arr.map((item) => {
-        return {
-          label: item.appName,
-          value: item.id,
-        };
+      this.$nextTick(() => {
+        let res = arr.map((item) => {
+          return {
+            label: item.appName,
+            value: item.id,
+          };
+        });
+        this.$refs.authModal.formData.updateRule("appListId", {
+          options: res,
+        });
       });
-      this.$refs.authModal.formData.updateRule("appListId", {
-        options: res,
-      });
-      // });
     },
 
     getAppList() {
@@ -595,9 +683,30 @@ export default {
      * @param {Array} data 要过滤的数据
      * @param {string} 父级id
      */
+
+    modelHidenFn(d) {
+      let arr = this.filterTreeData(d, null, this.permissionIdList);
+      let $fapi = this.$refs.authModal.formData;
+      $fapi.updateRule(
+        "permissionIdList",
+        {
+          value: [],
+          props: {
+            multiple: true,
+            showCheckbox: true,
+            data: arr,
+          },
+        },
+        true
+      );
+      $fapi.refresh(true);
+    },
+    // 处理树形图数据
     filterTreeData(data, pid = null, list = []) {
       data.map((item) => {
-        item.pid = pid;
+        item.indeterminate = true;
+        delete item.indeterminate;
+        // item.pid = pid;
         item.id = item.permissionId ? item.permissionId : item.id;
         item.title = item.permissionName ? item.permissionName : item.appName;
         item.checked = list.includes(item.id);
@@ -625,7 +734,6 @@ export default {
           .then((d) => {
             this.showFlag = false;
             // this.load = false;
-
             this.$Message.success("添加成功");
             this.init();
           })

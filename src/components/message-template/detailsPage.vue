@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal v-model="userForm" title="详情">
+    <Modal v-model="userForm" title="详情" :closable="false" :mask-closable="false">
       <div class="mail-details">
         <div class="first-hear">{{ htmlDetails }}:</div>
         <span class="boxi-text"
@@ -31,8 +31,7 @@
         <span class="boxi-text">代理商通过后发多送的消息模板</span>
       </div>
       <div slot="footer">
-        <slot name="header">
-        </slot>
+        <slot name="header"> </slot>
       </div>
     </Modal>
   </div>

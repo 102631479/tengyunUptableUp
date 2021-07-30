@@ -422,5 +422,4 @@ let columns = [{
     ],
   },
 ];
-
 export default columnData

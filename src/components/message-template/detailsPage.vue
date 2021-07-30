@@ -7,7 +7,6 @@
           >尊敬的智慧文旅云用户，您好！恭喜您通过代理商认证，我们准备了项目资料，您可下载查看</span
         >
       </div>
-
       <div class="mail-text">
         <div class="first-hear">{{ htmlDetails }}:</div>
         <div class="boxi-text">
@@ -19,7 +18,6 @@
           </div>
           -->
           <div v-html="htmlData"></div>
-
           <div class="dolown" style="color: #657180">
             此敬<br />智慧文旅云团队
           </div>

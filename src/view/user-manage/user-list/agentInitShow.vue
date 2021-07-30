@@ -108,6 +108,7 @@
             :maxlength="maxlengthsize"
           ></Input>
         </Form-item>
+
         <Form-item label="银行所在地" prop="bankAddress">
           <Input
             :maxlength="maxlengthsize"
@@ -115,6 +116,7 @@
             placeholder="请输入银行所在地"
           ></Input>
         </Form-item>
+
         <Form-item label="开户支行" prop="accountOpeningBranch">
           <Input
             :maxlength="maxlengthsize"
@@ -128,6 +130,7 @@
             placeholder="请输入银行账号"
           ></Input>
         </Form-item>
+        
         <div v-show="formItem.agentType == 1">
           <formCreate
             ref="agentFormModal1"
@@ -290,7 +293,6 @@ export default {
   },
   methods: {
     // 升级请求
-
     // 清空上传数组
     agentInit() {
       this.formItem.annexIdList = [];
@@ -300,6 +302,7 @@ export default {
       this.$refs.formInline.validate((valid) => {
         if (!valid) return;
         this.loading = true;
+
         let p1 = new Promise((resolve, reject) => {
           resolve();
         }).then((res) => {
@@ -312,6 +315,7 @@ export default {
             }
           });
         });
+
         let p2 = new Promise((resolve, reject) => {
           resolve();
         }).then((res) => {
@@ -334,6 +338,7 @@ export default {
           });
         });
         Promise.all([p1, p2]).then((result) => {
+
           if (this.formData11 && this.formData22) {
             //  处理上传数组
             this.formItem.annexIdList = [];

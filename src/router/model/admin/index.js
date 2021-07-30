@@ -334,7 +334,7 @@ export default [{
       path: 'user-feedback',
       name: 'user-feedback',
       meta: {
-        icon: 'iconradio-button-on-outline',
+        // icon: 'iconradio-button-on-outline',
         title: '用户反馈'
       },
       component: () => import('@/view/user-feedback/index')
@@ -353,7 +353,7 @@ export default [{
       path: 'user-appointment',
       name: 'user-appointment',
       meta: {
-        icon: 'iconradio-button-on-outline',
+        // icon: 'iconradio-button-on-outline',
         title: '用户预约'
       },
       component: () => import('@/view/user-appointment/index')

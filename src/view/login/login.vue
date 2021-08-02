@@ -154,7 +154,7 @@ export default {
       let sm4 = new SM4(sm4Config);
       let newPassword = password.trim();
       let text = sm4.encrypt(newPassword);
-      console.log(sm4.decrypt(text), "解密字符串");
+      // console.log(sm4.decrypt(text), "解密字符串");
       return sm4.encrypt(newPassword);
     },
     submitBtn() {

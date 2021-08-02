@@ -1,0 +1,65 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "82853301",
+      "name": "系统公告",
+      "font_class": "icon-xtgg",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "82853302",
+      "name": "产品商管理",
+      "font_class": "icon-cpsgl",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "82853303",
+      "name": "企业微信管理",
+      "font_class": "icon-qywxgl",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "82853304",
+      "name": "代理商管理",
+      "font_class": "icon-dlsgl",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "82853305",
+      "name": "文档管理",
+      "font_class": "icon-wdgl",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "82853306",
+      "name": "应用申请管理",
+      "font_class": "icon-yysqgl",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "82853308",
+      "name": "用户预约",
+      "font_class": "icon-yhyy",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "82853454",
+      "name": "用户管理",
+      "font_class": "icon-yhgl",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    }
+  ]
+}

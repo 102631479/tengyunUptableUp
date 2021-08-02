@@ -4,7 +4,7 @@ export default [{
     path: '/user-manage',
     name: 'user-manage',
     meta: {
-      icon: "icon-tengxunyunchanpinzonglan-1",
+      icon: "icon-icon-yhgl",
       notCache: true,
       // access: ['backstage:user:management'],
       access: ['operate:user-manage:path'],
@@ -35,7 +35,7 @@ export default [{
     path: '/applyManager',
     name: 'applyManager',
     meta: {
-      icon: 'icon-tengxunyunchanpinzonglan-2',
+      icon: 'icon-icon-yysqgl',
       access: ['operate:application-apply:path'],
       title: '应用申请管理'
     },
@@ -55,7 +55,7 @@ export default [{
     path: '/agent',
     name: 'agent',
     meta: {
-      icon: 'iconpricetags-outline',
+      icon: 'icon-icon-dlsgl',
       access: ['operate:agent-management:path'],
       title: '代理商管理'
     },
@@ -74,7 +74,7 @@ export default [{
     path: '/product',
     name: 'product',
     meta: {
-      icon: 'iconpricetags-outline',
+      icon: 'icon-icon-cpsgl',
       access: ['operate:product-manage:path'],
       title: '产品商管理'
     },
@@ -180,7 +180,7 @@ export default [{
     path: '/document-management',
     name: 'document-management',
     meta: {
-      icon: 'iconpricetags-outline',
+      icon: 'icon-icon-wdgl',
       // access: ['operate:document:path'],
       title: '文档管理'
     },
@@ -285,7 +285,7 @@ export default [{
     path: '/system',
     name: 'system',
     meta: {
-      icon: 'icon-tengxunyunchanpinzonglan-2',
+      icon: 'icon-icon-xtgg',
       // access: ['system-notice'],
       title: '系统公告'
     },
@@ -325,7 +325,8 @@ export default [{
     path: '/userback',
     name: 'userback',
     meta: {
-      icon: 'iconpricetags-outline',
+      icon: 'icon-tengxunyunchanpinzonglan-2',
+
       // access: ['userback'],
       title: '用户反馈'
     },
@@ -344,7 +345,7 @@ export default [{
     path: '/appointment',
     name: 'appointment',
     meta: {
-      icon: 'iconpricetags-outline',
+      icon: 'icon-icon-yhyy',
       // access: ['userback'],
       title: '用户预约'
     },
@@ -385,7 +386,7 @@ export default [{
     name: 'wechat',
     meta: {
       access: ['operate:wechat:path'],
-      icon: 'icon-tengxunyunchanpinzonglan-2',
+      icon: 'icon-icon-qywxgl',
       title: '企业微信管理'
     },
     component: Main,

@@ -326,7 +326,6 @@ export default [{
     name: 'userback',
     meta: {
       icon: 'icon-tengxunyunchanpinzonglan-2',
-
       // access: ['userback'],
       title: '用户反馈'
     },

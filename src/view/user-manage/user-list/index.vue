@@ -242,7 +242,7 @@ export default {
     add() {
       this.$refs.formModal.formData.form.userStatus = 1;
       this.$refs.formModal.formData.form.areaId = [];
-      console.log(this.$refs.formModal, "this.$refs.formModal11111111111");
+      // console.log(this.$refs.formModal, "this.$refs.formModal11111111111");
       this.$refs.formModal.formData.hidden(true, "identityType");
       this.$refs.formModal.edit = false;
       this.$refs.formModal.userForm = true;

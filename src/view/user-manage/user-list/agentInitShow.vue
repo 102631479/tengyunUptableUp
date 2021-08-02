@@ -165,7 +165,6 @@ import Bus from "@/bus";
 import agentRules1 from "./agentRules1";
 import agentRules2 from "./agentRules2";
 import { getStatusupdate } from "@/api/user-list";
-
 export default {
   components: { agentRules1, agentRules2 },
   data() {
@@ -175,13 +174,10 @@ export default {
       loading: false,
       agentRules1,
       agentRules2,
-
       formData1: {},
       formData2: {},
-
       formData11: false,
       formData22: false,
-
       agentInitShow: false,
       ruleInline: {
         applicationIdentity: [
@@ -222,7 +218,6 @@ export default {
             message: "手机号格式不正确",
           },
         ],
-
         mailingAddress: [
           { required: true, message: "请填写", trigger: "blur" },
         ],
@@ -279,7 +274,6 @@ export default {
     Bus.$on("change:annexIdList", (data) => {
       this.formItem.photoLists.push(data);
     });
-
     Bus.$on("delete:annexIdList", (data) => {
       this.formItem.photoLists.map((item, index) => {
         if (data.type == item.type) {
@@ -338,7 +332,6 @@ export default {
           });
         });
         Promise.all([p1, p2]).then((result) => {
-
           if (this.formData11 && this.formData22) {
             //  处理上传数组
             this.formItem.annexIdList = [];
@@ -376,6 +369,7 @@ export default {
       this.agentInitShow = false;
       this.agentInit();
     },
+    
   },
 };
 </script>

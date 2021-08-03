@@ -141,8 +141,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log();
-                    console.log(params.row.oldName);
+                    // console.log(params.row.oldName);
                     this.srcUserFormIMg = params.row.fileAddress;
                     this.userFormIMg = true;
                   },
@@ -508,8 +507,8 @@ export default {
   methods: {
     // 查看返回
     LookReturn(d) {
-      console.log(d.indexOf("md"),'d.indexOf("md")');
-      if (d.indexOf("md") > 0) return "";
+      let data= d.split(".")
+      if (data[1].indexOf("md") > -1) return "";
       return "查看";
     },
     sercher() {

@@ -141,7 +141,7 @@ export default [{
     path: '/message',
     name: 'message',
     meta: {
-      icon: 'iconpricetags-outline',
+      icon: 'icon-icon-xtgg',
       access: ['message-template'],
       title: '消息模板管理'
     },
@@ -285,7 +285,7 @@ export default [{
     path: '/system',
     name: 'system',
     meta: {
-      icon: 'icon-icon-xtgg',
+      icon: 'icon-icon-xxmkgl',
       // access: ['system-notice'],
       title: '系统公告'
     },

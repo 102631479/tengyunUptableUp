@@ -52,7 +52,7 @@ import VueAMap from 'vue-amap';
 import './index.less'
 import '@/assets/icons-console/iconfont.css'
 import '@/assets/iconsName/iconfont.css'
-// import '@/assets/ico_xiaoxi/iconfont.css'
+import '@/assets/notios/iconfont.css'
 import '@/assets/icons/iconfont.css'
 import TreeTable from 'tree-table-vue'
 import VOrgTree from 'v-org-tree'

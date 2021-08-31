@@ -7,12 +7,26 @@
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
-          <div>
+          <div
+            v-if="
+              hasOneOf(
+                ['operate:notify-template:add-message'],
+                this.$store.state.user.access
+              )
+            "
+          >
             <Button type="primary" class="mr-6" @click="openadd"
               >新增模板</Button
             >
           </div>
-          <div>
+          <div
+            v-if="
+              hasOneOf(
+                ['operate:notify-template:page-message'],
+                this.$store.state.user.access
+              )
+            "
+          >
             <Input
               type="text"
               class="mr-6"
@@ -67,6 +81,7 @@
 // import { getStandinside } from "@/api/message-Standinside";
 import { getStandinside, deletStandinside } from "@/api/message-template"; //调用编辑器
 import Bus from "@/bus";
+import { hasOneOf } from "@/libs/tools";
 // import detailsPage from ''
 import detailsPage from "../../../components/message-template/detailsPage";
 import formModal from "./formModal";
@@ -77,6 +92,7 @@ export default {
   },
   data() {
     return {
+      hasOneOf,
       ifDele: false,
       ifDeleData: "",
       detailHtmlData: "",
@@ -175,6 +191,12 @@ export default {
                   marginRight: "8px",
                   color: "#0084ff",
                   cursor: "pointer",
+                  display: hasOneOf(
+                    ["operate:notify-template:update-message"],
+                    this.$store.state.user.access
+                  )
+                    ? "inline-block"
+                    : "none",
                 },
                 on: {
                   click: () => {
@@ -201,6 +223,12 @@ export default {
                   marginRight: "8px",
                   color: "#0084ff",
                   cursor: "pointer",
+                  display: hasOneOf(
+                    ["operate:notify-template:delete-message"],
+                    this.$store.state.user.access
+                  )
+                    ? "inline-block"
+                    : "none",
                 },
                 // on: {
                 //   click: () => {

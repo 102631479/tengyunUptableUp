@@ -7,13 +7,27 @@
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
-          <div>
+          <div
+            v-if="
+              hasOneOf(
+                ['operate:message-template:add-message'],
+                this.$store.state.user.access
+              )
+            "
+          >
             <Button type="primary" class="mr-6" @click="openadd"
               >新增模板</Button
             >
           </div>
 
-          <div>
+          <div
+            v-if="
+              hasOneOf(
+                ['operate:message-template:page-message'],
+                this.$store.state.user.access
+              )
+            "
+          >
             <Input
               type="text"
               class="mr-6"
@@ -76,6 +90,8 @@
 </template>
 
 <script>
+import { hasOneOf } from "@/libs/tools";
+
 import Bus from "@/bus";
 import columns from "./columns";
 import {
@@ -90,6 +106,7 @@ export default {
   },
   data() {
     return {
+      hasOneOf,
       editCodeID: "",
       editCodeStatus: true,
       editCodeData: "",

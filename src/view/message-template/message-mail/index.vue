@@ -7,13 +7,27 @@
     <Card>
       <div class="flex justify-between mb-10">
         <div class="flex">
-          <div>
+          <div
+            v-if="
+              hasOneOf(
+                ['operate:mail-template:add-message'],
+                this.$store.state.user.access
+              )
+            "
+          >
             <Button type="primary" class="mr-6" @click="openadd"
               >新增模板</Button
             >
           </div>
 
-          <div>
+          <div
+            v-if="
+              hasOneOf(
+                ['operate:mail-template:page-message'],
+                this.$store.state.user.access
+              )
+            "
+          >
             <Input
               type="text"
               class="mr-6"
@@ -68,7 +82,7 @@
 // import { getMail } from "@/api/message-Mail";
 import { getMail, deletMail } from "@/api/message-template"; //调用编辑器
 import Bus from "@/bus";
-
+import { hasOneOf } from "@/libs/tools";
 import detailsPage from "../../../components/message-template/detailsPage";
 import formModal from "./formModal";
 export default {
@@ -78,6 +92,7 @@ export default {
   },
   data() {
     return {
+      hasOneOf,
       ifDele: false,
       ifDeleData: "",
       detailHtmlData: "",
@@ -152,6 +167,12 @@ export default {
                   size: "small",
                 },
                 style: {
+                  display: hasOneOf(
+                    ["operate:mail-template:update-message"],
+                    this.$store.state.user.access
+                  )
+                    ? "inline-block"
+                    : "none",
                   marginRight: "8px",
                   color: "#0084ff",
                   cursor: "pointer",
@@ -186,6 +207,12 @@ export default {
                   marginRight: "8px",
                   color: "#0084ff",
                   cursor: "pointer",
+                  display: hasOneOf(
+                    ["operate:mail-template:delete-message"],
+                    this.$store.state.user.access
+                  )
+                    ? "inline-block"
+                    : "none",
                 },
                 // on: {
                 //   click: () => {

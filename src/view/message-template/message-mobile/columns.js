@@ -1,6 +1,9 @@
 import {
   deleTemplate
 } from "@/api/message-template";
+import {
+  hasOneOf
+} from "@/libs/tools";
 
 let _this
 let columnData = (data) => {
@@ -138,6 +141,11 @@ let columns = [{
             marginRight: "8px",
             color: "#0084ff",
             cursor: "pointer",
+            display: hasOneOf(
+                ["operate:message-template:update-message"],
+                _this.$store.state.user.access
+              ) ?
+              "inline-block" : "none",
           },
           on: {
             click: async () => {
@@ -230,6 +238,11 @@ let columns = [{
             marginRight: "8px",
             color: "#0084ff",
             cursor: "pointer",
+            display: hasOneOf(
+                ["operate:message-template:delete-message"],
+                _this.$store.state.user.access
+              ) ?
+              "inline-block" : "none",
           },
           on: {
             click: async () => {

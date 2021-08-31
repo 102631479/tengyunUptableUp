@@ -142,7 +142,7 @@ export default [{
     name: 'message',
     meta: {
       icon: 'icon-icon-xtgg',
-      access: ['message-template'],
+      access: ['operate:message-template:path'],
       title: '消息模板管理'
     },
     component: Main,
@@ -150,6 +150,8 @@ export default [{
         path: 'message-mobile',
         name: 'message-mobile',
         meta: {
+          access: ['operate:message-template:menu'],
+
           // icon: 'iconradio-button-on-outline',
           title: '短信模板'
         },
@@ -159,6 +161,8 @@ export default [{
         path: 'message-Standinside',
         name: 'message-Standinside',
         meta: {
+          access: ['operate:notify-template:menu'],
+
           // icon: 'iconradio-button-on-outline',
           title: '站内信模板'
         },
@@ -168,6 +172,8 @@ export default [{
         path: 'message-mail',
         name: 'message-mail',
         meta: {
+          access: ['operate:mail-template:menu'],
+
           // icon: 'iconradio-button-on-outline',
           title: '邮件模板'
         },

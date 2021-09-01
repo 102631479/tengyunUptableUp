@@ -151,7 +151,6 @@ export default [{
         name: 'message-mobile',
         meta: {
           access: ['operate:message-template:menu'],
-
           // icon: 'iconradio-button-on-outline',
           title: '短信模板'
         },
@@ -162,7 +161,6 @@ export default [{
         name: 'message-Standinside',
         meta: {
           access: ['operate:notify-template:menu'],
-
           // icon: 'iconradio-button-on-outline',
           title: '站内信模板'
         },
@@ -173,7 +171,6 @@ export default [{
         name: 'message-mail',
         meta: {
           access: ['operate:mail-template:menu'],
-
           // icon: 'iconradio-button-on-outline',
           title: '邮件模板'
         },
@@ -196,7 +193,6 @@ export default [{
       name: 'document-management',
       meta: {
         access: ['operate:document:manage'],
-
         // icon: 'iconradio-button-on-outline',
         title: '文档模板配置'
       },

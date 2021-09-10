@@ -35,6 +35,7 @@ const showThisMenuEle = (item, access) => {
  * @param {Array} list 通过路由列表得到菜单列表
  * @returns {Array}
  */
+// 权限设置数据函数1111111111111111111111111111111
 export const getMenuByRouter = (list, access) => {
   let res = []
   forEach(list, item => {
@@ -332,6 +333,7 @@ export const showByAccess = (access, canViewAccess) => {
  * @param {*} route1 路由对象
  * @param {*} route2 路由对象
  */
+
 export const routeEqual = (route1, route2) => {
   const params1 = route1.params || {}
   const params2 = route2.params || {}

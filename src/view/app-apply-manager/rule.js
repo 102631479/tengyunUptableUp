@@ -30,13 +30,13 @@ export default [
   //   "type": "daterange",
   //   // "format": "yyyy-MM-dd HH:mm:ss",
   // }),
-  maker.date('到期时间：', 'expireDateTime').validate([{
-    required: true,
-    message: '请输入到期时间'
-  }]).props({
-    // "type": "daterange",
-    "format": "yyyy-MM-dd 23:59:59",
-  }),
+  // maker.date('到期时间：', 'expireDateTime').validate([{
+  //   required: true,
+  //   message: '请输入到期时间'
+  // }]).props({
+  //   // "type": "daterange",
+  //   "format": "yyyy-MM-dd 23:59:59",
+  // }),
   // maker.select('已申请应用：', 'appListId', []).validate([{
   //   required: true,
   //   message: '请输入申请应用'
@@ -50,11 +50,15 @@ export default [
   //   // checkStrictly: true,
   //   data: [],
   // }),
-  maker.tree('权限设置：', 'permissionIdList', []).emit(['on-check-change']).props({
-    multiple: true,
-    showCheckbox: true,
-    checkStrictly: true,
-    data: [],
-  }),
+  // maker.tree('权限设置：', 'permissionIdList', []).emit(['on-check-change']).props({
+  // multiple: true,
+  // showCheckbox: true,
+  // // checkStrictly,
+  // data: [],
+  // data: [],
+  // type: 'checked',
+  // multiple: false,
+  // showCheckbox: true,
+  // }),
 
 ]

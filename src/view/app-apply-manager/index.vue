@@ -123,7 +123,12 @@ export default {
     authModal,
   },
   mounted() {
-    return
+    this.$nextTick(() => {
+      // $fapi.on("on-check-change", (payload) => {
+      //   console.log(payload, "payloadpayload");
+      // });
+    });
+    return;
     this.$nextTick(() => {
       let $fapi = this.$refs.authModal.formData;
       $fapi.on("application-id-list-on-change", (id) => {
@@ -344,33 +349,51 @@ export default {
                     },
                     on: {
                       click: async () => {
+                        console.log(params.row, "更新授权");
                         if (params.row.permissionMap) {
                           let powerArrey = [];
                           for (var item in params.row.permissionMap) {
-                            powerArrey.push(item);
+                            //  if(params.row.permissionMap[item])
+                            if (params.row.permissionMap[item]) {
+                              powerArrey.push(item);
+                            }
                           }
                           this.permissionIdList = powerArrey;
                         }
-
+                        console.log(this.permissionIdList, "拥有的权限");
+                        if (params.row.roleId == null) {
+                          this.$refs.authModal.roleId = "";
+                        } else {
+                          this.$refs.authModal.roleId = params.row.roleId;
+                        }
                         this.$refs.authModal.userForm = true;
                         let data = this.$refs.authModal.formData;
-                        this.$refs.authModal.edit = false;
-                        await this.getAuths(params.row.appListId);
+                        await this.getAuths(
+                          params.row.appListId,
+                          params.row.permissionMap
+                        );
                         await this.getTags(params.row.appListId);
                         this.$refs.authModal.uid = params.row.id;
-                        console.log(
-                          params.row.dataCreateTime,
-                          "params.row.dataCreateTime"
-                        );
+                        // this.$refs.authModal.uid = params.row.id;
+                        // console.log(
+                        //   params.row.dataCreateTime,
+                        //   "params.row.dataCreateTime"
+                        // );
+                        // console.log(params.row, "params.row");
+                        // expireDateTime;
                         // setTimeout(() => {
                         data.setValue({
-                          ["expireDateTime"]: params.row.expireDateTime,
-                          // ["appListId"]: params.row.appListId,
+                          // ["expireDateTime"]: params.row.expireDateTime,
+                          ["appListId"]: params.row.appListId,
                           ["dataCreateTime"]: params.row.dataCreateTime,
                           ["phone"]: params.row.phone,
                           ["userId"]: params.row.userId,
                           // ["permissionIdList"]: powerArrey,
                         });
+
+                        this.$refs.authModal.formInline.timeData =
+                          params.row.expireDateTime;
+                        this.$refs.authModal.edit = false;
                       },
                     },
                   },
@@ -421,14 +444,33 @@ export default {
                       : "none",
                   },
                   on: {
-                    click: () => {
-                      this.$refs.authModal.edit = true;
-                      this.$refs.authModal.userForm = true;
-                      this.getAuths(params.row.appListId);
+                    click: async () => {
+                      // this.permissionMap;
+                      if (params.row.permissionMap) {
+                        let powerArrey = [];
+                        for (var item in params.row.permissionMap) {
+                          if (params.row.permissionMap[item]) {
+                            powerArrey.push(item);
+                          }
+                        }
+                        this.permissionIdList = powerArrey;
+                      }
+                      console.log(this.permissionIdList, "拥有的权限");
+                      // console.log(params.row.roleId, "params.row.roleId");
+                      if (params.row.roleId == null) {
+                        this.$refs.authModal.roleId = "";
+                      } else {
+                        this.$refs.authModal.roleId = params.row.roleId;
+                      }
+                      await this.getAuths(params.row.appListId);
                       this.$refs.authModal.uid = params.row.id;
-                      this.getTags(params.row.appListId);
+                      await this.getTags(params.row.appListId);
                       let data = this.$refs.authModal.formData;
+                      // this.$refs.authModal.roleId = params.row.roleId;
+                      // console.log(params.row, "params.row");
+
                       data.setValue({
+                        ["appListId"]: params.row.appListId,
                         ["dataCreateTime"]: params.row.dataCreateTime,
                         ["phone"]: params.row.phone,
                         ["userId"]: params.row.userId,
@@ -438,19 +480,25 @@ export default {
                       //   null,
                       //   this.permissionIdList
                       // );
+                      // this.$nextTick(() => {
+                      //   this.$refs.authModal.formData.updateRule(
+                      //     "permissionIdList",
+                      //     {
+                      //       props: {
+                      //         value: this.permissionIdList,
+                      //         multiple: true,
+                      //         showCheckbox: true,
+                      //         checkStrictly: true,
+                      //         // data: arr,
+                      //       },
+                      //     },
+                      //     true
+                      //   );
+                      // });
                       this.$nextTick(() => {
-                        this.$refs.authModal.formData.updateRule(
-                          "permissionIdList",
-                          {
-                            props: {
-                              value: this.permissionIdList,
-                              multiple: true,
-                              showCheckbox: true,
-                              data: arr,
-                            },
-                          },
-                          true
-                        );
+                        this.$refs.authModal.formInline.timeData = "";
+                        // params.row.expireDateTime;
+                        this.$refs.authModal.edit = true;
                       });
                     },
                   },
@@ -595,7 +643,7 @@ export default {
         });
     },
 
-    getAuths(params) {
+    getAuths(params, data) {
       getAuth({ appListId: params })
         .then(async (d) => {
           console.log(d.data);
@@ -612,9 +660,12 @@ export default {
           data.setValue({
             ["appListId"]: dataArrey,
           });
-          this.authlists = d.data;
-          let arr = this.filterTreeData(d.data, null, this.permissionIdList);
-          this.$refs.authModal.data2 = JSON.parse(JSON.stringify(arr));
+          console.log(params, "params");
+          // return;
+          this.authlists = data;
+          // console.log();
+          // let arr = this.filterTreeData(d.data, null, this.permissionIdList);
+          // this.$refs.authModal.data2 = JSON.parse(JSON.stringify(arr));
           // arr.map()
           // this.$refs.authModal.TreeData = JSON.parse(JSON.stringify(arr));
           // this.$refs.authModal.TreeData = this.filterTreeData(
@@ -622,7 +673,12 @@ export default {
           //   null,
           //   this.permissionIdList
           // );
+          console.log(d.data, "d.data拥有的权限");
           this.modelHidenFn(d.data);
+          this.$nextTick(() => {
+            // this.$refs.authModal.edit = true;
+            this.$refs.authModal.userForm = true;
+          });
         })
         .catch((e) => {
           this.$Message.error(e.message);
@@ -672,33 +728,57 @@ export default {
 
     modelHidenFn(d) {
       let arr = this.filterTreeData(d, null, this.permissionIdList);
+      console.log(arr, "树形图数据");
       let $fapi = this.$refs.authModal.formData;
-      $fapi.updateRule(
-        "permissionIdList",
-        {
-          value: [],
-          props: {
-            multiple: true,
-            showCheckbox: true,
-            data: JSON.parse(JSON.stringify(arr)),
-          },
-        },
-        true
-      );
+      this.$refs.authModal.TreeData = JSON.parse(JSON.stringify(arr));
+      // $fapi.updateRule(
+      //   "permissionIdList",
+      //   {
+      //     value: [],
+      //     props: {
+      //       multiple: true,
+      //       showCheckbox: true,
+      //       // data: JSON.parse(JSON.stringify(arr)),
+      //       checkDirectly: true,
+      //     },
+      //   },
+      //   true
+      // );
       $fapi.refresh(true);
+      // console.log($fapi, "$fapi");
     },
     // 处理树形图数据
+    _getSelectId(list) {
+      return list.filter((item) => {
+        item.children
+          ? (item.children = this._getSelectId(item.children))
+          : null;
+        return item.checked;
+      });
+      return;
+    },
+    //
     filterTreeData(data, pid = null, list = []) {
       data.map((item) => {
         item.pid = pid;
         item.id = item.permissionId ? item.permissionId : item.id;
         item.title = item.permissionName ? item.permissionName : item.appName;
+        console.log(list.includes(item.id), "list.includes(item.id)");
         item.checked = list.includes(item.id);
+        // item.expand = list.includes(item.id);
+        // if (item.children.length == 0) {
+        //   console.log("没有子节点");
+        //   item.checked = list.includes(item.id);
+        // } else {
+        //   item.checked = list.includes(item.id);
+        //   // item.checked = false;
+        // }
         item.hasOwnProperty("children")
           ? this.filterTreeData(item.children, null, this.permissionIdList)
           : (item.children = null);
         return item;
       });
+      // console.log(data, "树形图数据");
       return data;
     },
 

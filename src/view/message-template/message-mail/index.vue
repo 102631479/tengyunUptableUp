@@ -124,7 +124,7 @@ export default {
         { title: "邮件内容", key: "contents", align: "center" },
         {
           title: "模板描述",
-          key: "templateDescribe",
+          key: "remarks",
           align: "center",
           width: "100",
         },

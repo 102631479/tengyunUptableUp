@@ -130,10 +130,39 @@ export default {
         },
         { title: "消息内容", key: "templateContents", align: "center" },
         {
-          title: "模板类型",
-          key: "businessType",
+          title: "类型",
+          key: "relevanceServe",
           align: "center",
           width: "200",
+          render: (h, params) => {
+            //  <Option value="2">审核消息</Option>
+            //         <Option value="3">订单消息</Option>
+            //         <Option value="4">财务消息</Option>
+            //         <Option value="6">系统消息</Option>
+            //         <Option value="7">工单消息</Option>
+
+            // this.status = params.row.relevanceServe;
+            if (params.row.relevanceServe == 2) {
+              return h("span", "审核消息");
+            } else if (params.row.relevanceServe == 1) {
+              return h("span", "系统公告");
+            } else if (params.row.relevanceServe == 3) {
+              return h("span", "订单消息");
+            } else if (params.row.relevanceServe == 4) {
+              return h("span", "财务消息");
+            } else if (params.row.relevanceServe == 6) {
+              return h("span", "系统消息");
+            } else if (params.row.relevanceServe == 7) {
+              return h("span", "工单消息");
+            } else {
+              return h("span", "其他消息");
+            }
+          },
+        },
+        {
+          title: "状态",
+          key: "status",
+          align: "center",
           render: (h, params) => {
             this.status = params.row.status;
             if (params.row.status == 2) {
@@ -143,6 +172,7 @@ export default {
             }
           },
         },
+
         {
           title: "模板描述",
           key: "templateDescribe",

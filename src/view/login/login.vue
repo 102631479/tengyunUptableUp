@@ -157,8 +157,6 @@ export default {
       // console.log(sm4.decrypt(text), "解密字符串");
       return sm4.encrypt(newPassword);
     },
-
-    
     submitBtn() {
       if (!this.loginForm.userName) {
         this.$message({ type: "error", message: "请输入用户名" });

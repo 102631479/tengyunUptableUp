@@ -38,6 +38,7 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         "Content-type": 'application/json;'
+        //
       }
     }
     return config
